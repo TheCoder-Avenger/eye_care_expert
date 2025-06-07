@@ -16,7 +16,6 @@ const HomeView = () => {
             Browse our premium eyewear collection
           </p>
 
-          {/* Sample Product Links */}
           <div className="home-view__product-links">
             <Link
               href="/product/classic-aviator-sunglasses"

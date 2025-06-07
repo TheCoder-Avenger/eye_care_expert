@@ -1,33 +1,18 @@
-// ===============================================
-// FROSTWP-INSPIRED COLOR PALETTE
-// ===============================================
-// Based on FrostWP theme aesthetics: clean, minimal,
-// modern UI with soft whites, cool grays, and light blues
-
-// ===============================================
-// PRIMARY COLORS
-// ===============================================
 $primary-color: #667eea;
 $secondary-color: #764ba2;
 $accent-color: #5a6fd8;
-$tertiary-color: #b3d9ff; // Very light blue
+$tertiary-color: #b3d9ff;
 
-// ===============================================
-// BACKGROUND COLORS
-// ===============================================
-$background-color: #ffffff; // Pure white background
+$background-color: #ffffff;
 $background-light: #fafafa;
 $background-lighter: #f8f9ff;
 $background-dark: #222222;
-$background-gray: #f8f9fa; // Cool light gray background
-$background-section: #fdfdfe; // Section background
-$background-card: #ffffff; // Card background
-$background-overlay: rgba(255, 255, 255, 0.95); // Modal/overlay background
+$background-gray: #f8f9fa;
+$background-section: #fdfdfe;
+$background-card: #ffffff;
+$background-overlay: rgba(255, 255, 255, 0.95);
 
-// ===============================================
-// COOL GRAYS (FrostWP inspired) - MOVED UP FOR REFERENCE
-// ===============================================
-$gray-50: #f9fafb; // Lightest cool gray
+$gray-50: #f9fafb;
 $gray-100: #f8f9fa;
 $gray-200: #f0f0f0;
 $gray-300: #eeeeee;
@@ -38,158 +23,117 @@ $gray-700: #333333;
 $gray-800: #222222;
 $gray-900: #111111;
 
-// ===============================================
-// TEXT COLORS
-// ===============================================
 $text-color: $gray-700;
-$text-secondary: #4a5568; // Secondary text - medium gray
+$text-secondary: #4a5568;
 $text-muted: $gray-500;
 $text-light: $gray-600;
-$text-white: #ffffff; // White text for dark backgrounds
-$text-link: #0066ff; // Link text color
-$text-link-hover: #0052d6; // Link hover color
+$text-white: #ffffff;
+$text-link: #0066ff;
+$text-link-hover: #0052d6;
 $text-inverse: #ffffff;
 
-// ===============================================
-// BORDER COLORS
-// ===============================================
 $border-color: $gray-300;
 $border-light: $gray-200;
-$border-medium: #cbd5e0; // Medium border
+$border-medium: #cbd5e0;
 $border-dark: $gray-400;
-$border-focus: #0066ff; // Focus state border
-$border-error: #e53e3e; // Error state border
-$border-success: #38a169; // Success state border
+$border-focus: #0066ff;
+$border-error: #e53e3e;
+$border-success: #38a169;
 
-// ===============================================
-// STATE COLORS
-// ===============================================
 $success-color: #2ed573;
-$success-light: #f0fff4; // Light success background
+$success-light: #f0fff4;
 $warning-color: #ffa502;
-$warning-light: #fffaf0; // Light warning background
+$warning-light: #fffaf0;
 $error-color: #ff4757;
-$error-light: #fed7d7; // Light error background
+$error-light: #fed7d7;
 $info-color: #3742fa;
-$info-light: #ebf8ff; // Light info background
+$info-light: #ebf8ff;
 
-// Gray definitions moved up above
+$blue-50: #eff6ff;
+$blue-100: #dbeafe;
+$blue-200: #bfdbfe;
+$blue-300: #93c5fd;
+$blue-400: #60a5fa;
+$blue-500: #3b82f6;
+$blue-600: #2563eb;
+$blue-700: #1d4ed8;
+$blue-800: #1e40af;
+$blue-900: #1e3a8a;
 
-// ===============================================
-// BLUE PALETTE (Extended)
-// ===============================================
-$blue-50: #eff6ff; // Lightest blue
-$blue-100: #dbeafe; // Very light blue
-$blue-200: #bfdbfe; // Light blue
-$blue-300: #93c5fd; // Medium-light blue
-$blue-400: #60a5fa; // Medium blue
-$blue-500: #3b82f6; // Standard blue
-$blue-600: #2563eb; // Medium-dark blue
-$blue-700: #1d4ed8; // Dark blue
-$blue-800: #1e40af; // Very dark blue
-$blue-900: #1e3a8a; // Darkest blue
+$navbar-background: #ffffff;
+$navbar-text: #1a1d21;
+$navbar-hover: #f8f9fa;
 
-// ===============================================
-// COMPONENT SPECIFIC COLORS
-// ===============================================
-$navbar-background: #ffffff; // Navigation background
-$navbar-text: #1a1d21; // Navigation text
-$navbar-hover: #f8f9fa; // Navigation hover state
+$button-primary: #0066ff;
+$button-primary-hover: #0052d6;
+$button-primary-text: #ffffff;
+$button-secondary: #f8f9fa;
+$button-secondary-hover: #e2e8f0;
+$button-secondary-text: #1a1d21;
 
-$button-primary: #0066ff; // Primary button background
-$button-primary-hover: #0052d6; // Primary button hover
-$button-primary-text: #ffffff; // Primary button text
-$button-secondary: #f8f9fa; // Secondary button background
-$button-secondary-hover: #e2e8f0; // Secondary button hover
-$button-secondary-text: #1a1d21; // Secondary button text
+$form-background: #ffffff;
+$form-border: #e2e8f0;
+$form-focus: #0066ff;
+$form-text: #1a1d21;
+$form-placeholder: #718096;
 
-$form-background: #ffffff; // Form field background
-$form-border: #e2e8f0; // Form field border
-$form-focus: #0066ff; // Form field focus border
-$form-text: #1a1d21; // Form field text
-$form-placeholder: #718096; // Form placeholder text
+$card-background: #ffffff;
+$card-border: #e2e8f0;
+$card-shadow: rgba(0, 0, 0, 0.05);
 
-$card-background: #ffffff; // Card background
-$card-border: #e2e8f0; // Card border
-$card-shadow: rgba(0, 0, 0, 0.05); // Card shadow
+$header-background: #ffffff;
+$footer-background: #f8f9fa;
+$footer-text: #4a5568;
 
-$header-background: #ffffff; // Header background
-$footer-background: #f8f9fa; // Footer background
-$footer-text: #4a5568; // Footer text
-
-// ===============================================
-// SHADOWS & EFFECTS
-// ===============================================
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
 $shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
 $shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
 $shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
 
-// ===============================================
-// HOVER & FOCUS STATES
-// ===============================================
-$hover-overlay: rgba(0, 102, 255, 0.05); // Subtle blue hover overlay
-$focus-ring: rgba(0, 102, 255, 0.2); // Focus ring color
-$active-overlay: rgba(0, 102, 255, 0.1); // Active state overlay
+$hover-overlay: rgba(0, 102, 255, 0.05);
+$focus-ring: rgba(0, 102, 255, 0.2);
+$active-overlay: rgba(0, 102, 255, 0.1);
 
-// ===============================================
-// TYPOGRAPHY RELATED COLORS
-// ===============================================
-$heading-color: #1a1d21; // Heading text color
-$body-color: #4a5568; // Body text color
-$caption-color: #718096; // Caption text color
-$code-background: #f8f9fa; // Code block background
-$code-text: #1a1d21; // Code text color
-$code-border: #e2e8f0; // Code border color
+$heading-color: #1a1d21;
+$body-color: #4a5568;
+$caption-color: #718096;
+$code-background: #f8f9fa;
+$code-text: #1a1d21;
+$code-border: #e2e8f0;
 
-// ===============================================
-// UTILITY COLORS
-// ===============================================
 $transparent: transparent;
 $white-color: #ffffff;
 $black-color: #000000;
 $overlay-dark: rgba(0, 0, 0, 0.5);
 $overlay-light: rgba(255, 255, 255, 0.9);
 
-// ===============================================
-// FONT SIZES
-// ===============================================
-$font-xs: 0.6rem; // 9.6px
-$font-sm: 0.7rem; // 11.2px
-$font-small: 0.8rem; // 12.8px
-$font-regular: 0.85rem; // 13.6px
-$font-medium: 0.9rem; // 14.4px
-$font-large: 1rem; // 16px
-$font-xl: 1.25rem; // 20px
-$font-2xl: 1.5rem; // 24px
-$font-3xl: 2rem; // 32px
-$font-4xl: 2.5rem; // 40px
-$font-5xl: 3rem; // 48px
+$font-xs: 0.6rem;
+$font-sm: 0.7rem;
+$font-small: 0.8rem;
+$font-regular: 0.85rem;
+$font-medium: 0.9rem;
+$font-large: 1rem;
+$font-xl: 1.25rem;
+$font-2xl: 1.5rem;
+$font-3xl: 2rem;
+$font-4xl: 2.5rem;
+$font-5xl: 3rem;
 
-// ===============================================
-// FONT WEIGHTS
-// ===============================================
 $font-weight-light: 300;
 $font-weight-normal: 400;
 $font-weight-medium: 500;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
-// ===============================================
-// SPACING
-// ===============================================
-$space-xs: 0.25rem; // 4px
-$space-sm: 0.5rem; // 8px
-$space-md: 0.75rem; // 12px
-$space-lg: 1rem; // 16px
-$space-xl: 1.5rem; // 24px
-$space-2xl: 2rem; // 32px
-$space-3xl: 3rem; // 48px
-$space-4xl: 4rem; // 64px
+$space-xs: 0.25rem;
+$space-sm: 0.5rem;
+$space-md: 0.75rem;
+$space-lg: 1rem;
+$space-xl: 1.5rem;
+$space-2xl: 2rem;
+$space-3xl: 3rem;
+$space-4xl: 4rem;
 
-// ===============================================
-// BORDER RADIUS
-// ===============================================
 $radius-xs: 2px;
 $radius-sm: 4px;
 $radius-md: 8px;
@@ -198,25 +142,16 @@ $radius-xl: 16px;
 $radius-2xl: 20px;
 $radius-full: 50px;
 
-// ===============================================
-// TRANSITIONS
-// ===============================================
 $transition-fast: 0.15s ease;
 $transition-normal: 0.2s ease;
 $transition-slow: 0.3s ease;
 
-// ===============================================
-// BREAKPOINTS
-// ===============================================
-$breakpoint-sm: 480px; // Small phones
-$breakpoint-md: 768px; // Tablets
-$breakpoint-lg: 1024px; // Small laptops
-$breakpoint-xl: 1200px; // Large screens
-$breakpoint-2xl: 1400px; // Extra large screens
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-2xl: 1400px;
 
-// ===============================================
-// Z-INDEX
-// ===============================================
 $z-dropdown: 1000;
 $z-sticky: 1010;
 $z-fixed: 1020;

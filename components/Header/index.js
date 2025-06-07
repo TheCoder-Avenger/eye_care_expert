@@ -5,25 +5,19 @@ import "./style.scss";
 import Modal from "@components/Modal";
 
 const Header = () => {
-  // Modal state management
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
 
-  // Dropdown state
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
-  // User authentication state (placeholder)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("John Doe");
 
-  // Selected language state
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
-  // Product category toggle
   const [selectedCategory, setSelectedCategory] = useState("Eyeglass");
 
-  // Cart and wishlist counters
   const [cartCount, setCartCount] = useState(3);
   const [wishlistCount, setWishlistCount] = useState(5);
 
@@ -36,7 +30,6 @@ const Header = () => {
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language.name);
     setShowLanguageDropdown(false);
-    // Add translation logic here
   };
 
   const handleCategoryToggle = (category) => {
@@ -52,7 +45,6 @@ const Header = () => {
     <>
       <header className="header">
         <div className="header__container">
-          {/* Logo and Tagline Section */}
           <div className="header__logo-section">
             <div className="header__logo">
               <span className="header__logo-icon">👁️</span>
@@ -63,7 +55,6 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Product Category Toggle */}
           <div className="header__category-toggle">
             <div className="header__toggle-container">
               <button
@@ -89,9 +80,7 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Right Section - Controls */}
           <div className="header__controls">
-            {/* Language Dropdown */}
             <div className="header__language-dropdown">
               <button
                 className="header__dropdown-trigger"
@@ -118,7 +107,6 @@ const Header = () => {
               )}
             </div>
 
-            {/* Wishlist Button */}
             <button
               className="header__icon-btn header__wishlist-btn"
               onClick={() => setShowWishlistModal(true)}
@@ -130,7 +118,6 @@ const Header = () => {
               )}
             </button>
 
-            {/* Cart Button */}
             <button
               className="header__icon-btn header__cart-btn"
               onClick={() => setShowCartModal(true)}
@@ -142,7 +129,6 @@ const Header = () => {
               )}
             </button>
 
-            {/* Authentication Section */}
             <div className="header__auth-section">
               {isLoggedIn ? (
                 <div className="header__user-profile">
@@ -166,7 +152,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Wishlist Modal */}
       <Modal
         isOpen={showWishlistModal}
         onClose={() => setShowWishlistModal(false)}
@@ -190,7 +175,6 @@ const Header = () => {
         </div>
       </Modal>
 
-      {/* Cart Modal */}
       <Modal
         isOpen={showCartModal}
         onClose={() => setShowCartModal(false)}
@@ -214,7 +198,6 @@ const Header = () => {
         <button className="modal__checkout-btn">Proceed to Checkout</button>
       </Modal>
 
-      {/* User Profile Modal */}
       <Modal
         isOpen={showUserModal && isLoggedIn}
         onClose={() => setShowUserModal(false)}

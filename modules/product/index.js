@@ -6,15 +6,12 @@ import Modal from "@components/Modal";
 import "./style.scss";
 
 const ProductView = ({ slug }) => {
-  // Product state
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Gallery state
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Product configuration state
   const [selectedLensType, setSelectedLensType] = useState("single-vision");
   const [selectedFrameColor, setSelectedFrameColor] = useState("black");
   const [selectedPowerOption, setSelectedPowerOption] = useState("with-power");
@@ -23,19 +20,15 @@ const ProductView = ({ slug }) => {
     leftEye: { sph: "", cyl: "", axis: "" },
   });
 
-  // Modal state
   const [showBuyOneGetOneModal, setShowBuyOneGetOneModal] = useState(false);
   const [selectedSecondProduct, setSelectedSecondProduct] = useState(null);
 
-  // Cart state
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  // Mock product data (replace with API call)
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
-      // Simulate API call
       setTimeout(() => {
         setProduct({
           id: slug,
@@ -56,11 +49,11 @@ const ProductView = ({ slug }) => {
             "Lightweight Frame",
           ],
           images: [
-            "/api/placeholder/600/600",
-            "/api/placeholder/600/600",
-            "/api/placeholder/600/600",
-            "/api/placeholder/600/600",
-            "/api/placeholder/600/600",
+            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Front",
+            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Side",
+            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Back",
+            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Detail",
+            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Case",
           ],
           colors: [
             { name: "Black", code: "#000000", available: true },
@@ -93,19 +86,22 @@ const ProductView = ({ slug }) => {
               id: "product-2",
               name: "Reading Glasses",
               price: 1999,
-              image: "/api/placeholder/200/200",
+              image:
+                "https://placehold.co/200x200/f8f9fa/1a1d21?text=Reading+Glasses",
             },
             {
               id: "product-3",
               name: "Sport Sunglasses",
               price: 2499,
-              image: "/api/placeholder/200/200",
+              image:
+                "https://placehold.co/200x200/f8f9fa/1a1d21?text=Sport+Sunglasses",
             },
             {
               id: "product-4",
               name: "Blue Light Glasses",
               price: 1799,
-              image: "/api/placeholder/200/200",
+              image:
+                "https://placehold.co/200x200/f8f9fa/1a1d21?text=Blue+Light+Glasses",
             },
           ],
         });
@@ -122,10 +118,8 @@ const ProductView = ({ slug }) => {
 
   const handleAddToCart = async () => {
     setIsAddingToCart(true);
-    // Simulate API call
     setTimeout(() => {
       setIsAddingToCart(false);
-      // Add to cart logic here
       console.log("Added to cart:", {
         product,
         lensType: selectedLensType,
@@ -139,7 +133,6 @@ const ProductView = ({ slug }) => {
   };
 
   const handleBuyNow = () => {
-    // Navigate to checkout or show buy options
     console.log("Buy now clicked");
   };
 
@@ -190,9 +183,7 @@ const ProductView = ({ slug }) => {
   return (
     <div className="product-view">
       <div className="product-view__container">
-        {/* Product Gallery */}
         <div className="product-view__gallery">
-          {/* Main Image */}
           <div className="product-view__main-image">
             <img
               src={product.images[selectedImageIndex]}
@@ -210,7 +201,6 @@ const ProductView = ({ slug }) => {
             </button>
           </div>
 
-          {/* Thumbnail Images */}
           <div className="product-view__thumbnails">
             {product.images.map((image, index) => (
               <button
@@ -228,7 +218,6 @@ const ProductView = ({ slug }) => {
           </div>
         </div>
 
-        {/* Product Details */}
         <div className="product-view__details">
           <div className="product-view__header">
             <h1 className="product-view__title">{product.name}</h1>
@@ -265,7 +254,6 @@ const ProductView = ({ slug }) => {
             </ul>
           </div>
 
-          {/* Frame Color Selection */}
           <div className="product-view__options">
             <h3>Frame Color:</h3>
             <div className="product-view__color-options">
@@ -293,7 +281,6 @@ const ProductView = ({ slug }) => {
             </div>
           </div>
 
-          {/* Lens Options */}
           <div className="product-view__lens-options">
             <h3>Lens Type:</h3>
             <div className="product-view__lens-grid">
@@ -317,7 +304,6 @@ const ProductView = ({ slug }) => {
             </div>
           </div>
 
-          {/* Power Options */}
           <div className="product-view__power-options">
             <h3>Power Options:</h3>
             <div className="product-view__power-toggle">
@@ -344,7 +330,6 @@ const ProductView = ({ slug }) => {
             </div>
           </div>
 
-          {/* Prescription Form */}
           {selectedPowerOption === "with-power" && (
             <div className="product-view__prescription">
               <h3>Prescription Details:</h3>
@@ -429,7 +414,6 @@ const ProductView = ({ slug }) => {
             </div>
           )}
 
-          {/* Quantity and Actions */}
           <div className="product-view__actions">
             <div className="product-view__quantity">
               <label>Quantity:</label>
@@ -474,7 +458,6 @@ const ProductView = ({ slug }) => {
         </div>
       </div>
 
-      {/* Buy One Get One Modal */}
       <Modal
         isOpen={showBuyOneGetOneModal}
         onClose={() => setShowBuyOneGetOneModal(false)}

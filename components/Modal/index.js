@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import "./style.scss";
 
 const Modal = ({ isOpen, onClose, title, children, size = "medium" }) => {
-  // Prevent body scroll when modal is open
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (isOpen) {
@@ -11,7 +10,6 @@ const Modal = ({ isOpen, onClose, title, children, size = "medium" }) => {
         document.body.style.overflow = "unset";
       }
 
-      // Cleanup on unmount
       return () => {
         document.body.style.overflow = "unset";
       };

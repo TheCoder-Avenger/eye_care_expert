@@ -66,5 +66,11 @@
   },
   "modularPageStructure": {
     "description": "Do not write page logic directly inside the 'app/page.js' file. Instead, use the 'modules/' folder at the root level. Each feature or page should reside inside a folder within 'modules/', containing 'index.js' and 'style.module.scss'. The 'app/page.js' file should only handle routing, layout wrappers, or redirects."
+  },
+  "usePlaceholderImages": {
+    "description": "Use https://placehold.co/ for all placeholder images in the codebase. Define width, height, background, text color, and text where appropriate."
+  },
+  "removeAllComments": {
+    "description": "Remove all comments from the entire codebase, including JS/JSX and SCSS files."
   }
 }

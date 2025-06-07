@@ -1,6 +1,3 @@
-// Global SCSS variables are auto-included via next.config.mjs
-
-/* Header Component Styles - Following Cursor Rules */
 .header {
   background: $background-color;
   box-shadow: $shadow-md;
@@ -21,7 +18,7 @@
   }
 }
 
-/* Logo Section */
+
 .header__logo-section {
   flex-shrink: 0;
 }
@@ -53,7 +50,7 @@
   }
 }
 
-/* Category Toggle */
+
 .header__category-toggle {
   flex: 1;
   display: flex;
@@ -93,7 +90,7 @@
   }
 }
 
-/* Header Controls */
+
 .header__controls {
   display: flex;
   align-items: center;
@@ -101,7 +98,7 @@
   flex-shrink: 0;
 }
 
-/* Language Dropdown */
+
 .header__language-dropdown {
   position: relative;
 }
@@ -172,7 +169,7 @@
   }
 }
 
-/* Icon Buttons */
+
 .header__icon-btn {
   position: relative;
   display: flex;
@@ -214,7 +211,7 @@
   }
 }
 
-/* Authentication Section */
+
 .header__auth-section {
   margin-left: $space-sm;
 }
@@ -257,7 +254,7 @@
   }
 }
 
-/* User Profile */
+
 .header__profile-btn {
   display: flex;
   align-items: center;
@@ -286,7 +283,7 @@
   margin-left: $space-xs;
 }
 
-/* Responsive Design - Mobile First */
+
 @media (max-width: $breakpoint-md) {
   .header__container {
     padding: $space-lg;

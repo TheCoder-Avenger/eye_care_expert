@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -13,11 +14,57 @@ export default function Home() {
           height={38}
           priority
         />
+
+        <div style={{ margin: "2rem 0", textAlign: "center" }}>
+          <h2 style={{ marginBottom: "1rem", color: "#333" }}>
+            EyeCare Expert Portal
+          </h2>
+          <p style={{ marginBottom: "2rem", color: "#666" }}>
+            Browse our premium eyewear collection
+          </p>
+
+          {/* Sample Product Links */}
+          <div
+            style={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Link
+              href="/product/classic-aviator-sunglasses"
+              style={{
+                padding: "0.75rem 1.5rem",
+                background: "#667eea",
+                color: "white",
+                textDecoration: "none",
+                borderRadius: "8px",
+                fontWeight: "500",
+                transition: "background 0.3s ease",
+              }}
+            >
+              View Aviator Sunglasses
+            </Link>
+            <Link
+              href="/product/blue-light-blocking-glasses"
+              style={{
+                padding: "0.75rem 1.5rem",
+                background: "#764ba2",
+                color: "white",
+                textDecoration: "none",
+                borderRadius: "8px",
+                fontWeight: "500",
+              }}
+            >
+              View Blue Light Glasses
+            </Link>
+          </div>
+        </div>
+
         <ol>
-          <li>
-            Get started by editing <code>app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
+          <li>Product pages with advanced features implemented ✅</li>
+          <li>Header with all requested components ✅</li>
         </ol>
 
         <div className={styles.ctas}>

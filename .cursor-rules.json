@@ -36,5 +36,29 @@
   "comments": {
     "required": false,
     "description": "Add comments only for non-obvious logic. Do not overcomment."
+  },
+  "responsiveDesign": {
+    "description": "Ensure all UI components and layouts are fully responsive and adapt smoothly to different screen sizes including desktop, tablet, and mobile. Use fluid widths, flexible flexbox layouts, and media queries as needed."
+  },
+  "pageModulesStructure": {
+    "description": "For each page, place the main JSX component inside a dedicated 'modules' folder within the page’s directory. For example, 'app/product/[slug]/modules/ProductView.jsx'. Follow this structure consistently across the project."
+  },
+  "reuseComponents": {
+    "description": "Identify repetitive UI code or logic and refactor it into reusable components inside the 'components' folder. Avoid duplication by reusing these components across pages and modules."
+  },
+  "mobileFirstDesign": {
+    "description": "Use mobile-first UI design approach. Start styling and layout for the smallest screen sizes first, then progressively enhance for larger screens using media queries."
+  },
+  "globalColorUsage": {
+    "description": "Always use global SCSS color variables defined in '/assets/stylesheets/_variables.scss'. Do not hardcode color values. Import the file in all SCSS modules that need access to global colors."
+  },
+  "globalJSImports": {
+    "description": "Always use global import aliases in JS/JSX files instead of relative imports. Configure path aliases (e.g., @components, @utils, @styles) in jsconfig.json or tsconfig.json and use them consistently to import shared modules, utils, constants, config files, contexts, and global styles."
+  },
+  "componentStructure": {
+    "description": "Each component or module must reside in its own folder containing two files: 'index.js' for the JSX logic and 'style.module.scss' for scoped styles. Do not separate these files into different directories. Keep both in the same folder for clarity and maintainability."
+  },
+  "globalStyleImportInLayout": {
+    "description": "Always import global SCSS variables from '/assets/stylesheets/_variables.scss' into 'layout.js' at the top of the file to ensure global design tokens like colors and font sizes are available project-wide."
   }
 }

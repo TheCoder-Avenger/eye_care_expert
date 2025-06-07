@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import "./style.scss";
 
 const ProductsView = () => {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -57,18 +59,22 @@ const ProductsView = () => {
     }
   };
 
-  // Effect to fetch products when filters or page changes
+  // Effect to fetch products when filters or page changes with debouncing
   useEffect(() => {
-    fetchProducts(1);
+    const timeoutId = setTimeout(() => {
+      fetchProducts(1);
+    }, 300); // 300ms debounce for search
+
+    return () => clearTimeout(timeoutId);
   }, [filters]);
 
-  // Handle filter changes
-  const handleFilterChange = (filterName, value) => {
+  // Handle filter changes with useCallback to prevent unnecessary re-renders
+  const handleFilterChange = useCallback((filterName, value) => {
     setFilters((prev) => ({
       ...prev,
       [filterName]: value,
     }));
-  };
+  }, []);
 
   // Handle page change
   const handlePageChange = (page) => {
@@ -84,11 +90,13 @@ const ProductsView = () => {
     }).format(price);
   };
 
-  // Handle add to cart (placeholder for now)
-  const handleAddToCart = (product) => {
-    alert(`Added ${product.name} to cart!`);
-    // TODO: Implement actual cart functionality
-  };
+  // Handle view product - navigate to product detail page
+  const handleViewProduct = useCallback(
+    (product) => {
+      router.push(`/product/${product._id}`);
+    },
+    [router]
+  );
 
   if (error) {
     return (
@@ -303,10 +311,10 @@ const ProductsView = () => {
                       {formatPrice(product.price)}
                     </div>
                     <button
-                      className="product-card__add-to-cart"
-                      onClick={() => handleAddToCart(product)}
+                      className="product-card__view-product"
+                      onClick={() => handleViewProduct(product)}
                     >
-                      Add to Cart
+                      View Product
                     </button>
                   </div>
                 </div>

@@ -28,89 +28,113 @@ const ProductView = ({ slug }) => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      setLoading(true);
-      setTimeout(() => {
-        setProduct({
-          id: slug,
-          name: "Classic Aviator Sunglasses",
-          brand: "EyeCare Expert",
-          price: 2999,
-          originalPrice: 4999,
-          discount: 40,
-          rating: 4.5,
-          reviews: 128,
-          description:
-            "Premium quality aviator sunglasses with UV protection and polarized lenses. Perfect for outdoor activities and daily wear.",
-          features: [
-            "UV 400 Protection",
-            "Polarized Lenses",
-            "Anti-Reflective Coating",
-            "Scratch Resistant",
-            "Lightweight Frame",
-          ],
-          images: [
-            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Front",
-            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Side",
-            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Back",
-            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Detail",
-            "https://placehold.co/600x600/f8f9fa/1a1d21?text=Aviator+Case",
-          ],
-          colors: [
-            { name: "Black", code: "#000000", available: true },
-            { name: "Brown", code: "#8B4513", available: true },
-            { name: "Gold", code: "#FFD700", available: false },
-            { name: "Silver", code: "#C0C0C0", available: true },
-          ],
-          lensOptions: [
-            {
-              id: "single-vision",
-              name: "Single Vision",
-              price: 0,
-              description: "For distance or reading",
-            },
-            {
-              id: "progressive",
-              name: "Progressive",
-              price: 1500,
-              description: "For distance and reading combined",
-            },
-            {
-              id: "blue-light",
-              name: "Blue Light Filter",
-              price: 800,
-              description: "Reduces digital eye strain",
-            },
-          ],
-          buyOneGetOneProducts: [
-            {
-              id: "product-2",
-              name: "Reading Glasses",
-              price: 1999,
-              image:
-                "https://placehold.co/200x200/f8f9fa/1a1d21?text=Reading+Glasses",
-            },
-            {
-              id: "product-3",
-              name: "Sport Sunglasses",
-              price: 2499,
-              image:
-                "https://placehold.co/200x200/f8f9fa/1a1d21?text=Sport+Sunglasses",
-            },
-            {
-              id: "product-4",
-              name: "Blue Light Glasses",
-              price: 1799,
-              image:
-                "https://placehold.co/200x200/f8f9fa/1a1d21?text=Blue+Light+Glasses",
-            },
-          ],
-        });
+      try {
+        setLoading(true);
+
+        const response = await fetch(`/api/products/${slug}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch product");
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Transform API data to match component expectations
+          const transformedProduct = {
+            id: data.data._id,
+            name: data.data.name,
+            brand: "EyeCare Expert",
+            price: data.data.price,
+            originalPrice: Math.round(data.data.price * 1.4), // Calculate original price
+            discount: Math.round(
+              ((Math.round(data.data.price * 1.4) - data.data.price) /
+                Math.round(data.data.price * 1.4)) *
+                100
+            ),
+            rating: 4.5, // Default rating
+            reviews: Math.floor(Math.random() * 200) + 50, // Random reviews count
+            description: data.data.description,
+            features: [
+              "UV 400 Protection",
+              "High Quality Material",
+              "Anti-Reflective Coating",
+              "Scratch Resistant",
+              "Lightweight Frame",
+            ],
+            images:
+              data.data.images.length > 0
+                ? data.data.images
+                : [
+                    "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=600",
+                    "https://images.unsplash.com/photo-1574258495973-cd67c4ecb71c?w=600",
+                    "https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600",
+                  ],
+            colors: [
+              {
+                name: data.data.color,
+                code: getColorCode(data.data.color),
+                available: true,
+              },
+            ],
+            lensOptions: data.data.available_lens_types.map(
+              (lensType, index) => ({
+                id: lensType.type.toLowerCase().replace(/ /g, "-"),
+                name: lensType.type,
+                price: index * 500, // Different prices for different lens types
+                description: `${
+                  lensType.type
+                } lens with options: ${lensType.sub_options.join(", ")}`,
+              })
+            ),
+            buyOneGetOneProducts: data.data.buy_1_get_1_available
+              ? [
+                  {
+                    id: "related-1",
+                    name: "Related Eyewear",
+                    price: Math.round(data.data.price * 0.8),
+                    image:
+                      "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=200",
+                  },
+                ]
+              : [],
+            // Add original product data for reference
+            originalData: data.data,
+          };
+
+          setProduct(transformedProduct);
+        } else {
+          throw new Error(data.error || "Failed to fetch product");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setProduct(null);
+      } finally {
         setLoading(false);
-      }, 1000);
+      }
     };
 
-    fetchProduct();
+    if (slug) {
+      fetchProduct();
+    }
   }, [slug]);
+
+  // Helper function to get color codes
+  const getColorCode = (colorName) => {
+    const colorMap = {
+      Black: "#000000",
+      Brown: "#8B4513",
+      Gold: "#FFD700",
+      Silver: "#C0C0C0",
+      Blue: "#0066CC",
+      Purple: "#800080",
+      Gray: "#808080",
+      Grey: "#808080",
+      Tortoise: "#8B4513",
+      Gunmetal: "#2C3539",
+    };
+    return colorMap[colorName] || "#666666";
+  };
 
   const handleImageSelect = (index) => {
     setSelectedImageIndex(index);

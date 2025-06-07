@@ -1,0 +1,40 @@
+{
+  "scss": {
+    "enforce": true,
+    "description": "Use SCSS for all styling. No inline styles or CSS modules."
+  },
+  "variables": {
+    "colors": "Always use predefined SCSS color variables from the project (e.g., $primary-color, $text-color, etc.). Never use hex, RGB, or named colors directly.",
+    "font-size": "Always use font size variables from SCSS (e.g., $font-small, $font-medium). Do not hardcode font sizes."
+  },
+  "layout": {
+    "useFlex": true,
+    "useGrid": false,
+    "description": "Use Flexbox for all layout structures. Do not use CSS Grid."
+  },
+  "classNaming": {
+    "globalClassnames": false,
+    "fileScopedNaming": true,
+    "description": "No global class names. Use BEM-like or file-scoped naming tied to the component or SCSS file."
+  },
+  "formatting": {
+    "consistent": true,
+    "description": "Always follow consistent code formatting: spacing, brackets, indentation (2 spaces), etc."
+  },
+  "namingConvention": {
+    "scss": "Use kebab-case for SCSS class names scoped to component. Example: .product-card__image",
+    "js": "Use camelCase for JS variables and functions."
+  },
+  "structure": {
+    "scssFolderStructure": "Use separate SCSS files for each component. e.g., Button.scss, Header.scss inside a 'styles' or 'components' folder.",
+    "importMethod": "Import SCSS using relative path at the top of each component."
+  },
+  "theme": {
+    "designReference": "Use the FrostWP example theme (https://frostwp.com/example/) as a reference for UI aesthetics and style.",
+    "description": "Match spacing, typography, and component feel with FrostWP's light, minimal, white, and cool UI design."
+  },
+  "comments": {
+    "required": false,
+    "description": "Add comments only for non-obvious logic. Do not overcomment."
+  }
+}

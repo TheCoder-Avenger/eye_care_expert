@@ -1,0 +1,167 @@
+// ===============================================
+// FROSTWP-INSPIRED COLOR PALETTE
+// ===============================================
+// Based on FrostWP theme aesthetics: clean, minimal,
+// modern UI with soft whites, cool grays, and light blues
+
+// ===============================================
+// PRIMARY COLORS
+// ===============================================
+$primary-color: #0066ff; // Clean, modern blue
+$secondary-color: #0052d6; // Deeper primary blue
+$accent-color: #4d94ff; // Light accent blue
+$tertiary-color: #b3d9ff; // Very light blue
+
+// ===============================================
+// BACKGROUND COLORS
+// ===============================================
+$background-color: #ffffff; // Pure white background
+$background-light: #fafbfc; // Soft off-white
+$background-gray: #f8f9fa; // Cool light gray background
+$background-section: #fdfdfe; // Section background
+$background-card: #ffffff; // Card background
+$background-overlay: rgba(255, 255, 255, 0.95); // Modal/overlay background
+
+// ===============================================
+// TEXT COLORS
+// ===============================================
+$text-color: #1a1d21; // Primary text - dark gray
+$text-secondary: #4a5568; // Secondary text - medium gray
+$text-muted: #718096; // Muted text - light gray
+$text-light: #a0aec0; // Light text for placeholders
+$text-white: #ffffff; // White text for dark backgrounds
+$text-link: #0066ff; // Link text color
+$text-link-hover: #0052d6; // Link hover color
+
+// ===============================================
+// BORDER COLORS
+// ===============================================
+$border-color: #e2e8f0; // Default border color
+$border-light: #f1f5f9; // Light border
+$border-medium: #cbd5e0; // Medium border
+$border-dark: #a0aec0; // Dark border
+$border-focus: #0066ff; // Focus state border
+$border-error: #e53e3e; // Error state border
+$border-success: #38a169; // Success state border
+
+// ===============================================
+// STATE COLORS
+// ===============================================
+$success-color: #38a169; // Success green
+$success-light: #f0fff4; // Light success background
+$warning-color: #ed8936; // Warning orange
+$warning-light: #fffaf0; // Light warning background
+$error-color: #e53e3e; // Error red
+$error-light: #fed7d7; // Light error background
+$info-color: #3182ce; // Info blue
+$info-light: #ebf8ff; // Light info background
+
+// ===============================================
+// COOL GRAYS (FrostWP inspired)
+// ===============================================
+$gray-50: #f9fafb; // Lightest cool gray
+$gray-100: #f3f4f6; // Very light cool gray
+$gray-200: #e5e7eb; // Light cool gray
+$gray-300: #d1d5db; // Medium-light cool gray
+$gray-400: #9ca3af; // Medium cool gray
+$gray-500: #6b7280; // Medium-dark cool gray
+$gray-600: #4b5563; // Dark cool gray
+$gray-700: #374151; // Very dark cool gray
+$gray-800: #1f2937; // Almost black cool gray
+$gray-900: #111827; // Darkest cool gray
+
+// ===============================================
+// BLUE PALETTE (Extended)
+// ===============================================
+$blue-50: #eff6ff; // Lightest blue
+$blue-100: #dbeafe; // Very light blue
+$blue-200: #bfdbfe; // Light blue
+$blue-300: #93c5fd; // Medium-light blue
+$blue-400: #60a5fa; // Medium blue
+$blue-500: #3b82f6; // Standard blue
+$blue-600: #2563eb; // Medium-dark blue
+$blue-700: #1d4ed8; // Dark blue
+$blue-800: #1e40af; // Very dark blue
+$blue-900: #1e3a8a; // Darkest blue
+
+// ===============================================
+// COMPONENT SPECIFIC COLORS
+// ===============================================
+$navbar-background: #ffffff; // Navigation background
+$navbar-text: #1a1d21; // Navigation text
+$navbar-hover: #f8f9fa; // Navigation hover state
+
+$button-primary: #0066ff; // Primary button background
+$button-primary-hover: #0052d6; // Primary button hover
+$button-primary-text: #ffffff; // Primary button text
+$button-secondary: #f8f9fa; // Secondary button background
+$button-secondary-hover: #e2e8f0; // Secondary button hover
+$button-secondary-text: #1a1d21; // Secondary button text
+
+$form-background: #ffffff; // Form field background
+$form-border: #e2e8f0; // Form field border
+$form-focus: #0066ff; // Form field focus border
+$form-text: #1a1d21; // Form field text
+$form-placeholder: #718096; // Form placeholder text
+
+$card-background: #ffffff; // Card background
+$card-border: #e2e8f0; // Card border
+$card-shadow: rgba(0, 0, 0, 0.05); // Card shadow
+
+$header-background: #ffffff; // Header background
+$footer-background: #f8f9fa; // Footer background
+$footer-text: #4a5568; // Footer text
+
+// ===============================================
+// SHADOWS & EFFECTS
+// ===============================================
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+// ===============================================
+// HOVER & FOCUS STATES
+// ===============================================
+$hover-overlay: rgba(0, 102, 255, 0.05); // Subtle blue hover overlay
+$focus-ring: rgba(0, 102, 255, 0.2); // Focus ring color
+$active-overlay: rgba(0, 102, 255, 0.1); // Active state overlay
+
+// ===============================================
+// TYPOGRAPHY RELATED COLORS
+// ===============================================
+$heading-color: #1a1d21; // Heading text color
+$body-color: #4a5568; // Body text color
+$caption-color: #718096; // Caption text color
+$code-background: #f8f9fa; // Code block background
+$code-text: #1a1d21; // Code text color
+$code-border: #e2e8f0; // Code border color
+
+// ===============================================
+// UTILITY COLORS
+// ===============================================
+$transparent: transparent;
+$white: #ffffff;
+$black: #000000;
+$overlay-dark: rgba(0, 0, 0, 0.5);
+$overlay-light: rgba(255, 255, 255, 0.9);
+
+// ===============================================
+// FONT SIZES
+// ===============================================
+
+$font-headline-large: rem(54px);
+$font-headline-medium: rem(48px);
+$font-headline-small: rem(36px);
+$font-title-large: rem(32px);
+$font-title-medium: rem(24px);
+$font-title-small: rem(20px);
+$font-body-large: rem(18px);
+$font-body: rem(16px);
+$font-body-small: rem(14px);
+$font-body-extra-small: rem(12px);
+$font-body-extra-extra-small: rem(10px);
+$font-code: rem(15px);

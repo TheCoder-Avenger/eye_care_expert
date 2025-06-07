@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Modal from "@components/Modal";
+import { useUser } from "@/context/UserContext";
 import "./style.scss";
 
 const HomeView = () => {
+  const { user, isLoggedIn, wishlist: userWishlist } = useUser();
   const [currentBanner, setCurrentBanner] = useState(0);
   const [filters, setFilters] = useState({
     frameType: "",
@@ -17,6 +19,10 @@ const HomeView = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [wishlist, setWishlist] = useState(new Set());
 
   const banners = [
     {
@@ -37,87 +43,51 @@ const HomeView = () => {
     },
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: "Classic Aviator Sunglasses",
-      price: "$159.99",
-      originalPrice: "$199.99",
-      image: "/api/placeholder/300/250",
-      frameType: "metal",
-      material: "titanium",
-      color: "black",
-      shape: "aviator",
-      description:
-        "Premium aviator sunglasses with 100% UV protection and polarized lenses",
-      badge: "Popular",
-    },
-    {
-      id: 2,
-      name: "Blue Light Blocking Glasses",
-      price: "$89.99",
-      originalPrice: "$129.99",
-      image: "/api/placeholder/300/250",
-      frameType: "plastic",
-      material: "acetate",
-      color: "blue",
-      shape: "rectangular",
-      description:
-        "Reduce eye strain from digital devices with our premium blue light blocking technology",
-      badge: "Best Seller",
-    },
-    {
-      id: 3,
-      name: "Vintage Round Frames",
-      price: "$129.99",
-      image: "/api/placeholder/300/250",
-      frameType: "metal",
-      material: "stainless-steel",
-      color: "gold",
-      shape: "round",
-      description:
-        "Timeless round frames with modern comfort and premium materials",
-    },
-    {
-      id: 4,
-      name: "Sport Sunglasses",
-      price: "$199.99",
-      originalPrice: "$249.99",
-      image: "/api/placeholder/300/250",
-      frameType: "plastic",
-      material: "polycarbonate",
-      color: "red",
-      shape: "wrap",
-      description:
-        "High-performance sunglasses designed for active lifestyle with impact resistance",
-      badge: "New",
-    },
-    {
-      id: 5,
-      name: "Cat Eye Frames",
-      price: "$149.99",
-      image: "/api/placeholder/300/250",
-      frameType: "plastic",
-      material: "acetate",
-      color: "tortoise",
-      shape: "cat-eye",
-      description:
-        "Elegant cat eye frames for a sophisticated and timeless look",
-    },
-    {
-      id: 6,
-      name: "Minimalist Frames",
-      price: "$99.99",
-      originalPrice: "$139.99",
-      image: "/api/placeholder/300/250",
-      frameType: "metal",
-      material: "titanium",
-      color: "silver",
-      shape: "rectangular",
-      description:
-        "Clean, minimalist design perfect for everyday professional wear",
-    },
-  ];
+  // Fetch products from API
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch("/api/products?is_popular=true");
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+
+      const data = await response.json();
+      setProducts(data);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching products:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch user's wishlist from API
+  const fetchWishlist = async () => {
+    if (!isLoggedIn || !user?.email) {
+      setWishlist(new Set());
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/api/users/wishlist?email=${encodeURIComponent(user.email)}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          const wishlistIds = new Set(
+            data.wishlist?.map((item) => item._id) || []
+          );
+          setWishlist(wishlistIds);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
 
   const filterOptions = {
     frameType: ["metal", "plastic"],
@@ -133,14 +103,17 @@ const HomeView = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const filteredProducts = products.filter((product) => {
-    return (
-      (!filters.frameType || product.frameType === filters.frameType) &&
-      (!filters.material || product.material === filters.material) &&
-      (!filters.color || product.color === filters.color) &&
-      (!filters.shape || product.shape === filters.shape)
-    );
-  });
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, [isLoggedIn, user]);
+
+  const filteredProducts = products?.data?.products?.filter(
+    (ele) => ele?.is_popular === true
+  );
 
   const handleFilterChange = (filterType, value) => {
     setFilters((prev) => ({
@@ -169,6 +142,82 @@ const HomeView = () => {
 
   const clearAllFilters = () => {
     setFilters({ frameType: "", material: "", color: "", shape: "" });
+  };
+
+  const toggleWishlist = async (product) => {
+    // Check if user is logged in
+    if (!isLoggedIn || !user?.email) {
+      alert("Please log in to add items to your wishlist");
+      return;
+    }
+
+    try {
+      const isInWishlist = wishlist.has(product?._id);
+
+      // Optimistically update UI
+      setWishlist((prev) => {
+        const newWishlist = new Set(prev);
+        if (isInWishlist) {
+          newWishlist.delete(product?._id);
+        } else {
+          newWishlist.add(product?._id);
+        }
+        return newWishlist;
+      });
+
+      let response;
+
+      if (isInWishlist) {
+        // Remove from wishlist
+        response = await fetch(
+          `/api/users/wishlist/${product?._id}?email=${encodeURIComponent(
+            user.email
+          )}`,
+          {
+            method: "DELETE",
+          }
+        );
+      } else {
+        // Add to wishlist
+        response = await fetch("/api/users/wishlist", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            product_id: product?._id,
+          }),
+        });
+      }
+
+      if (!response.ok) {
+        // Revert optimistic update if API call fails
+        setWishlist((prev) => {
+          const newWishlist = new Set(prev);
+          if (isInWishlist) {
+            newWishlist.add(product?._id);
+          } else {
+            newWishlist.delete(product?._id);
+          }
+          return newWishlist;
+        });
+        throw new Error("Failed to update wishlist");
+      }
+
+      const result = await response.json();
+      console.log("Wishlist updated:", result);
+
+      // Show success message
+      if (isInWishlist) {
+        console.log("Product removed from wishlist");
+      } else {
+        console.log("Product added to wishlist");
+      }
+    } catch (error) {
+      console.error("Error updating wishlist:", error);
+      alert("Failed to update wishlist. Please try again.");
+    }
   };
 
   const nextBanner = () => {
@@ -263,17 +312,13 @@ const HomeView = () => {
 
       <div className="home-view__container">
         <div className="home-view__main">
-          <aside className="filters-sidebar filters-sidebar--desktop">
-            <FiltersContent />
-          </aside>
-
           <main className="product-grid">
             <div className="product-grid__header">
               <div className="product-grid__header-left">
                 <h2 className="product-grid__title">Our Premium Collection</h2>
                 <span className="product-grid__count">
-                  {filteredProducts.length} product
-                  {filteredProducts.length !== 1 ? "s" : ""} found
+                  {filteredProducts?.length} product
+                  {filteredProducts?.length !== 1 ? "s" : ""} found
                 </span>
               </div>
 
@@ -287,54 +332,99 @@ const HomeView = () => {
             </div>
 
             <div className="product-grid__container">
-              {filteredProducts.map((product) => (
-                <div key={product.id} className="product-card">
-                  {product.badge && (
-                    <div
-                      className={`product-card__badge product-card__badge--${product.badge
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                    >
-                      {product.badge}
-                    </div>
-                  )}
-                  <div className="product-card__image">
-                    <div className="placeholder-image">{product.name}</div>
-                  </div>
-                  <div className="product-card__content">
-                    <h3 className="product-card__name">{product.name}</h3>
-                    <div className="product-card__pricing">
-                      <span className="product-card__price">
-                        {product.price}
-                      </span>
-                      {product.originalPrice && (
-                        <span className="product-card__original-price">
-                          {product.originalPrice}
-                        </span>
-                      )}
-                    </div>
-                    <div className="product-card__actions">
-                      <button
-                        className="product-card__btn product-card__btn--info"
-                        onClick={() => openProductModal(product)}
-                      >
-                        Quick View
-                      </button>
-                      <Link
-                        href={`/product/${product.name
-                          .toLowerCase()
-                          .replace(/\s+/g, "-")}`}
-                        className="product-card__btn product-card__btn--primary"
-                      >
-                        View Details
-                      </Link>
-                    </div>
+              {loading && (
+                <div className="product-grid__loading">
+                  <div className="loading-spinner">
+                    Loading popular products...
                   </div>
                 </div>
-              ))}
+              )}
+
+              {error && (
+                <div className="product-grid__error">
+                  <div className="error-message">
+                    <h3>Error loading products</h3>
+                    <p>{error}</p>
+                    <button
+                      className="product-grid__retry"
+                      onClick={fetchProducts}
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {!loading &&
+                !error &&
+                filteredProducts.map((product) => (
+                  <div key={product._id} className="product-card">
+                    {product.badge && (
+                      <div
+                        className={`product-card__badge product-card__badge--${product.badge
+                          .toLowerCase()
+                          .replace(" ", "-")}`}
+                      >
+                        {product.badge}
+                      </div>
+                    )}
+                    <div className="product-card__image">
+                      <img
+                        src={product?.images?.[0]}
+                        className="placeholder-image"
+                        alt={product?.name}
+                      />
+                      <button
+                        className={`product-card__wishlist-overlay ${
+                          wishlist.has(product._id) ? "active" : ""
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(product);
+                        }}
+                        aria-label={
+                          wishlist.has(product._id)
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
+                        }
+                      >
+                        <span className="product-card__wishlist-icon">
+                          {wishlist.has(product._id) ? "❤️" : "🤍"}
+                        </span>
+                      </button>
+                    </div>
+                    <div className="product-card__content">
+                      <h3 className="product-card__name">{product.name}</h3>
+                      <div className="product-card__pricing">
+                        <span className="product-card__price">
+                          {product.price}
+                        </span>
+                        {product.price && (
+                          <span className="product-card__original-price">
+                            {product.price * 2}
+                          </span>
+                        )}
+                      </div>
+                      <div className="product-card__actions">
+                        <button
+                          className="product-card__btn product-card__btn--info"
+                          onClick={() => openProductModal(product)}
+                        >
+                          Quick View
+                        </button>
+                        <Link
+                          href={`/product/${product._id}`}
+                          className="product-card__btn product-card__btn--primary"
+                        >
+                          View Details
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
 
-            {filteredProducts.length === 0 && (
+            {!loading && !error && filteredProducts.length === 0 && (
               <div className="product-grid__empty">
                 <div className="product-grid__empty-icon">🔍</div>
                 <h3>No products found</h3>
@@ -408,9 +498,7 @@ const HomeView = () => {
 
               <div className="product-modal__actions">
                 <Link
-                  href={`/product/${selectedProduct.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}`}
+                  href={`/product/${selectedProduct._id}`}
                   className="product-modal__btn product-modal__btn--primary"
                 >
                   View Full Details

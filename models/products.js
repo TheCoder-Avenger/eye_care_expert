@@ -67,6 +67,10 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    is_popular: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

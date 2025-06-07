@@ -1,34 +1,71 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUser } from "../../context/UserContext";
 import PlaceholderImage from "@components/PlaceholderImage";
 import "./style.scss";
 
 const Wishlist = ({ isOpen, onClose }) => {
-  const { user, isLoggedIn } = useUser();
+  const { user, isLoggedIn, updateUser } = useUser();
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Close modal when clicking outside
+  const handleOverlayClick = useCallback(
+    (e) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  // Close modal with Escape key
+  useEffect(() => {
+    const handleEscapeKey = (e) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscapeKey);
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (isOpen && isLoggedIn && user?.email) {
       fetchWishlistItems();
+    } else if (isOpen && !isLoggedIn) {
+      setWishlistItems([]);
+      setError(null);
     }
   }, [isOpen, isLoggedIn, user]);
 
   const fetchWishlistItems = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await fetch(
         `/api/users/wishlist?email=${encodeURIComponent(user.email)}`
       );
       const data = await response.json();
 
       if (data.success) {
-        setWishlistItems(data.wishlist);
+        setWishlistItems(data.wishlist || []);
+      } else {
+        setError(data.message || "Failed to fetch wishlist items");
       }
     } catch (error) {
       console.error("Error fetching wishlist items:", error);
+      setError("Failed to load wishlist items. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -47,15 +84,23 @@ const Wishlist = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       if (data.success) {
-        setWishlistItems(data.wishlist);
+        setWishlistItems(data.wishlist || []);
+        // Update user context if wishlist count is available
+        if (updateUser && data.wishlistCount !== undefined) {
+          updateUser({ ...user, wishlistCount: data.wishlistCount });
+        }
+      } else {
+        setError(data.message || "Failed to remove item from wishlist");
       }
     } catch (error) {
       console.error("Error removing wishlist item:", error);
+      setError("Failed to remove item. Please try again.");
     }
   };
 
   const addToCart = async (product) => {
     try {
+      setError(null);
       const cartData = {
         email: user.email,
         product_id: product._id,
@@ -74,39 +119,78 @@ const Wishlist = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       if (data.success) {
+        // Update user context if cart count is available
+        if (updateUser && data.cartCount !== undefined) {
+          updateUser({ ...user, cartCount: data.cartCount });
+        }
+
+        // Show success message
+        setError(null);
         alert("Product added to cart successfully!");
+      } else {
+        setError(data.message || "Failed to add product to cart");
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      alert("Failed to add product to cart");
+      setError("Failed to add product to cart. Please try again.");
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="wishlist-overlay">
+    <div className="wishlist-overlay" onClick={handleOverlayClick}>
       <div className="wishlist">
         <div className="wishlist__header">
-          <h2 className="wishlist__title">Your Wishlist</h2>
-          <button className="wishlist__close" onClick={onClose}>
+          <h2 className="wishlist__title">
+            Your Wishlist
+            {isLoggedIn && wishlistItems.length > 0 && (
+              <span className="wishlist__count">({wishlistItems.length})</span>
+            )}
+          </h2>
+          <button
+            className="wishlist__close"
+            onClick={onClose}
+            aria-label="Close wishlist"
+          >
             ×
           </button>
         </div>
 
         <div className="wishlist__content">
+          {error && (
+            <div className="wishlist__error">
+              <p>{error}</p>
+              <button
+                onClick={() => setError(null)}
+                className="wishlist__error-close"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
+
           {!isLoggedIn ? (
             <div className="wishlist__login-message">
-              <p>Please log in to view your wishlist</p>
+              <div className="wishlist__login-icon">💖</div>
+              <h3>Sign in to view your wishlist</h3>
+              <p>
+                Save your favorite items for later by signing in to your
+                account.
+              </p>
             </div>
           ) : loading ? (
             <div className="wishlist__loading">
               <div className="wishlist__loading-spinner"></div>
-              <p>Loading wishlist items...</p>
+              <p>Loading your wishlist...</p>
             </div>
           ) : wishlistItems.length === 0 ? (
             <div className="wishlist__empty">
-              <p>Your wishlist is empty</p>
+              <div className="wishlist__empty-icon">💔</div>
+              <h3>Your wishlist is empty</h3>
+              <p>
+                Browse our collection and add items you love to your wishlist.
+              </p>
             </div>
           ) : (
             <div className="wishlist__items">
@@ -134,19 +218,25 @@ const Wishlist = ({ isOpen, onClose }) => {
                   <div className="wishlist__item-details">
                     <h4 className="wishlist__item-name">{item.name}</h4>
                     <p className="wishlist__item-price">₹{item.price}</p>
-                    <p className="wishlist__item-description">
-                      {item.description?.substring(0, 100)}...
-                    </p>
+                    {item.description && (
+                      <p className="wishlist__item-description">
+                        {item.description.length > 100
+                          ? `${item.description.substring(0, 100)}...`
+                          : item.description}
+                      </p>
+                    )}
                     <div className="wishlist__item-actions">
                       <button
                         className="wishlist__add-to-cart"
                         onClick={() => addToCart(item)}
+                        disabled={loading}
                       >
                         Add to Cart
                       </button>
                       <button
                         className="wishlist__remove"
                         onClick={() => removeFromWishlist(item._id)}
+                        disabled={loading}
                       >
                         Remove
                       </button>
@@ -157,6 +247,18 @@ const Wishlist = ({ isOpen, onClose }) => {
             </div>
           )}
         </div>
+
+        {isLoggedIn && wishlistItems.length > 0 && (
+          <div className="wishlist__footer">
+            <button
+              className="wishlist__refresh"
+              onClick={fetchWishlistItems}
+              disabled={loading}
+            >
+              🔄 Refresh
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

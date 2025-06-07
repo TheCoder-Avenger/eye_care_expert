@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import dbConnect from "../../../../helpers/db-connect";
-import User from "../../../../models/users";
+import dbConnect from "@utils/db-connect";
+import { User } from "@models";
 
 export async function POST(request) {
   try {
-    // Connect to database
     await dbConnect();
 
-    // Parse request body
     const userData = await request.json();
 
     const {
@@ -20,7 +18,6 @@ export async function POST(request) {
       password,
     } = userData;
 
-    // Validate required fields
     if (!first_name || !last_name || !email || !mobile_number || !password) {
       return NextResponse.json(
         { error: "All required fields must be provided" },
@@ -28,7 +25,6 @@ export async function POST(request) {
       );
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({
       $or: [{ email: email.toLowerCase() }, { mobile_number }],
     });
@@ -40,10 +36,8 @@ export async function POST(request) {
       );
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create new user
     const newUser = new User({
       first_name: first_name.trim(),
       last_name: last_name.trim(),
@@ -55,10 +49,8 @@ export async function POST(request) {
       password: hashedPassword,
     });
 
-    // Save user to database
     const savedUser = await newUser.save();
 
-    // Remove password from response
     const { password: _, ...userResponse } = savedUser.toObject();
 
     return NextResponse.json(
@@ -72,7 +64,6 @@ export async function POST(request) {
     console.error("Registration error:", error);
 
     if (error.code === 11000) {
-      // Duplicate key error
       return NextResponse.json(
         { error: "User with this email or mobile number already exists" },
         { status: 409 }

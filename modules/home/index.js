@@ -18,7 +18,6 @@ const HomeView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
-  // Sample banner data
   const banners = [
     {
       id: 1,
@@ -38,7 +37,6 @@ const HomeView = () => {
     },
   ];
 
-  // Sample product data
   const products = [
     {
       id: 1,
@@ -121,7 +119,6 @@ const HomeView = () => {
     },
   ];
 
-  // Filter options
   const filterOptions = {
     frameType: ["metal", "plastic"],
     material: ["titanium", "acetate", "stainless-steel", "polycarbonate"],
@@ -129,7 +126,6 @@ const HomeView = () => {
     shape: ["aviator", "rectangular", "round", "wrap", "cat-eye"],
   };
 
-  // Banner carousel auto-advance
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
@@ -137,7 +133,6 @@ const HomeView = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Filter products
   const filteredProducts = products.filter((product) => {
     return (
       (!filters.frameType || product.frameType === filters.frameType) &&
@@ -219,7 +214,6 @@ const HomeView = () => {
 
   return (
     <div className="home-view">
-      {/* Banner Carousel */}
       <section className="banner-carousel">
         <div className="banner-carousel__container">
           {banners.map((banner, index) => (
@@ -269,12 +263,10 @@ const HomeView = () => {
 
       <div className="home-view__container">
         <div className="home-view__main">
-          {/* Desktop Filters Sidebar */}
           <aside className="filters-sidebar filters-sidebar--desktop">
             <FiltersContent />
           </aside>
 
-          {/* Product Grid */}
           <main className="product-grid">
             <div className="product-grid__header">
               <div className="product-grid__header-left">
@@ -285,7 +277,6 @@ const HomeView = () => {
                 </span>
               </div>
 
-              {/* Mobile Filter Button */}
               <button
                 className="product-grid__filter-btn"
                 onClick={openFilterModal}
@@ -360,7 +351,6 @@ const HomeView = () => {
         </div>
       </div>
 
-      {/* Mobile Filters Modal */}
       <Modal
         isOpen={isFilterModalOpen}
         onClose={closeFilterModal}
@@ -372,7 +362,6 @@ const HomeView = () => {
         </div>
       </Modal>
 
-      {/* Product Info Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeProductModal}

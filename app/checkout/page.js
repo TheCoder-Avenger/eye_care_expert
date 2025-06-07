@@ -25,7 +25,6 @@ const CheckoutPage = () => {
     notes: "",
   });
 
-  // Form validation
   const validateForm = () => {
     const newErrors = {};
 
@@ -57,7 +56,6 @@ const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({

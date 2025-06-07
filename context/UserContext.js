@@ -17,7 +17,6 @@ export const UserProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Check for existing user on app start
   useEffect(() => {
     const checkExistingUser = async () => {
       try {
@@ -37,7 +36,6 @@ export const UserProvider = ({ children }) => {
             setUser(result.user);
             setIsLoggedIn(true);
           } else {
-            // If user not found, clear localStorage
             localStorage.removeItem("user_email");
           }
         }

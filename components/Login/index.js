@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Modal from "../Modal";
-import { useUser } from "../../context/UserContext";
+import Modal from "@components/Modal";
+import { useUser } from "@/context/UserContext";
 import "./style.scss";
 
 const Login = ({ isOpen, onClose, onLoginSuccess }) => {
@@ -20,7 +20,6 @@ const Login = ({ isOpen, onClose, onLoginSuccess }) => {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -77,13 +76,10 @@ const Login = ({ isOpen, onClose, onLoginSuccess }) => {
       const result = await response.json();
       console.log("Login successful:", result);
 
-      // Login user using context
       login(result.user);
 
-      // Reset form
       setFormData({ email: "", password: "" });
 
-      // Call success callback
       if (onLoginSuccess) {
         onLoginSuccess(result.user);
       }

@@ -72,5 +72,8 @@
   },
   "removeAllComments": {
     "description": "Remove all comments from the entire codebase, including JS/JSX and SCSS files."
+  },
+  "useSchemasFromIndex": {
+    "description": "Use schemas by importing them from the centralized models/index.js file. Example: import { User } from 'models';. First, export each schema from models/index.js."
   }
 }

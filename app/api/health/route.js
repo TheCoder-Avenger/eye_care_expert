@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import dbConnect from "../../../helpers/db-connect";
+import dbConnect from "@utils/db-connect";
 
 export async function GET() {
   try {

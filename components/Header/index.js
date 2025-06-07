@@ -3,9 +3,9 @@
 import { useState } from "react";
 import "./style.scss";
 import Modal from "@components/Modal";
-import Register from "../Register";
-import Login from "../Login";
-import { useUser } from "../../context/UserContext";
+import Register from "@components/Register";
+import Login from "@components/Login";
+import { useUser } from "@/context/UserContext";
 
 const Header = () => {
   const { user, isLoggedIn, isLoading, logout } = useUser();
@@ -46,7 +46,6 @@ const Header = () => {
   };
 
   const handleLoginSuccess = (userData) => {
-    // User context will handle login state
     console.log("User logged in:", userData);
   };
 

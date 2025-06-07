@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Modal from "../Modal";
-import { useUser } from "../../context/UserContext";
+import Modal from "@components/Modal";
+import { useUser } from "@/context/UserContext";
 import "./style.scss";
 
 const Register = ({ isOpen, onClose }) => {
@@ -25,7 +25,6 @@ const Register = ({ isOpen, onClose }) => {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -37,7 +36,6 @@ const Register = ({ isOpen, onClose }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Required field validation
     if (!formData.first_name.trim()) {
       newErrors.first_name = "First name is required";
     }
@@ -70,7 +68,6 @@ const Register = ({ isOpen, onClose }) => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    // Optional alternate mobile number validation
     if (
       formData.alternate_mobile_number &&
       !/^\d{10}$/.test(formData.alternate_mobile_number.replace(/\D/g, ""))
@@ -93,7 +90,6 @@ const Register = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
-      // Prepare data for API call (excluding confirmPassword)
       const userData = {
         first_name: formData.first_name.trim(),
         last_name: formData.last_name.trim(),
@@ -107,7 +103,6 @@ const Register = ({ isOpen, onClose }) => {
 
       console.log("User data to be saved:", userData);
 
-      // API call to register user
       const response = await fetch("/api/users/register", {
         method: "POST",
         headers: {
@@ -124,10 +119,8 @@ const Register = ({ isOpen, onClose }) => {
       const result = await response.json();
       console.log("Registration successful:", result);
 
-      // Login user automatically after successful registration
       login(result.user);
 
-      // Reset form
       setFormData({
         first_name: "",
         last_name: "",

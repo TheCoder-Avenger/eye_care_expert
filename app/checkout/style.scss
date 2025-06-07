@@ -184,7 +184,6 @@
   }
 }
 
-// Appointment Preview Styles
 .appointment-preview {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 12px;
@@ -252,7 +251,6 @@
   }
 }
 
-// Appointment Modal Styles
 .appointment-modal {
   &__intro {
     text-align: center;
@@ -344,7 +342,6 @@
   }
 }
 
-// Order Success Modal Styles
 .order-success-modal {
   text-align: center;
 
@@ -440,7 +437,6 @@
   }
 }
 
-// Mobile Responsive Adjustments
 @media (max-width: 768px) {
   .checkout-page {
     padding: 1rem 0;

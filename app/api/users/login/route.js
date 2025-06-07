@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import dbConnect from "../../../../helpers/db-connect";
-import User from "../../../../models/users";
+import dbConnect from "@utils/db-connect";
+import { User } from "@models";
 
 export async function POST(request) {
   try {
-    // Connect to database
     await dbConnect();
 
-    // Parse request body
     const { email, password } = await request.json();
 
-    // Validate required fields
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required" },
@@ -19,7 +16,6 @@ export async function POST(request) {
       );
     }
 
-    // Find user by email
     const user = await User.findOne({
       email: email.toLowerCase().trim(),
     });
@@ -31,7 +27,6 @@ export async function POST(request) {
       );
     }
 
-    // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -41,7 +36,6 @@ export async function POST(request) {
       );
     }
 
-    // Remove password from response
     const { password: _, ...userResponse } = user.toObject();
 
     return NextResponse.json(

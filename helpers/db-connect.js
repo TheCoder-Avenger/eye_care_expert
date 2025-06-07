@@ -9,12 +9,10 @@ if (!cached) {
 }
 
 async function dbConnect() {
-  // If we have a cached connection, return it
   if (cached.conn) {
     return cached.conn;
   }
 
-  // If we don't have a promise, create it
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,

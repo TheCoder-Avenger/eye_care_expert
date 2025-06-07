@@ -260,7 +260,6 @@
   }
 }
 
-/* Banner Carousel Styles */
 .banner-carousel {
   position: relative;
   height: 500px;
@@ -501,7 +500,6 @@
   background: rgba(255, 255, 255, 0.8);
 }
 
-/* Filters Sidebar Styles */
 .filters-sidebar {
   width: 320px;
   background: $background-card;
@@ -605,7 +603,6 @@
   box-shadow: $shadow-lg;
 }
 
-/* Product Grid Styles */
 .product-grid {
   flex: 1;
   min-width: 0;
@@ -774,7 +771,6 @@
   box-shadow: $shadow-lg;
 }
 
-/* Product Card Styles */
 .product-card {
   background: $background-card;
   border-radius: $radius-xl;
@@ -915,7 +911,6 @@
   border-color: $text-color;
 }
 
-/* Product Modal Styles */
 .product-modal {
   display: flex;
   gap: $space-3xl;
@@ -1047,7 +1042,6 @@
   border-color: $text-color;
 }
 
-/* Placeholder Image Styles */
 .placeholder-image {
   background: linear-gradient(
     45deg,
@@ -1068,7 +1062,6 @@
   padding: $space-md;
 }
 
-/* Responsive Design */
 @media (max-width: $breakpoint-sm) {
   .banner-carousel__nav {
     width: 45px;

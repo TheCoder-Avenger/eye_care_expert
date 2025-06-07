@@ -120,7 +120,6 @@
   }
 }
 
-// Override modal size for register form
 .modal {
   &.modal--register {
     max-width: 600px;
@@ -128,7 +127,6 @@
   }
 }
 
-// Additional responsive adjustments
 @media (max-width: 480px) {
   .register-form {
     .form-group {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import "./styles/Header.scss";
-import "./styles/Modal.scss";
+import "./style.scss";
+import Modal from "@components/Modal";
 
 const Header = () => {
   // Modal state management
@@ -167,117 +167,77 @@ const Header = () => {
       </header>
 
       {/* Wishlist Modal */}
-      {showWishlistModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowWishlistModal(false)}
-        >
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal__header">
-              <h3>Your Wishlist</h3>
-              <button
-                className="modal__close-btn"
-                onClick={() => setShowWishlistModal(false)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="modal__body">
-              <p>You have {wishlistCount} items in your wishlist.</p>
-              <div className="modal__items">
-                <div className="modal__item">
-                  <span>👓 Classic Frame - $99</span>
-                  <button className="modal__item-remove-btn">Remove</button>
-                </div>
-                <div className="modal__item">
-                  <span>🕶️ Aviator Sunglasses - $149</span>
-                  <button className="modal__item-remove-btn">Remove</button>
-                </div>
-                <div className="modal__item">
-                  <span>👓 Blue Light Glasses - $79</span>
-                  <button className="modal__item-remove-btn">Remove</button>
-                </div>
-              </div>
-            </div>
+      <Modal
+        isOpen={showWishlistModal}
+        onClose={() => setShowWishlistModal(false)}
+        title="Your Wishlist"
+        size="medium"
+      >
+        <p>You have {wishlistCount} items in your wishlist.</p>
+        <div className="modal__items">
+          <div className="modal__item">
+            <span>👓 Classic Frame - $99</span>
+            <button className="modal__item-remove-btn">Remove</button>
+          </div>
+          <div className="modal__item">
+            <span>🕶️ Aviator Sunglasses - $149</span>
+            <button className="modal__item-remove-btn">Remove</button>
+          </div>
+          <div className="modal__item">
+            <span>👓 Blue Light Glasses - $79</span>
+            <button className="modal__item-remove-btn">Remove</button>
           </div>
         </div>
-      )}
+      </Modal>
 
       {/* Cart Modal */}
-      {showCartModal && (
-        <div className="modal-overlay" onClick={() => setShowCartModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal__header">
-              <h3>Shopping Cart</h3>
-              <button
-                className="modal__close-btn"
-                onClick={() => setShowCartModal(false)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="modal__body">
-              <p>You have {cartCount} items in your cart.</p>
-              <div className="modal__items">
-                <div className="modal__item">
-                  <span>👓 Reading Glasses - $89 (x2)</span>
-                  <button className="modal__item-remove-btn">Remove</button>
-                </div>
-                <div className="modal__item">
-                  <span>🕶️ Sports Sunglasses - $199</span>
-                  <button className="modal__item-remove-btn">Remove</button>
-                </div>
-              </div>
-              <div className="modal__cart-total">
-                <strong>Total: $377</strong>
-              </div>
-              <button className="modal__checkout-btn">
-                Proceed to Checkout
-              </button>
-            </div>
+      <Modal
+        isOpen={showCartModal}
+        onClose={() => setShowCartModal(false)}
+        title="Shopping Cart"
+        size="medium"
+      >
+        <p>You have {cartCount} items in your cart.</p>
+        <div className="modal__items">
+          <div className="modal__item">
+            <span>👓 Reading Glasses - $89 (x2)</span>
+            <button className="modal__item-remove-btn">Remove</button>
+          </div>
+          <div className="modal__item">
+            <span>🕶️ Sports Sunglasses - $199</span>
+            <button className="modal__item-remove-btn">Remove</button>
           </div>
         </div>
-      )}
+        <div className="modal__cart-total">
+          <strong>Total: $377</strong>
+        </div>
+        <button className="modal__checkout-btn">Proceed to Checkout</button>
+      </Modal>
 
       {/* User Profile Modal */}
-      {showUserModal && isLoggedIn && (
-        <div className="modal-overlay" onClick={() => setShowUserModal(false)}>
-          <div
-            className="modal modal--user"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal__header">
-              <h3>User Profile</h3>
-              <button
-                className="modal__close-btn"
-                onClick={() => setShowUserModal(false)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="modal__body">
-              <div className="modal__user-info">
-                <div className="modal__user-info-avatar">👤</div>
-                <h4>{userName}</h4>
-                <p>john.doe@example.com</p>
-              </div>
-              <div className="modal__user-actions">
-                <button className="modal__action-btn">My Orders</button>
-                <button className="modal__action-btn">Profile Settings</button>
-                <button className="modal__action-btn">
-                  Prescription History
-                </button>
-                <button
-                  className="modal__action-btn modal__action-btn--logout"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
-          </div>
+      <Modal
+        isOpen={showUserModal && isLoggedIn}
+        onClose={() => setShowUserModal(false)}
+        title="User Profile"
+        size="small"
+      >
+        <div className="modal__user-info">
+          <div className="modal__user-info-avatar">👤</div>
+          <h4>{userName}</h4>
+          <p>john.doe@example.com</p>
         </div>
-      )}
+        <div className="modal__user-actions">
+          <button className="modal__action-btn">My Orders</button>
+          <button className="modal__action-btn">Profile Settings</button>
+          <button className="modal__action-btn">Prescription History</button>
+          <button
+            className="modal__action-btn modal__action-btn--logout"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
+      </Modal>
     </>
   );
 };

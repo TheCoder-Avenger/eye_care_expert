@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import PlaceholderImage from "../../../../components/PlaceholderImage";
-import "./styles/ProductView.scss";
-import "../../../../components/styles/Modal.scss";
+import PlaceholderImage from "@components/PlaceholderImage";
+import Modal from "@components/Modal";
+import "./style.scss";
 
 const ProductView = ({ slug }) => {
   // Product state
@@ -181,7 +181,7 @@ const ProductView = ({ slug }) => {
       <div className="product-view">
         <div className="product-view__error">
           <h2>Product not found</h2>
-          <p>The product you're looking for doesn't exist.</p>
+          <p>The product you&apos;re looking for doesn&apos;t exist.</p>
         </div>
       </div>
     );

@@ -60,5 +60,11 @@
   },
   "globalStyleImportInLayout": {
     "description": "Always import global SCSS variables from '/assets/stylesheets/_variables.scss' into 'layout.js' at the top of the file to ensure global design tokens like colors and font sizes are available project-wide."
+  },
+  "autoIncludeGlobalSCSS": {
+    "description": "Do not manually import SCSS variables like '@import \"../../assets/stylesheets/variables\";' in each SCSS file. Instead, configure global style inclusion via 'sassOptions.additionalData' in 'next.config.js' so variables are available globally."
+  },
+  "modularPageStructure": {
+    "description": "Do not write page logic directly inside the 'app/page.js' file. Instead, use the 'modules/' folder at the root level. Each feature or page should reside inside a folder within 'modules/', containing 'index.js' and 'style.module.scss'. The 'app/page.js' file should only handle routing, layout wrappers, or redirects."
   }
 }

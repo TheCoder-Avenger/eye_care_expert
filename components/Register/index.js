@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Modal from "../Modal";
+import { useUser } from "../../context/UserContext";
 import "./style.scss";
 
 const Register = ({ isOpen, onClose }) => {
+  const { login } = useUser();
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -121,6 +123,9 @@ const Register = ({ isOpen, onClose }) => {
 
       const result = await response.json();
       console.log("Registration successful:", result);
+
+      // Login user automatically after successful registration
+      login(result.user);
 
       // Reset form
       setFormData({

@@ -4,17 +4,19 @@ import { useState } from "react";
 import "./style.scss";
 import Modal from "@components/Modal";
 import Register from "../Register";
+import Login from "../Login";
+import { useUser } from "../../context/UserContext";
 
 const Header = () => {
+  const { user, isLoggedIn, isLoading, logout } = useUser();
+
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("John Doe");
 
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
@@ -39,8 +41,13 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logout();
     setShowUserModal(false);
+  };
+
+  const handleLoginSuccess = (userData) => {
+    // User context will handle login state
+    console.log("User logged in:", userData);
   };
 
   return (
@@ -132,20 +139,29 @@ const Header = () => {
             </button>
 
             <div className="header__auth-section">
-              {isLoggedIn ? (
+              {isLoading ? (
+                <div className="header__loading">Loading...</div>
+              ) : isLoggedIn && user ? (
                 <div className="header__user-profile">
                   <button
                     className="header__profile-btn"
                     onClick={() => setShowUserModal(true)}
                   >
                     <span className="header__avatar">👤</span>
-                    <span className="header__user-name">{userName}</span>
+                    <span className="header__user-name">
+                      {user.first_name} {user.last_name}
+                    </span>
                     <span className="header__dropdown-arrow">▼</span>
                   </button>
                 </div>
               ) : (
                 <div className="header__auth-buttons">
-                  <button className="header__login-btn">Login</button>
+                  <button
+                    className="header__login-btn"
+                    onClick={() => setShowLoginModal(true)}
+                  >
+                    Login
+                  </button>
                   <button
                     className="header__signup-btn"
                     onClick={() => setShowRegisterModal(true)}
@@ -213,8 +229,10 @@ const Header = () => {
       >
         <div className="modal__user-info">
           <div className="modal__user-info-avatar">👤</div>
-          <h4>{userName}</h4>
-          <p>john.doe@example.com</p>
+          <h4>
+            {user?.first_name} {user?.last_name}
+          </h4>
+          <p>{user?.email}</p>
         </div>
         <div className="modal__user-actions">
           <button className="modal__action-btn">My Orders</button>
@@ -231,6 +249,12 @@ const Header = () => {
       <Register
         isOpen={showRegisterModal}
         onClose={() => setShowRegisterModal(false)}
+      />
+
+      <Login
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
     </>
   );

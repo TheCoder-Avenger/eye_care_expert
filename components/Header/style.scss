@@ -18,7 +18,6 @@
   }
 }
 
-
 .header__logo-section {
   flex-shrink: 0;
 }
@@ -49,7 +48,6 @@
     font-weight: $font-weight-normal;
   }
 }
-
 
 .header__category-toggle {
   flex: 1;
@@ -90,14 +88,12 @@
   }
 }
 
-
 .header__controls {
   display: flex;
   align-items: center;
   gap: $space-lg;
   flex-shrink: 0;
 }
-
 
 .header__language-dropdown {
   position: relative;
@@ -169,7 +165,6 @@
   }
 }
 
-
 .header__icon-btn {
   position: relative;
   display: flex;
@@ -211,9 +206,15 @@
   }
 }
 
-
 .header__auth-section {
   margin-left: $space-sm;
+}
+
+.header__loading {
+  padding: $space-sm $space-lg;
+  color: $text-light;
+  font-size: $font-regular;
+  font-style: italic;
 }
 
 .header__auth-buttons {
@@ -254,7 +255,6 @@
   }
 }
 
-
 .header__profile-btn {
   display: flex;
   align-items: center;
@@ -282,7 +282,6 @@
   font-size: $font-sm;
   margin-left: $space-xs;
 }
-
 
 @media (max-width: $breakpoint-md) {
   .header__container {

@@ -1,0 +1,188 @@
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: $z-modal;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cart {
+  background: $background-color;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: $space-lg;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    margin: 0;
+    color: $text-color;
+    font-size: $font-large;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: $text-muted;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color $transition-normal;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-lg;
+  }
+
+  &__login-message,
+  &__empty {
+    text-align: center;
+    padding: $space-2xl $space-lg;
+    color: $text-muted;
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $space-2xl $space-lg;
+    color: $text-muted;
+  }
+
+  &__loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid $border-color;
+    border-top: 2px solid $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: $space-lg;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+  }
+
+  &__item {
+    display: flex;
+    gap: 0.75rem;
+    padding: $space-lg;
+    border: 1px solid $border-color;
+    border-radius: $radius-md;
+    background: $background-light;
+  }
+
+  &__item-image {
+    flex-shrink: 0;
+    border-radius: $radius-sm;
+    overflow: hidden;
+  }
+
+  &__item-details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__item-name {
+    margin: 0 0 0.25rem 0;
+    font-size: $font-small;
+    font-weight: $font-weight-semibold;
+    color: $text-color;
+  }
+
+  &__item-specs {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.75rem;
+    color: $text-muted;
+  }
+
+  &__item-price {
+    margin: 0;
+    font-size: $font-small;
+    font-weight: $font-weight-semibold;
+    color: $primary-color;
+  }
+
+  &__item-remove {
+    background: none;
+    border: 1px solid $error-color;
+    color: $error-color;
+    padding: 0.25rem 0.5rem;
+    border-radius: $radius-sm;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all $transition-normal;
+    align-self: flex-start;
+
+    &:hover {
+      background: $error-color;
+      color: $text-white;
+    }
+  }
+
+  &__footer {
+    padding: $space-lg;
+    border-top: 1px solid $border-color;
+    background: $background-light;
+  }
+
+  &__total {
+    margin-bottom: $space-lg;
+    text-align: center;
+    font-size: $font-large;
+    color: $text-color;
+  }
+
+  &__checkout-btn {
+    width: 100%;
+    background: $primary-color;
+    color: $text-white;
+    border: none;
+    padding: 0.75rem $space-lg;
+    border-radius: $radius-md;
+    font-size: $font-small;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: background-color $transition-normal;
+
+    &:hover {
+      background: $button-primary-hover;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: $breakpoint-md) {
+  .cart {
+    width: 400px;
+  }
+}

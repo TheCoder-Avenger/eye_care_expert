@@ -1,0 +1,347 @@
+.cart-page {
+  min-height: 100vh;
+  background: $background-light;
+  padding: $space-2xl 0;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $space-lg;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: $space-2xl;
+  }
+
+  &__title {
+    margin: 0 0 0.5rem 0;
+    color: $text-color;
+    font-size: $font-2xl;
+    font-weight: $font-weight-bold;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: $text-muted;
+    font-size: $font-large;
+  }
+
+  &__login-message {
+    text-align: center;
+    padding: $space-4xl $space-2xl;
+    background: $background-color;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+
+    h2 {
+      margin: 0 0 $space-lg 0;
+      color: $text-color;
+      font-size: $font-xl;
+    }
+
+    p {
+      margin: 0;
+      color: $text-muted;
+    }
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $space-4xl $space-2xl;
+    color: $text-muted;
+  }
+
+  &__loading-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid $border-color;
+    border-top: 3px solid $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: $space-lg;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: $space-4xl $space-2xl;
+    background: $background-color;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+
+    &-icon {
+      font-size: 4rem;
+      margin-bottom: $space-lg;
+    }
+
+    h2 {
+      margin: 0 0 $space-lg 0;
+      color: $text-color;
+      font-size: $font-xl;
+    }
+
+    p {
+      margin: 0 0 $space-2xl 0;
+      color: $text-muted;
+    }
+  }
+
+  &__continue-shopping {
+    display: inline-block;
+    background: $primary-color;
+    color: $text-white;
+    padding: 0.75rem 1.5rem;
+    border-radius: $radius-md;
+    text-decoration: none;
+    font-weight: $font-weight-semibold;
+    transition: background-color $transition-normal;
+
+    &:hover {
+      background: $button-primary-hover;
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: $space-2xl;
+    align-items: start;
+  }
+
+  &__items {
+    background: $background-color;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    overflow: hidden;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto auto auto;
+    gap: $space-lg;
+    padding: 1.5rem;
+    border-bottom: 1px solid $border-color;
+    align-items: center;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__item-image {
+    border-radius: $radius-sm;
+    overflow: hidden;
+  }
+
+  &__item-details {
+    min-width: 0;
+  }
+
+  &__item-name {
+    margin: 0 0 0.5rem 0;
+    font-size: $font-large;
+    font-weight: $font-weight-semibold;
+    color: $text-color;
+  }
+
+  &__item-specs {
+    margin: 0 0 0.5rem 0;
+    font-size: $font-small;
+    color: $text-muted;
+  }
+
+  &__item-price {
+    margin: 0;
+    font-size: $font-small;
+    color: $primary-color;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__item-quantity {
+    text-align: center;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: $font-small;
+      color: $text-muted;
+    }
+  }
+
+  &__quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+
+    button {
+      width: 2rem;
+      height: 2rem;
+      background: $background-light;
+      border: 1px solid $border-color;
+      border-radius: $radius-sm;
+      cursor: pointer;
+      transition: all $transition-normal;
+
+      &:hover:not(:disabled) {
+        background: $primary-color;
+        color: $text-white;
+        border-color: $primary-color;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    span {
+      min-width: 2rem;
+      text-align: center;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__item-subtotal {
+    text-align: right;
+    font-size: $font-large;
+    font-weight: $font-weight-bold;
+    color: $text-color;
+  }
+
+  &__item-remove {
+    width: 2rem;
+    height: 2rem;
+    background: none;
+    border: 1px solid $error-color;
+    color: $error-color;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: all $transition-normal;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: $error-color;
+      color: $text-white;
+    }
+  }
+
+  &__summary {
+    background: $background-color;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    position: sticky;
+    top: $space-2xl;
+  }
+
+  &__summary-content {
+    padding: 1.5rem;
+
+    h3 {
+      margin: 0 0 $space-lg 0;
+      color: $text-color;
+      font-size: $font-xl;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    color: $text-muted;
+
+    &:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &__summary-total {
+    padding-top: 0.75rem;
+    border-top: 1px solid $border-color;
+    color: $text-color !important;
+    font-size: $font-xl;
+  }
+
+  &__checkout-btn {
+    width: 100%;
+    background: $primary-color;
+    color: $text-white;
+    border: none;
+    padding: $space-lg;
+    border-radius: $radius-md;
+    font-size: $font-large;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: background-color $transition-normal;
+    margin-bottom: $space-lg;
+
+    &:hover {
+      background: $button-primary-hover;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .cart-page__content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cart-page__summary {
+    position: static;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .cart-page {
+    padding: $space-lg 0;
+
+    &__container {
+      padding: 0 0.5rem;
+    }
+
+    &__item {
+      grid-template-columns: 80px 1fr;
+      gap: 0.75rem;
+      padding: $space-lg;
+    }
+
+    &__item-quantity,
+    &__item-subtotal,
+    &__item-remove {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+
+    &__item-quantity {
+      margin-top: 0.5rem;
+    }
+
+    &__item-subtotal {
+      text-align: left;
+      margin-top: 0.5rem;
+    }
+
+    &__item-remove {
+      margin-top: 0.5rem;
+      width: auto;
+      padding: 0.5rem $space-lg;
+      height: auto;
+    }
+  }
+}

@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style.scss";
 import Modal from "@components/Modal";
 import Register from "@components/Register";
 import Login from "@components/Login";
 import { useUser } from "@/context/UserContext";
+import Cart from "@components/Cart";
+import Wishlist from "@components/Wishlist";
 
 const Header = () => {
   const { user, isLoggedIn, isLoading, logout } = useUser();
@@ -22,8 +24,8 @@ const Header = () => {
 
   const [selectedCategory, setSelectedCategory] = useState("Eyeglass");
 
-  const [cartCount, setCartCount] = useState(3);
-  const [wishlistCount, setWishlistCount] = useState(5);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
 
   const languages = [
     { code: "en", name: "English" },
@@ -43,11 +45,57 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     setShowUserModal(false);
+    setShowCartModal(false);
+    setShowWishlistModal(false);
   };
 
   const handleLoginSuccess = (userData) => {
     console.log("User logged in:", userData);
   };
+
+  const fetchCartCount = async () => {
+    if (!isLoggedIn || !user?.email) return;
+
+    try {
+      const response = await fetch(
+        `/api/users/cart?email=${encodeURIComponent(user.email)}`
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        setCartCount(data.cart.length);
+      }
+    } catch (error) {
+      console.error("Error fetching cart count:", error);
+    }
+  };
+
+  const fetchWishlistCount = async () => {
+    if (!isLoggedIn || !user?.email) return;
+
+    try {
+      const response = await fetch(
+        `/api/users/wishlist?email=${encodeURIComponent(user.email)}`
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        setWishlistCount(data.wishlist.length);
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist count:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && user?.email) {
+      fetchCartCount();
+      fetchWishlistCount();
+    } else {
+      setCartCount(0);
+      setWishlistCount(0);
+    }
+  }, [isLoggedIn, user]);
 
   return (
     <>
@@ -175,52 +223,6 @@ const Header = () => {
       </header>
 
       <Modal
-        isOpen={showWishlistModal}
-        onClose={() => setShowWishlistModal(false)}
-        title="Your Wishlist"
-        size="medium"
-      >
-        <p>You have {wishlistCount} items in your wishlist.</p>
-        <div className="modal__items">
-          <div className="modal__item">
-            <span>👓 Classic Frame - $99</span>
-            <button className="modal__item-remove-btn">Remove</button>
-          </div>
-          <div className="modal__item">
-            <span>🕶️ Aviator Sunglasses - $149</span>
-            <button className="modal__item-remove-btn">Remove</button>
-          </div>
-          <div className="modal__item">
-            <span>👓 Blue Light Glasses - $79</span>
-            <button className="modal__item-remove-btn">Remove</button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        isOpen={showCartModal}
-        onClose={() => setShowCartModal(false)}
-        title="Shopping Cart"
-        size="medium"
-      >
-        <p>You have {cartCount} items in your cart.</p>
-        <div className="modal__items">
-          <div className="modal__item">
-            <span>👓 Reading Glasses - $89 (x2)</span>
-            <button className="modal__item-remove-btn">Remove</button>
-          </div>
-          <div className="modal__item">
-            <span>🕶️ Sports Sunglasses - $199</span>
-            <button className="modal__item-remove-btn">Remove</button>
-          </div>
-        </div>
-        <div className="modal__cart-total">
-          <strong>Total: $377</strong>
-        </div>
-        <button className="modal__checkout-btn">Proceed to Checkout</button>
-      </Modal>
-
-      <Modal
         isOpen={showUserModal && isLoggedIn}
         onClose={() => setShowUserModal(false)}
         title="User Profile"
@@ -254,6 +256,12 @@ const Header = () => {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onLoginSuccess={handleLoginSuccess}
+      />
+
+      <Cart isOpen={showCartModal} onClose={() => setShowCartModal(false)} />
+      <Wishlist
+        isOpen={showWishlistModal}
+        onClose={() => setShowWishlistModal(false)}
       />
     </>
   );

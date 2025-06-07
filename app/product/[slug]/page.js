@@ -1,3 +1,5 @@
+import ProductView from "@modules/product";
+
 export default function ProductPage({ params }) {
   return <ProductView slug={params.slug} />;
 }

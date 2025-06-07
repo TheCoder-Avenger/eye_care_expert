@@ -3,11 +3,13 @@
 import { useState } from "react";
 import "./style.scss";
 import Modal from "@components/Modal";
+import Register from "../Register";
 
 const Header = () => {
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
@@ -144,7 +146,12 @@ const Header = () => {
               ) : (
                 <div className="header__auth-buttons">
                   <button className="header__login-btn">Login</button>
-                  <button className="header__signup-btn">Sign Up</button>
+                  <button
+                    className="header__signup-btn"
+                    onClick={() => setShowRegisterModal(true)}
+                  >
+                    Sign Up
+                  </button>
                 </div>
               )}
             </div>
@@ -221,6 +228,10 @@ const Header = () => {
           </button>
         </div>
       </Modal>
+      <Register
+        isOpen={showRegisterModal}
+        onClose={() => setShowRegisterModal(false)}
+      />
     </>
   );
 };

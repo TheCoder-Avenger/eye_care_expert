@@ -1,0 +1,15 @@
+// Global SCSS variables are auto-included via next.config.mjs
+
+/* PlaceholderImage Component Styles */
+.placeholder-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $background-light;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  color: $text-light;
+  font-size: $font-regular;
+  min-height: 200px;
+  width: 100%;
+}

@@ -1,0 +1,244 @@
+// Global SCSS variables are auto-included via next.config.mjs
+
+/* Modal Component Styles - Following Cursor Rules */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($black-color, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-modal-backdrop;
+  backdrop-filter: blur(4px);
+  animation: overlay-appear $transition-slow;
+}
+
+@keyframes overlay-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: $background-color;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: $z-modal;
+  animation: modal-appear $transition-slow;
+
+  &--large {
+    max-width: 800px;
+  }
+
+  &--user .modal__body {
+    text-align: center;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-xl;
+    border-bottom: 1px solid $border-color;
+
+    h3 {
+      margin: 0;
+      color: $text-color;
+      font-size: $font-xl;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__close-btn {
+    background: none;
+    border: none;
+    font-size: $font-2xl;
+    color: $text-muted;
+    cursor: pointer;
+    padding: $space-xs;
+    border-radius: $radius-sm;
+    transition: all $transition-normal;
+
+    &:hover {
+      background: $background-light;
+      color: $text-light;
+    }
+  }
+
+  &__body {
+    padding: $space-xl;
+
+    p {
+      margin: 0 0 $space-lg 0;
+      color: $text-light;
+    }
+  }
+}
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Modal Items */
+.modal__items {
+  margin-top: $space-lg;
+}
+
+.modal__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-lg;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  margin-bottom: $space-sm;
+  background: $background-light;
+
+  &-remove-btn {
+    background: $error-color;
+    color: $text-inverse;
+    border: none;
+    padding: $space-xs $space-md;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-size: $font-small;
+    font-weight: $font-weight-medium;
+    transition: background-color $transition-normal;
+
+    &:hover {
+      background: darken($error-color, 10%);
+    }
+  }
+}
+
+.modal__cart-total {
+  margin: $space-lg 0;
+  padding: $space-lg;
+  background: $background-lighter;
+  border-radius: $radius-md;
+  text-align: center;
+  font-size: $font-large;
+  font-weight: $font-weight-semibold;
+  color: $text-color;
+}
+
+.modal__checkout-btn {
+  width: 100%;
+  background: $primary-color;
+  color: $text-inverse;
+  border: none;
+  padding: $space-md;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-size: $font-large;
+  font-weight: $font-weight-semibold;
+  transition: background-color $transition-normal;
+
+  &:hover {
+    background: $secondary-color;
+  }
+}
+
+/* User Modal */
+.modal__user-info {
+  margin-bottom: $space-2xl;
+
+  &-avatar {
+    font-size: $font-4xl;
+    margin-bottom: $space-lg;
+  }
+
+  h4 {
+    margin: $space-sm 0;
+    color: $text-color;
+    font-size: $font-2xl;
+    font-weight: $font-weight-semibold;
+  }
+
+  p {
+    color: $text-light;
+    margin: 0;
+  }
+}
+
+.modal__user-actions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.modal__action-btn {
+  padding: $space-md $space-xl;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  background: $background-color;
+  color: $text-color;
+  cursor: pointer;
+  font-size: $font-medium;
+  font-weight: $font-weight-medium;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: $background-lighter;
+    border-color: $primary-color;
+  }
+
+  &--logout {
+    background: $error-color;
+    color: $text-inverse;
+    border-color: $error-color;
+
+    &:hover {
+      background: darken($error-color, 10%);
+    }
+  }
+}
+
+/* Responsive Design - Mobile First */
+@media (max-width: $breakpoint-md) {
+  .modal {
+    width: 95%;
+    margin: $space-lg;
+  }
+
+  .modal--large {
+    max-height: 90vh;
+  }
+
+  .modal__header,
+  .modal__body {
+    padding: $space-lg;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .modal {
+    width: 95%;
+    margin: $space-sm;
+  }
+
+  .modal__header h3 {
+    font-size: $font-large;
+  }
+
+  .modal__body {
+    padding: $space-md;
+  }
+}

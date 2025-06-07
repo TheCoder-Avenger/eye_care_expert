@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import PlaceholderImage from "@components/PlaceholderImage";
-import Modal from "@components/Modal";
-import "./style.scss";
+import PlaceholderImage from "../../../../components/PlaceholderImage";
+import "./styles/ProductView.scss";
+import "../../../../components/styles/Modal.scss";
 
 const ProductView = ({ slug }) => {
   // Product state
@@ -181,7 +181,7 @@ const ProductView = ({ slug }) => {
       <div className="product-view">
         <div className="product-view__error">
           <h2>Product not found</h2>
-          <p>The product you&apos;re looking for doesn&apos;t exist.</p>
+          <p>The product you're looking for doesn't exist.</p>
         </div>
       </div>
     );
@@ -475,64 +475,81 @@ const ProductView = ({ slug }) => {
       </div>
 
       {/* Buy One Get One Modal */}
-      <Modal
-        isOpen={showBuyOneGetOneModal}
-        onClose={() => setShowBuyOneGetOneModal(false)}
-        title="Buy 1 Get 1 Free - Choose Your Second Product"
-        size="large"
-      >
-        <div className="buy-one-get-one">
-          <div className="buy-one-get-one__selected">
-            <h4>Selected Product:</h4>
-            <div className="buy-one-get-one__product">
-              <img src={product.images[0]} alt={product.name} />
-              <div>
-                <h5>{product.name}</h5>
-                <p>₹{product.price}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="buy-one-get-one__free-products">
-            <h4>Choose Your Free Product:</h4>
-            <div className="buy-one-get-one__grid">
-              {product.buyOneGetOneProducts.map((freeProduct) => (
-                <div
-                  key={freeProduct.id}
-                  className={`buy-one-get-one__free-product ${
-                    selectedSecondProduct?.id === freeProduct.id
-                      ? "buy-one-get-one__free-product--selected"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSecondProduct(freeProduct)}
-                >
-                  <img src={freeProduct.image} alt={freeProduct.name} />
-                  <h5>{freeProduct.name}</h5>
-                  <p className="buy-one-get-one__original-price">
-                    ₹{freeProduct.price}
-                  </p>
-                  <span className="buy-one-get-one__free-tag">FREE</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {selectedSecondProduct && (
-            <div className="buy-one-get-one__summary">
-              <div className="buy-one-get-one__total">
-                <p>You Pay: ₹{product.price}</p>
-                <p>You Save: ₹{selectedSecondProduct.price}</p>
-                <h4>
-                  Total Value: ₹{product.price + selectedSecondProduct.price}
-                </h4>
-              </div>
-              <button className="buy-one-get-one__confirm">
-                Add Both to Cart
+      {showBuyOneGetOneModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowBuyOneGetOneModal(false)}
+        >
+          <div
+            className="modal modal--large"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal__header">
+              <h3>Buy 1 Get 1 Free - Choose Your Second Product</h3>
+              <button
+                className="modal__close-btn"
+                onClick={() => setShowBuyOneGetOneModal(false)}
+              >
+                ✕
               </button>
             </div>
-          )}
+            <div className="modal__body">
+              <div className="buy-one-get-one">
+                <div className="buy-one-get-one__selected">
+                  <h4>Selected Product:</h4>
+                  <div className="buy-one-get-one__product">
+                    <img src={product.images[0]} alt={product.name} />
+                    <div>
+                      <h5>{product.name}</h5>
+                      <p>₹{product.price}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="buy-one-get-one__free-products">
+                  <h4>Choose Your Free Product:</h4>
+                  <div className="buy-one-get-one__grid">
+                    {product.buyOneGetOneProducts.map((freeProduct) => (
+                      <div
+                        key={freeProduct.id}
+                        className={`buy-one-get-one__free-product ${
+                          selectedSecondProduct?.id === freeProduct.id
+                            ? "buy-one-get-one__free-product--selected"
+                            : ""
+                        }`}
+                        onClick={() => setSelectedSecondProduct(freeProduct)}
+                      >
+                        <img src={freeProduct.image} alt={freeProduct.name} />
+                        <h5>{freeProduct.name}</h5>
+                        <p className="buy-one-get-one__original-price">
+                          ₹{freeProduct.price}
+                        </p>
+                        <span className="buy-one-get-one__free-tag">FREE</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {selectedSecondProduct && (
+                  <div className="buy-one-get-one__summary">
+                    <div className="buy-one-get-one__total">
+                      <p>You Pay: ₹{product.price}</p>
+                      <p>You Save: ₹{selectedSecondProduct.price}</p>
+                      <h4>
+                        Total Value: ₹
+                        {product.price + selectedSecondProduct.price}
+                      </h4>
+                    </div>
+                    <button className="buy-one-get-one__confirm">
+                      Add Both to Cart
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-      </Modal>
+      )}
     </div>
   );
 };

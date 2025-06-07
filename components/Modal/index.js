@@ -1,6 +1,23 @@
+import { useEffect } from "react";
 import "./style.scss";
 
 const Modal = ({ isOpen, onClose, title, children, size = "medium" }) => {
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "unset";
+      }
+
+      // Cleanup on unmount
+      return () => {
+        document.body.style.overflow = "unset";
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleOverlayClick = (e) => {
@@ -10,11 +27,11 @@ const Modal = ({ isOpen, onClose, title, children, size = "medium" }) => {
   };
 
   return (
-    <div className="modal" onClick={handleOverlayClick}>
-      <div className={`modal__content modal__content--${size}`}>
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className={`modal ${size === "large" ? "modal--large" : ""}`}>
         <div className="modal__header">
-          <h2 className="modal__title">{title}</h2>
-          <button className="modal__close" onClick={onClose}>
+          <h3>{title}</h3>
+          <button className="modal__close-btn" onClick={onClose}>
             ×
           </button>
         </div>

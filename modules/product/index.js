@@ -3,9 +3,12 @@
 import { useState, useEffect } from "react";
 import PlaceholderImage from "@components/PlaceholderImage";
 import Modal from "@components/Modal";
+import Toast from "@components/Toast";
+import { useUser } from "@/context/UserContext";
 import "./style.scss";
 
 const ProductView = ({ slug }) => {
+  const { addToCart } = useUser();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +28,12 @@ const ProductView = ({ slug }) => {
 
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -142,10 +151,9 @@ const ProductView = ({ slug }) => {
 
   const handleAddToCart = async () => {
     setIsAddingToCart(true);
-    setTimeout(() => {
-      setIsAddingToCart(false);
-      console.log("Added to cart:", {
-        product,
+
+    try {
+      const result = await addToCart(product, {
         lensType: selectedLensType,
         frameColor: selectedFrameColor,
         powerOption: selectedPowerOption,
@@ -153,7 +161,30 @@ const ProductView = ({ slug }) => {
           selectedPowerOption === "with-power" ? prescription : null,
         quantity,
       });
-    }, 1500);
+
+      if (result.success) {
+        setToast({
+          isVisible: true,
+          message: "Product added to cart successfully!",
+          type: "success",
+        });
+      } else {
+        setToast({
+          isVisible: true,
+          message: "Failed to add product to cart. Please try again.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setToast({
+        isVisible: true,
+        message: "Failed to add product to cart. Please try again.",
+        type: "error",
+      });
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const handleBuyNow = () => {
@@ -540,6 +571,13 @@ const ProductView = ({ slug }) => {
           )}
         </div>
       </Modal>
+
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={() => setToast({ ...toast, isVisible: false })}
+      />
     </div>
   );
 };

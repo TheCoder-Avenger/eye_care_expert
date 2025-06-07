@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useUser } from "../../context/UserContext";
 import PlaceholderImage from "@components/PlaceholderImage";
+import Modal from "@components/Modal";
 import "./style.scss";
 
 const Wishlist = ({ isOpen, onClose }) => {
@@ -10,35 +11,6 @@ const Wishlist = ({ isOpen, onClose }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  // Close modal when clicking outside
-  const handleOverlayClick = useCallback(
-    (e) => {
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  // Close modal with Escape key
-  useEffect(() => {
-    const handleEscapeKey = (e) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey);
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (isOpen && isLoggedIn && user?.email) {
@@ -136,117 +108,105 @@ const Wishlist = ({ isOpen, onClose }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const wishlistTitle = `Your Wishlist${
+    isLoggedIn && wishlistItems.length > 0 ? ` (${wishlistItems.length})` : ""
+  }`;
 
   return (
-    <div className="wishlist-overlay" onClick={handleOverlayClick}>
-      <div className="wishlist">
-        <div className="wishlist__header">
-          <h2 className="wishlist__title">
-            Your Wishlist
-            {isLoggedIn && wishlistItems.length > 0 && (
-              <span className="wishlist__count">({wishlistItems.length})</span>
-            )}
-          </h2>
-          <button
-            className="wishlist__close"
-            onClick={onClose}
-            aria-label="Close wishlist"
-          >
-            ×
-          </button>
-        </div>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={wishlistTitle}
+      size="medium"
+    >
+      <div className="wishlist__content">
+        {error && (
+          <div className="wishlist__error">
+            <p>{error}</p>
+            <button
+              onClick={() => setError(null)}
+              className="wishlist__error-close"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
 
-        <div className="wishlist__content">
-          {error && (
-            <div className="wishlist__error">
-              <p>{error}</p>
-              <button
-                onClick={() => setError(null)}
-                className="wishlist__error-close"
-              >
-                Dismiss
-              </button>
-            </div>
-          )}
-
-          {!isLoggedIn ? (
-            <div className="wishlist__login-message">
-              <div className="wishlist__login-icon">💖</div>
-              <h3>Sign in to view your wishlist</h3>
-              <p>
-                Save your favorite items for later by signing in to your
-                account.
-              </p>
-            </div>
-          ) : loading ? (
-            <div className="wishlist__loading">
-              <div className="wishlist__loading-spinner"></div>
-              <p>Loading your wishlist...</p>
-            </div>
-          ) : wishlistItems.length === 0 ? (
-            <div className="wishlist__empty">
-              <div className="wishlist__empty-icon">💔</div>
-              <h3>Your wishlist is empty</h3>
-              <p>
-                Browse our collection and add items you love to your wishlist.
-              </p>
-            </div>
-          ) : (
-            <div className="wishlist__items">
-              {wishlistItems.map((item) => (
-                <div key={item._id} className="wishlist__item">
-                  <div className="wishlist__item-image">
-                    {item.images?.[0] ? (
-                      <PlaceholderImage
-                        width={120}
-                        height={90}
-                        text=""
-                        backgroundColor="f0f0f0"
-                        textColor="666"
-                      />
-                    ) : (
-                      <PlaceholderImage
-                        width={120}
-                        height={90}
-                        text="No Image"
-                        backgroundColor="f0f0f0"
-                        textColor="666"
-                      />
-                    )}
-                  </div>
-                  <div className="wishlist__item-details">
-                    <h4 className="wishlist__item-name">{item.name}</h4>
-                    <p className="wishlist__item-price">₹{item.price}</p>
-                    {item.description && (
-                      <p className="wishlist__item-description">
-                        {item.description.length > 100
-                          ? `${item.description.substring(0, 100)}...`
-                          : item.description}
-                      </p>
-                    )}
-                    <div className="wishlist__item-actions">
-                      <button
-                        className="wishlist__add-to-cart"
-                        onClick={() => addToCart(item)}
-                        disabled={loading}
-                      >
-                        Add to Cart
-                      </button>
-                      <button
-                        className="wishlist__remove"
-                        onClick={() => removeFromWishlist(item._id)}
-                        disabled={loading}
-                      >
-                        Remove
-                      </button>
-                    </div>
+        {!isLoggedIn ? (
+          <div className="wishlist__login-message">
+            <div className="wishlist__login-icon">💖</div>
+            <h3>Sign in to view your wishlist</h3>
+            <p>
+              Save your favorite items for later by signing in to your account.
+            </p>
+          </div>
+        ) : loading ? (
+          <div className="wishlist__loading">
+            <div className="wishlist__loading-spinner"></div>
+            <p>Loading your wishlist...</p>
+          </div>
+        ) : wishlistItems.length === 0 ? (
+          <div className="wishlist__empty">
+            <div className="wishlist__empty-icon">💔</div>
+            <h3>Your wishlist is empty</h3>
+            <p>
+              Browse our collection and add items you love to your wishlist.
+            </p>
+          </div>
+        ) : (
+          <div className="wishlist__items">
+            {wishlistItems.map((item) => (
+              <div key={item._id} className="wishlist__item">
+                <div className="wishlist__item-image">
+                  {item.images?.[0] ? (
+                    <PlaceholderImage
+                      width={120}
+                      height={90}
+                      text=""
+                      backgroundColor="f0f0f0"
+                      textColor="666"
+                    />
+                  ) : (
+                    <PlaceholderImage
+                      width={120}
+                      height={90}
+                      text="No Image"
+                      backgroundColor="f0f0f0"
+                      textColor="666"
+                    />
+                  )}
+                </div>
+                <div className="wishlist__item-details">
+                  <h4 className="wishlist__item-name">{item.name}</h4>
+                  <p className="wishlist__item-price">₹{item.price}</p>
+                  {item.description && (
+                    <p className="wishlist__item-description">
+                      {item.description.length > 100
+                        ? `${item.description.substring(0, 100)}...`
+                        : item.description}
+                    </p>
+                  )}
+                  <div className="wishlist__item-actions">
+                    <button
+                      className="wishlist__add-to-cart"
+                      onClick={() => addToCart(item)}
+                      disabled={loading}
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      className="wishlist__remove"
+                      onClick={() => removeFromWishlist(item._id)}
+                      disabled={loading}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {isLoggedIn && wishlistItems.length > 0 && (
           <div className="wishlist__footer">
@@ -260,7 +220,7 @@ const Wishlist = ({ isOpen, onClose }) => {
           </div>
         )}
       </div>
-    </div>
+    </Modal>
   );
 };
 

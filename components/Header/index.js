@@ -10,7 +10,7 @@ import Cart from "@components/Cart";
 import Wishlist from "@components/Wishlist";
 
 const Header = () => {
-  const { user, isLoggedIn, isLoading, logout } = useUser();
+  const { user, isLoggedIn, isLoading, logout, cart, wishlist } = useUser();
 
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
@@ -24,8 +24,9 @@ const Header = () => {
 
   const [selectedCategory, setSelectedCategory] = useState("Eyeglass");
 
-  const [cartCount, setCartCount] = useState(0);
-  const [wishlistCount, setWishlistCount] = useState(0);
+  // Cart and wishlist counts are now managed by UserContext
+  const cartCount = cart?.length || 0;
+  const wishlistCount = wishlist?.length || 0;
 
   const languages = [
     { code: "en", name: "English" },
@@ -53,49 +54,7 @@ const Header = () => {
     console.log("User logged in:", userData);
   };
 
-  const fetchCartCount = async () => {
-    if (!isLoggedIn || !user?.email) return;
-
-    try {
-      const response = await fetch(
-        `/api/users/cart?email=${encodeURIComponent(user.email)}`
-      );
-      const data = await response.json();
-
-      if (data.success) {
-        setCartCount(data.cart.length);
-      }
-    } catch (error) {
-      console.error("Error fetching cart count:", error);
-    }
-  };
-
-  const fetchWishlistCount = async () => {
-    if (!isLoggedIn || !user?.email) return;
-
-    try {
-      const response = await fetch(
-        `/api/users/wishlist?email=${encodeURIComponent(user.email)}`
-      );
-      const data = await response.json();
-
-      if (data.success) {
-        setWishlistCount(data.wishlist.length);
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist count:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (isLoggedIn && user?.email) {
-      fetchCartCount();
-      fetchWishlistCount();
-    } else {
-      setCartCount(0);
-      setWishlistCount(0);
-    }
-  }, [isLoggedIn, user]);
+  // Cart and wishlist counts are now managed by UserContext
 
   return (
     <>

@@ -1,0 +1,72 @@
+.toast {
+  position: fixed;
+  top: $space-xl;
+  right: $space-xl;
+  background: $background-color;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  border: 1px solid $border-color;
+  z-index: $z-tooltip;
+  animation: toast-slide-in $transition-normal;
+  min-width: 300px;
+  max-width: 400px;
+
+  &--success {
+    border-left: 4px solid $success-color;
+  }
+
+  &--error {
+    border-left: 4px solid $error-color;
+  }
+
+  &--info {
+    border-left: 4px solid $info-color;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    padding: $space-lg;
+  }
+
+  &__icon {
+    font-size: $font-large;
+    flex-shrink: 0;
+  }
+
+  &__message {
+    flex: 1;
+    color: $text-color;
+    font-size: $font-medium;
+    font-weight: $font-weight-medium;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: $font-xl;
+    color: $text-muted;
+    cursor: pointer;
+    padding: $space-xs;
+    border-radius: $radius-sm;
+    transition: all $transition-normal;
+    flex-shrink: 0;
+
+    &:hover {
+      background: $background-light;
+      color: $text-light;
+    }
+  }
+}
+
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

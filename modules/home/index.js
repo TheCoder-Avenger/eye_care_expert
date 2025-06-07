@@ -272,11 +272,6 @@ const HomeView = () => {
                 index === currentBanner ? "active" : ""
               }`}
             >
-              <div className="banner-carousel__content">
-                <h2 className="banner-carousel__title">{banner.title}</h2>
-                <p className="banner-carousel__subtitle">{banner.subtitle}</p>
-                <button className="banner-carousel__cta">{banner.cta}</button>
-              </div>
               <div className="banner-carousel__image">
                 <div className="placeholder-image">Banner {index + 1}</div>
               </div>

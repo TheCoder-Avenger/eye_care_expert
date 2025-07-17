@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-
+import ProductCard from "@/components/ProductCard";
 import "./style.scss";
 
 const ProductsView = () => {
@@ -25,8 +24,6 @@ const ProductsView = () => {
     totalPages: 1,
     totalProducts: 0,
   });
-
-  console.log("products", products);
 
   // Fetch products from API
   const fetchProducts = async (page = 1) => {
@@ -84,23 +81,6 @@ const ProductsView = () => {
   const handlePageChange = (page) => {
     fetchProducts(page);
   };
-
-  // Format price in Indian Rupees
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
-
-  // Handle view product - navigate to product detail page
-  const handleViewProduct = useCallback(
-    (product) => {
-      router.push(`/product/${product._id}`);
-    },
-    [router]
-  );
 
   if (error) {
     return (
@@ -242,6 +222,7 @@ const ProductsView = () => {
           </div>
         </div>
 
+        {/* Results Info */}
         <div className="products-view__results-info">
           <p>
             Showing {products.length} of {pagination.totalProducts} products
@@ -249,6 +230,7 @@ const ProductsView = () => {
           </p>
         </div>
 
+        {/* Products Grid */}
         {loading ? (
           <div className="products-view__loading">
             <div className="loading-spinner"></div>
@@ -262,92 +244,7 @@ const ProductsView = () => {
         ) : (
           <div className="products-view__grid">
             {products.map((product) => (
-              <div key={product._id} className="product-card">
-                <div className="product-card__image">
-                  <Image
-                    src={product.images?.[0]}
-                    width={100}
-                    height={100}
-                    alt={product.name}
-                  />
-                  {product.buy_1_get_1_available && (
-                    <div className="product-card__badge">Buy 1 Get 1</div>
-                  )}
-                  {product.best_seller && (
-                    <div className="product-card__badge best-seller">
-                      Best Seller
-                    </div>
-                  )}
-                </div>
-
-                <div className="product-card__content">
-                  <h3 className="product-card__title">{product.name}</h3>
-                  <p className="product-card__description">
-                    {product.description.length > 100
-                      ? `${product.description.substring(0, 100)}...`
-                      : product.description}
-                  </p>
-
-                  <div className="product-card__details">
-                    <div className="detail-row">
-                      <span className="detail-label">Shape:</span>
-                      <span className="detail-value">{product.shape}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Material:</span>
-                      <span className="detail-value">{product.material}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Color:</span>
-                      <span className="detail-value">{product.color}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Size:</span>
-                      <span className="detail-value">{product.size}</span>
-                    </div>
-                  </div>
-
-                  <div className="product-card__lens-types">
-                    <h4>Available Lens Types:</h4>
-                    <div className="lens-types-list">
-                      {product.available_lens_types.map((lensType, index) => (
-                        <span key={index} className="lens-type-tag">
-                          {lensType.type}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="product-card__footer">
-                    <div className="product-card__price">
-                      {product.actual_price &&
-                      product.price < product.actual_price ? (
-                        <>
-                          <span className="discounted-price">
-                            {formatPrice(product.price)}
-                          </span>
-                          <span className="actual-price strikethrough">
-                            {formatPrice(product.actual_price)}
-                          </span>
-                          {product.discounted_percentage > 0 && (
-                            <span className="discount-badge">
-                              -{product.discounted_percentage}%
-                            </span>
-                          )}
-                        </>
-                      ) : (
-                        <span>{formatPrice(product.price)}</span>
-                      )}
-                    </div>
-                    <button
-                      className="product-card__view-product"
-                      onClick={() => handleViewProduct(product)}
-                    >
-                      View Product
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         )}

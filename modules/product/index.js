@@ -6,6 +6,7 @@ import Modal from "@components/Modal";
 import Toast from "@components/Toast";
 import { useUser } from "@/context/UserContext";
 import "./style.scss";
+import Image from "next/image";
 
 const ProductView = ({ slug }) => {
   const { addToCart } = useUser();
@@ -53,60 +54,61 @@ const ProductView = ({ slug }) => {
           const transformedProduct = {
             id: data.data._id,
             name: data.data.name,
-            brand: "EyeCare Expert",
-            price: data.data.price,
-            originalPrice: Math.round(data.data.price * 1.4), // Calculate original price
-            discount: Math.round(
-              ((Math.round(data.data.price * 1.4) - data.data.price) /
-                Math.round(data.data.price * 1.4)) *
-                100
-            ),
-            rating: 4.5, // Default rating
-            reviews: Math.floor(Math.random() * 200) + 50, // Random reviews count
+            brand: data.data.brand_name,
+            price: data.data.discounted_price || data.data.actual_price,
+            originalPrice: data.data.actual_price,
+            discount: data.data.discounted_percentage || 0,
             description: data.data.description,
-            features: [
-              "UV 400 Protection",
-              "High Quality Material",
-              "Anti-Reflective Coating",
-              "Scratch Resistant",
-              "Lightweight Frame",
-            ],
             images:
-              data.data.images.length > 0
-                ? data.data.images
-                : [
-                    "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=600",
-                    "https://images.unsplash.com/photo-1574258495973-cd67c4ecb71c?w=600",
-                    "https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600",
-                  ],
+              data.data.images && data.data.images.length > 0
+                ? data.data.images.map((img) =>
+                    img.includes("drive.google.com") &&
+                    !img.includes("uc?export=view")
+                      ? img
+                          .replace("/view?usp=sharing", "")
+                          .replace("/view", "")
+                          .replace(
+                            "https://drive.google.com/file/d/",
+                            "https://drive.google.com/uc?export=view&id="
+                          )
+                          .replace("/view", "")
+                      : img
+                  )
+                : [],
             colors: [
               {
                 name: data.data.color,
                 code: getColorCode(data.data.color),
-                available: true,
+                available: data.data.quantity > 0,
               },
             ],
-            lensOptions: data.data.available_lens_types.map(
-              (lensType, index) => ({
-                id: lensType.type.toLowerCase().replace(/ /g, "-"),
-                name: lensType.type,
-                price: index * 500, // Different prices for different lens types
-                description: `${
-                  lensType.type
-                } lens with options: ${lensType.sub_options.join(", ")}`,
-              })
-            ),
-            buyOneGetOneProducts: data.data.buy_1_get_1_available
-              ? [
-                  {
-                    id: "related-1",
-                    name: "Related Eyewear",
-                    price: Math.round(data.data.price * 0.8),
-                    image:
-                      "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=200",
-                  },
-                ]
-              : [],
+            lensOptions:
+              data.data.available_lens_types &&
+              data.data.available_lens_types.length > 0
+                ? data.data.available_lens_types.map((lensType, index) => ({
+                    id: lensType.type.toLowerCase().replace(/ /g, "-"),
+                    name: lensType.type,
+                    price: index * 500, // Different prices for different lens types
+                    description: `${lensType.type} lens${
+                      lensType.sub_options && lensType.sub_options.length > 0
+                        ? ` with options: ${lensType.sub_options.join(", ")}`
+                        : ""
+                    }`,
+                  }))
+                : [],
+            buyOneGetOneProducts:
+              data.data.buy_1_get_1_available &&
+              data.data.images &&
+              data.data.images.length > 0
+                ? [
+                    {
+                      id: "related-1",
+                      name: `${data.data.shape} Frame`,
+                      price: Math.round(data.data.actual_price * 0.8),
+                      image: data.data.images[0],
+                    },
+                  ]
+                : [],
             // Add original product data for reference
             originalData: data.data,
           };
@@ -131,18 +133,33 @@ const ProductView = ({ slug }) => {
   // Helper function to get color codes
   const getColorCode = (colorName) => {
     const colorMap = {
-      Black: "#000000",
-      Brown: "#8B4513",
-      Gold: "#FFD700",
-      Silver: "#C0C0C0",
-      Blue: "#0066CC",
-      Purple: "#800080",
-      Gray: "#808080",
-      Grey: "#808080",
-      Tortoise: "#8B4513",
-      Gunmetal: "#2C3539",
+      black: "#000000",
+      brown: "#8B4513",
+      gold: "#FFD700",
+      silver: "#C0C0C0",
+      blue: "#0066CC",
+      purple: "#800080",
+      gray: "#808080",
+      grey: "#808080",
+      tortoise: "#8B4513",
+      gunmetal: "#2C3539",
+      red: "#DC143C",
+      green: "#228B22",
+      white: "#FFFFFF",
+      transparent: "#F5F5F5",
+      clear: "#F8F8FF",
+      navy: "#000080",
+      maroon: "#800000",
+      olive: "#808000",
+      orange: "#FFA500",
+      pink: "#FFC0CB",
+      yellow: "#FFFF00",
+      cyan: "#00FFFF",
+      magenta: "#FF00FF",
+      lime: "#00FF00",
     };
-    return colorMap[colorName] || "#666666";
+    const normalizedColor = colorName.toLowerCase().trim();
+    return colorMap[normalizedColor] || "#666666";
   };
 
   const handleImageSelect = (index) => {
@@ -239,75 +256,118 @@ const ProductView = ({ slug }) => {
     <div className="product-view">
       <div className="product-view__container">
         <div className="product-view__gallery">
-          <div className="product-view__main-image">
-            <img
-              src={product.images[selectedImageIndex]}
-              alt={product.name}
-              className={`product-view__main-image-img ${
-                isZoomed ? "product-view__main-image-img--zoomed" : ""
-              }`}
-              onClick={() => setIsZoomed(!isZoomed)}
-            />
-            <button
-              className="product-view__zoom-btn"
-              onClick={() => setIsZoomed(!isZoomed)}
-            >
-              {isZoomed ? "🔍-" : "🔍+"}
-            </button>
-          </div>
+          {product.images && product.images.length > 0 ? (
+            <>
+              <div className="product-view__main-image">
+                <Image
+                  src={product.images[selectedImageIndex]}
+                  alt={product.name}
+                  width={500}
+                  height={500}
+                  className={`product-view__main-image-img ${
+                    isZoomed ? "product-view__main-image-img--zoomed" : ""
+                  }`}
+                  onClick={() => setIsZoomed(!isZoomed)}
+                />
+                <button
+                  className="product-view__zoom-btn"
+                  onClick={() => setIsZoomed(!isZoomed)}
+                >
+                  {isZoomed ? "🔍-" : "🔍+"}
+                </button>
+              </div>
 
-          <div className="product-view__thumbnails">
-            {product.images.map((image, index) => (
-              <button
-                key={index}
-                className={`product-view__thumbnail ${
-                  selectedImageIndex === index
-                    ? "product-view__thumbnail--active"
-                    : ""
-                }`}
-                onClick={() => handleImageSelect(index)}
-              >
-                <img src={image} alt={`${product.name} view ${index + 1}`} />
-              </button>
-            ))}
-          </div>
+              <div className="product-view__thumbnails">
+                {product.images.map((image, index) => (
+                  <button
+                    key={index}
+                    className={`product-view__thumbnail ${
+                      selectedImageIndex === index
+                        ? "product-view__thumbnail--active"
+                        : ""
+                    }`}
+                    onClick={() => handleImageSelect(index)}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${product.name} view ${index + 1}`}
+                      width={80}
+                      height={80}
+                    />
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="product-view__no-image">
+              <div className="product-view__placeholder">
+                <h3>No Images Available</h3>
+                <p>Product images will be added soon.</p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="product-view__details">
           <div className="product-view__header">
             <h1 className="product-view__title">{product.name}</h1>
             <p className="product-view__brand">{product.brand}</p>
-
-            <div className="product-view__rating">
-              <span className="product-view__stars">★★★★☆</span>
-              <span className="product-view__rating-text">
-                {product.rating} ({product.reviews} reviews)
-              </span>
-            </div>
           </div>
 
           <div className="product-view__pricing">
-            <span className="product-view__price">₹{product.price}</span>
-            <span className="product-view__original-price">
-              ₹{product.originalPrice}
+            <span className="product-view__price">
+              ₹{product.price?.toLocaleString()}
             </span>
-            <span className="product-view__discount">
-              {product.discount}% OFF
-            </span>
+            {product.originalPrice > product.price && (
+              <>
+                <span className="product-view__original-price">
+                  ₹{product.originalPrice?.toLocaleString()}
+                </span>
+                <span className="product-view__discount">
+                  {product.discount}% OFF
+                </span>
+              </>
+            )}
           </div>
 
-          <div className="product-view__description">
-            <p>{product.description}</p>
-          </div>
+          {product.originalData && (
+            <div className="product-view__specs">
+              <h3>Specifications:</h3>
+              <div className="product-view__specs-grid">
+                <div className="product-view__spec">
+                  <strong>Product ID:</strong> {product.originalData.product_id}
+                </div>
+                <div className="product-view__spec">
+                  <strong>Frame Type:</strong> {product.originalData.frame_type}
+                </div>
+                <div className="product-view__spec">
+                  <strong>Material:</strong> {product.originalData.material}
+                </div>
+                <div className="product-view__spec">
+                  <strong>Shape:</strong> {product.originalData.shape}
+                </div>
+                <div className="product-view__spec">
+                  <strong>Size:</strong> {product.originalData.general_size} (
+                  {product.originalData.dimensions})
+                </div>
+                <div className="product-view__spec">
+                  <strong>Quantity Available:</strong>{" "}
+                  {product.originalData.quantity}
+                </div>
+                {product.originalData.buy_1_get_1_available && (
+                  <div className="product-view__spec product-view__spec--highlight">
+                    <strong>🎁 Buy 1 Get 1 Free Available!</strong>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
-          <div className="product-view__features">
-            <h3>Features:</h3>
-            <ul>
-              {product.features.map((feature, index) => (
-                <li key={index}>{feature}</li>
-              ))}
-            </ul>
-          </div>
+          {product.description && (
+            <div className="product-view__description">
+              <p>{product.description}</p>
+            </div>
+          )}
 
           <div className="product-view__options">
             <h3>Frame Color:</h3>
@@ -336,28 +396,30 @@ const ProductView = ({ slug }) => {
             </div>
           </div>
 
-          <div className="product-view__lens-options">
-            <h3>Lens Type:</h3>
-            <div className="product-view__lens-grid">
-              {product.lensOptions.map((lens) => (
-                <div
-                  key={lens.id}
-                  className={`product-view__lens-option ${
-                    selectedLensType === lens.id
-                      ? "product-view__lens-option--active"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedLensType(lens.id)}
-                >
-                  <h4>{lens.name}</h4>
-                  <p>{lens.description}</p>
-                  <span className="product-view__lens-price">
-                    {lens.price === 0 ? "Included" : `+₹${lens.price}`}
-                  </span>
-                </div>
-              ))}
+          {product.lensOptions && product.lensOptions.length > 0 && (
+            <div className="product-view__lens-options">
+              <h3>Lens Type:</h3>
+              <div className="product-view__lens-grid">
+                {product.lensOptions.map((lens) => (
+                  <div
+                    key={lens.id}
+                    className={`product-view__lens-option ${
+                      selectedLensType === lens.id
+                        ? "product-view__lens-option--active"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedLensType(lens.id)}
+                  >
+                    <h4>{lens.name}</h4>
+                    <p>{lens.description}</p>
+                    <span className="product-view__lens-price">
+                      {lens.price === 0 ? "Included" : `+₹${lens.price}`}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="product-view__power-options">
             <h3>Power Options:</h3>
@@ -523,7 +585,12 @@ const ProductView = ({ slug }) => {
           <div className="buy-one-get-one__selected">
             <h4>Selected Product:</h4>
             <div className="buy-one-get-one__product">
-              <img src={product.images[0]} alt={product.name} />
+              <Image
+                src={product.images[0]}
+                alt={product.name}
+                width={80}
+                height={80}
+              />
               <div>
                 <h5>{product.name}</h5>
                 <p>₹{product.price}</p>
@@ -544,7 +611,12 @@ const ProductView = ({ slug }) => {
                   }`}
                   onClick={() => setSelectedSecondProduct(freeProduct)}
                 >
-                  <img src={freeProduct.image} alt={freeProduct.name} />
+                  <Image
+                    src={freeProduct.image}
+                    alt={freeProduct.name}
+                    width={120}
+                    height={120}
+                  />
                   <h5>{freeProduct.name}</h5>
                   <p className="buy-one-get-one__original-price">
                     ₹{freeProduct.price}

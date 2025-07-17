@@ -2,6 +2,17 @@ const XLSX = require("xlsx");
 const fs = require("fs");
 const path = require("path");
 
+// Function to convert Google Drive URL to direct image URL
+function convertGoogleDriveUrl(url) {
+  if (url.includes("drive.google.com/file/d/")) {
+    const fileId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (fileId) {
+      return `https://drive.google.com/uc?export=view&id=${fileId[1]}`;
+    }
+  }
+  return url;
+}
+
 // Path to the Excel file
 const excelFilePath = path.join(__dirname, "../models/ece_products.xlsx");
 const outputJsonPath = path.join(__dirname, "../models/products.json");
@@ -33,13 +44,24 @@ const products = rows.map((row, idx) => {
 
   usedProductIds.add(productId);
 
+  // Fix image fields - split comma-separated URLs and convert Google Drive URLs
+  let imageField = row["image"] || "";
+  let imageArray = [];
+
+  if (imageField) {
+    imageArray = imageField
+      .split(",")
+      .map((url) => url.trim())
+      .filter((url) => url.length > 0)
+      .map((url) => convertGoogleDriveUrl(url));
+  }
+
   return {
     product_id: productId,
     name: row["brand name"] || "",
     brand_name: row["brand name"] || "",
     description: "",
-    images: row["image"] ? [row["image"]] : [],
-    image_url: row["image"] || "",
+    images: imageArray,
     price: Number(row["discounted price"]) || 0,
     actual_price: Number(row["actual price"]) || 0,
     discounted_percentage: Number(row["discounted percentage"]) || 0,

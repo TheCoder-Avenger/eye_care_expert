@@ -453,10 +453,50 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: #2c3e50;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    // Regular price styling
+    > span {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    // Discounted price styling
+    .discounted-price {
+      color: #27ae60 !important;
+      font-weight: 700;
+      font-size: 1.5rem;
+      background: none !important;
+      -webkit-text-fill-color: #27ae60 !important;
+    }
+
+    // Original price with strikethrough
+    .strikethrough {
+      text-decoration: line-through;
+      color: #999 !important;
+      font-size: 1.1rem;
+      font-weight: 500;
+      background: none !important;
+      -webkit-text-fill-color: #999 !important;
+    }
+
+    // Discount badge
+    .discount-badge {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important;
+      color: white !important;
+      padding: 0.3rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+      letter-spacing: 0.5px;
+      -webkit-text-fill-color: white !important;
+    }
   }
 
   &__view-product {

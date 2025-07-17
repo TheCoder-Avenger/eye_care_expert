@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 import "./style.scss";
 
 const ProductsView = () => {
@@ -23,6 +25,8 @@ const ProductsView = () => {
     totalPages: 1,
     totalProducts: 0,
   });
+
+  console.log("products", products);
 
   // Fetch products from API
   const fetchProducts = async (page = 1) => {
@@ -238,7 +242,6 @@ const ProductsView = () => {
           </div>
         </div>
 
-        {/* Results Info */}
         <div className="products-view__results-info">
           <p>
             Showing {products.length} of {pagination.totalProducts} products
@@ -246,7 +249,6 @@ const ProductsView = () => {
           </p>
         </div>
 
-        {/* Products Grid */}
         {loading ? (
           <div className="products-view__loading">
             <div className="loading-spinner"></div>
@@ -262,9 +264,19 @@ const ProductsView = () => {
             {products.map((product) => (
               <div key={product._id} className="product-card">
                 <div className="product-card__image">
-                  <img src={product.images[0]} alt={product.name} />
+                  <Image
+                    src={product.images?.[0]}
+                    width={100}
+                    height={100}
+                    alt={product.name}
+                  />
                   {product.buy_1_get_1_available && (
                     <div className="product-card__badge">Buy 1 Get 1</div>
+                  )}
+                  {product.best_seller && (
+                    <div className="product-card__badge best-seller">
+                      Best Seller
+                    </div>
                   )}
                 </div>
 
@@ -308,7 +320,24 @@ const ProductsView = () => {
 
                   <div className="product-card__footer">
                     <div className="product-card__price">
-                      {formatPrice(product.price)}
+                      {product.actual_price &&
+                      product.price < product.actual_price ? (
+                        <>
+                          <span className="discounted-price">
+                            {formatPrice(product.price)}
+                          </span>
+                          <span className="actual-price strikethrough">
+                            {formatPrice(product.actual_price)}
+                          </span>
+                          {product.discounted_percentage > 0 && (
+                            <span className="discount-badge">
+                              -{product.discounted_percentage}%
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        <span>{formatPrice(product.price)}</span>
+                      )}
                     </div>
                     <button
                       className="product-card__view-product"

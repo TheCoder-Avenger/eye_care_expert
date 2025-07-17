@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import "./style.scss";
 import Modal from "@components/Modal";
 import Register from "@components/Register";
@@ -61,13 +63,26 @@ const Header = () => {
       <header className="header">
         <div className="header__container">
           <div className="header__logo-section">
-            <div className="header__logo">
-              <span className="header__logo-icon">👁️</span>
-              <div className="header__logo-text">
-                <h1>EyeCare Expert</h1>
-                <p className="header__logo-tagline">Your Vision, Our Mission</p>
+            <Link href="/" className="header__logo-link">
+              <div className="header__logo">
+                <div className="header__logo-image">
+                  <Image
+                    src="/eye-care-expert-logo.png"
+                    alt="Eye Care Expert Logo"
+                    width={60}
+                    height={60}
+                    className="header__logo-img"
+                    priority
+                  />
+                </div>
+                <div className="header__logo-text">
+                  <h1>EyeCare Expert</h1>
+                  <p className="header__logo-tagline">
+                    Your Vision, Our Precision
+                  </p>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
 
           <div className="header__category-toggle">

@@ -16,28 +16,68 @@ const lensTypeSchema = new mongoose.Schema({
 
 const productSchema = new mongoose.Schema(
   {
+    product_id: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
       trim: true,
     },
-    description: {
+    brand_name: {
       type: String,
       required: true,
       trim: true,
+      default: "eye care expert",
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: "",
     },
     images: [
       {
         type: String,
-        required: true,
+        trim: true,
       },
     ],
+    image_url: {
+      type: String,
+      trim: true,
+    },
     price: {
       type: Number,
       required: true,
       min: 0,
     },
+    actual_price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    discounted_percentage: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 0,
+    },
+    discounted_price: {
+      type: Number,
+      min: 0,
+    },
     size: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    general_size: {
+      type: String,
+      enum: ["SMALL", "MEDIUM", "LARGE", "NARROW"],
+      required: true,
+    },
+    dimensions: {
       type: String,
       required: true,
       trim: true,
@@ -59,7 +99,6 @@ const productSchema = new mongoose.Schema(
     },
     frame_type: {
       type: String,
-      required: true,
       trim: true,
     },
     available_lens_types: [lensTypeSchema],
@@ -70,6 +109,15 @@ const productSchema = new mongoose.Schema(
     is_popular: {
       type: Boolean,
       default: false,
+    },
+    best_seller: {
+      type: Boolean,
+      default: false,
+    },
+    quantity: {
+      type: Number,
+      default: 100,
+      min: 0,
     },
   },
   {

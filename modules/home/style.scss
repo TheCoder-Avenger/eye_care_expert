@@ -1210,3 +1210,165 @@
   border-bottom: 2px solid $border-light;
   font-size: $font-xl;
 }
+
+// Product Sections
+.product-section {
+  margin: 4rem 0;
+  position: relative;
+
+  &__header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .product-section__title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .product-section__subtitle {
+      font-size: 1.2rem;
+      color: #7f8c8d;
+      margin-bottom: 1.5rem;
+    }
+
+    .product-section__view-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: #764ba2;
+        transform: translateX(5px);
+      }
+    }
+  }
+
+  &__grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem 0;
+    scroll-behavior: smooth;
+
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    // For desktop: horizontal scroll row
+    @media (min-width: 769px) {
+      flex-wrap: wrap;
+
+      > * {
+        flex: 0 0 320px; // Fixed width for consistent cards
+        min-width: 320px;
+        max-width: 320px;
+      }
+    }
+
+    // For mobile: vertical stack
+    @media (max-width: 768px) {
+      flex-direction: column;
+      overflow-x: visible;
+
+      > * {
+        flex: 1 1 auto;
+        min-width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    // Add subtle gradient fade effects on sides for desktop
+    @media (min-width: 769px) {
+      position: relative;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 30px;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      &::before {
+        left: 0;
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0.9),
+          transparent
+        );
+      }
+
+      &::after {
+        right: 0;
+        background: linear-gradient(
+          to left,
+          rgba(255, 255, 255, 0.9),
+          transparent
+        );
+      }
+    }
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+
+    .loading-spinner {
+      color: #667eea;
+      font-size: 1.2rem;
+    }
+  }
+
+  &__error {
+    text-align: center;
+    padding: 4rem 2rem;
+
+    .error-message {
+      h3 {
+        color: #e74c3c;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        color: #6c757d;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .product-section__retry {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      }
+    }
+  }
+}

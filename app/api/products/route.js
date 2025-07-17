@@ -16,6 +16,7 @@ export async function GET(request) {
     const material = searchParams.get("material");
     const minPrice = parseFloat(searchParams.get("minPrice"));
     const maxPrice = parseFloat(searchParams.get("maxPrice"));
+    const best_seller = searchParams.get("best_seller");
 
     // Build query object
     const query = {};
@@ -33,6 +34,15 @@ export async function GET(request) {
     if (shape) query.shape = { $regex: shape, $options: "i" };
     if (frame_type) query.frame_type = { $regex: frame_type, $options: "i" };
     if (material) query.material = { $regex: material, $options: "i" };
+
+    // Best seller filter
+    if (best_seller === "true") {
+      query.best_seller = true;
+    }
+
+    // Debug logging
+    console.log("best_seller param:", best_seller);
+    console.log("Query object:", JSON.stringify(query, null, 2));
 
     // Price range filter
     if (!isNaN(minPrice) || !isNaN(maxPrice)) {

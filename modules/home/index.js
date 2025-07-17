@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Modal from "@components/Modal";
+import ProductCard from "@/components/ProductCard";
 import { useUser } from "@/context/UserContext";
 import "./style.scss";
 
@@ -19,10 +20,9 @@ const HomeView = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [bestsellerProducts, setBestsellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [wishlist, setWishlist] = useState(new Set());
 
   const banners = [
     {
@@ -49,43 +49,27 @@ const HomeView = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/products?is_popular=true");
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
-      }
+      // Fetch bestseller products
+      console.log("Fetching bestseller products...");
+      const bestsellerResponse = await fetch("/api/products?best_seller=true");
+      console.log("Response status:", bestsellerResponse.status);
 
-      const data = await response.json();
-      setProducts(data);
+      if (!bestsellerResponse.ok) {
+        throw new Error("Failed to fetch bestseller products");
+      }
+      const bestsellerData = await bestsellerResponse.json();
+      console.log("Bestseller data:", bestsellerData);
+      console.log(
+        "Products count:",
+        bestsellerData?.data?.products?.length || 0
+      );
+
+      setBestsellerProducts(bestsellerData?.data?.products || []);
     } catch (err) {
       setError(err.message);
       console.error("Error fetching products:", err);
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Fetch user's wishlist from API
-  const fetchWishlist = async () => {
-    if (!isLoggedIn || !user?.email) {
-      setWishlist(new Set());
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `/api/users/wishlist?email=${encodeURIComponent(user.email)}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          const wishlistIds = new Set(
-            data.wishlist?.map((item) => item._id) || []
-          );
-          setWishlist(wishlistIds);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
     }
   };
 
@@ -106,14 +90,6 @@ const HomeView = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  useEffect(() => {
-    fetchWishlist();
-  }, [isLoggedIn, user]);
-
-  const filteredProducts = products?.data?.products?.filter(
-    (ele) => ele?.is_popular === true
-  );
 
   const handleFilterChange = (filterType, value) => {
     setFilters((prev) => ({
@@ -142,82 +118,6 @@ const HomeView = () => {
 
   const clearAllFilters = () => {
     setFilters({ frameType: "", material: "", color: "", shape: "" });
-  };
-
-  const toggleWishlist = async (product) => {
-    // Check if user is logged in
-    if (!isLoggedIn || !user?.email) {
-      alert("Please log in to add items to your wishlist");
-      return;
-    }
-
-    try {
-      const isInWishlist = wishlist.has(product?._id);
-
-      // Optimistically update UI
-      setWishlist((prev) => {
-        const newWishlist = new Set(prev);
-        if (isInWishlist) {
-          newWishlist.delete(product?._id);
-        } else {
-          newWishlist.add(product?._id);
-        }
-        return newWishlist;
-      });
-
-      let response;
-
-      if (isInWishlist) {
-        // Remove from wishlist
-        response = await fetch(
-          `/api/users/wishlist/${product?._id}?email=${encodeURIComponent(
-            user.email
-          )}`,
-          {
-            method: "DELETE",
-          }
-        );
-      } else {
-        // Add to wishlist
-        response = await fetch("/api/users/wishlist", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: user.email,
-            product_id: product?._id,
-          }),
-        });
-      }
-
-      if (!response.ok) {
-        // Revert optimistic update if API call fails
-        setWishlist((prev) => {
-          const newWishlist = new Set(prev);
-          if (isInWishlist) {
-            newWishlist.add(product?._id);
-          } else {
-            newWishlist.delete(product?._id);
-          }
-          return newWishlist;
-        });
-        throw new Error("Failed to update wishlist");
-      }
-
-      const result = await response.json();
-      console.log("Wishlist updated:", result);
-
-      // Show success message
-      if (isInWishlist) {
-        console.log("Product removed from wishlist");
-      } else {
-        console.log("Product added to wishlist");
-      }
-    } catch (error) {
-      console.error("Error updating wishlist:", error);
-      alert("Failed to update wishlist. Please try again.");
-    }
   };
 
   const nextBanner = () => {
@@ -307,132 +207,52 @@ const HomeView = () => {
 
       <div className="home-view__container">
         <div className="home-view__main">
-          <main className="product-grid">
-            <div className="product-grid__header">
-              <div className="product-grid__header-left">
-                <h2 className="product-grid__title">Our Premium Collection</h2>
-                <span className="product-grid__count">
-                  {filteredProducts?.length} product
-                  {filteredProducts?.length !== 1 ? "s" : ""} found
-                </span>
-              </div>
-
-              <button
-                className="product-grid__filter-btn"
-                onClick={openFilterModal}
+          {/* Bestseller Products Section */}
+          <section className="product-section">
+            <div className="product-section__header">
+              <h2 className="product-section__title">🏆 Bestseller Products</h2>
+              <p className="product-section__subtitle">
+                Most loved by our customers
+              </p>
+              <Link
+                href="/products?best_seller=true"
+                className="product-section__view-all"
               >
-                <span className="product-grid__filter-icon">⚙</span>
-                Filters
-              </button>
+                View All Bestsellers →
+              </Link>
             </div>
 
-            <div className="product-grid__container">
-              {loading && (
-                <div className="product-grid__loading">
-                  <div className="loading-spinner">
-                    Loading popular products...
-                  </div>
+            {loading && (
+              <div className="product-section__loading">
+                <div className="loading-spinner">
+                  Loading bestseller products...
                 </div>
-              )}
-
-              {error && (
-                <div className="product-grid__error">
-                  <div className="error-message">
-                    <h3>Error loading products</h3>
-                    <p>{error}</p>
-                    <button
-                      className="product-grid__retry"
-                      onClick={fetchProducts}
-                    >
-                      Try Again
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {!loading &&
-                !error &&
-                filteredProducts.map((product) => (
-                  <div key={product._id} className="product-card">
-                    {product.badge && (
-                      <div
-                        className={`product-card__badge product-card__badge--${product.badge
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                      >
-                        {product.badge}
-                      </div>
-                    )}
-                    <div className="product-card__image">
-                      <img
-                        src={product?.images?.[0]}
-                        className="placeholder-image"
-                        alt={product?.name}
-                      />
-                      <button
-                        className={`product-card__wishlist-overlay ${
-                          wishlist.has(product._id) ? "active" : ""
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWishlist(product);
-                        }}
-                        aria-label={
-                          wishlist.has(product._id)
-                            ? "Remove from wishlist"
-                            : "Add to wishlist"
-                        }
-                      >
-                        <span className="product-card__wishlist-icon">
-                          {wishlist.has(product._id) ? "❤️" : "🤍"}
-                        </span>
-                      </button>
-                    </div>
-                    <div className="product-card__content">
-                      <h3 className="product-card__name">{product.name}</h3>
-                      <div className="product-card__pricing">
-                        <span className="product-card__price">
-                          {product.price}
-                        </span>
-                        {product.price && (
-                          <span className="product-card__original-price">
-                            {product.price * 2}
-                          </span>
-                        )}
-                      </div>
-                      <div className="product-card__actions">
-                        <button
-                          className="product-card__btn product-card__btn--info"
-                          onClick={() => openProductModal(product)}
-                        >
-                          Quick View
-                        </button>
-                        <Link
-                          href={`/product/${product._id}`}
-                          className="product-card__btn product-card__btn--primary"
-                        >
-                          View Details
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-
-            {!loading && !error && filteredProducts.length === 0 && (
-              <div className="product-grid__empty">
-                <div className="product-grid__empty-icon">🔍</div>
-                <h3>No products found</h3>
-                <p>Try adjusting your filters to see more results</p>
-                <button
-                  className="product-grid__clear-filters"
-                  onClick={clearAllFilters}
-                >
-                  Clear All Filters
-                </button>
               </div>
             )}
-          </main>
+
+            {error && (
+              <div className="product-section__error">
+                <div className="error-message">
+                  <h3>Error loading products</h3>
+                  <p>{error}</p>
+                  <button
+                    className="product-section__retry"
+                    onClick={fetchProducts}
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {!loading && !error && (
+              <div className="product-section__grid">
+                {bestsellerProducts.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+            )}
+          </section>
         </div>
       </div>
 

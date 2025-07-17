@@ -15,7 +15,6 @@
 .home-view__main {
   display: flex;
   gap: $space-2xl;
-  padding: $space-2xl 0;
   width: 100%;
 }
 
@@ -1213,7 +1212,6 @@
 
 // Product Sections
 .product-section {
-  margin: 4rem 0;
   position: relative;
 
   &__header {

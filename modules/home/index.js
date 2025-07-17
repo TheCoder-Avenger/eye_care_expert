@@ -27,21 +27,13 @@ const HomeView = () => {
   const banners = [
     {
       id: 1,
-      title: "Premium Eyewear Collection 2024",
-      subtitle:
-        "Discover our latest designer frames with cutting-edge technology",
-      image: "/api/placeholder/800/400",
-      cta: "Explore Collection",
-    },
-    {
-      id: 2,
-      title: "Blue Light Protection Technology",
-      subtitle:
-        "Advanced lens technology to protect your eyes from digital strain",
-      image: "/api/placeholder/800/400",
-      cta: "Learn More",
+      title: "Eye Care Expert",
+      image: "/eye-care-expert-banner.jpg",
     },
   ];
+
+  // Debug: Log the banner image path
+  console.log("Banner image path:", banners[0].image);
 
   // Fetch products from API
   const fetchProducts = async () => {
@@ -81,13 +73,6 @@ const HomeView = () => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     fetchProducts();
   }, []);
 
@@ -118,14 +103,6 @@ const HomeView = () => {
 
   const clearAllFilters = () => {
     setFilters({ frameType: "", material: "", color: "", shape: "" });
-  };
-
-  const nextBanner = () => {
-    setCurrentBanner((prev) => (prev + 1) % banners.length);
-  };
-
-  const prevBanner = () => {
-    setCurrentBanner((prev) => (prev - 1 + banners.length) % banners.length);
   };
 
   const FiltersContent = () => (
@@ -168,39 +145,19 @@ const HomeView = () => {
           {banners.map((banner, index) => (
             <div
               key={banner.id}
-              className={`banner-carousel__slide ${
+              className={`banner-carousel__slide banner-carousel__slide--image-only ${
                 index === currentBanner ? "active" : ""
               }`}
             >
-              <div className="banner-carousel__image">
-                <div className="placeholder-image">Banner {index + 1}</div>
-              </div>
+              <Image
+                src={banner.image}
+                alt={banner.title}
+                fill
+                className="banner-carousel__full-image"
+                priority={index === 0}
+                // style={{ objectFit: "fill" }}
+              />
             </div>
-          ))}
-        </div>
-
-        <button
-          className="banner-carousel__nav banner-carousel__nav--prev"
-          onClick={prevBanner}
-        >
-          ‹
-        </button>
-        <button
-          className="banner-carousel__nav banner-carousel__nav--next"
-          onClick={nextBanner}
-        >
-          ›
-        </button>
-
-        <div className="banner-carousel__indicators">
-          {banners.map((_, index) => (
-            <button
-              key={index}
-              className={`banner-carousel__indicator ${
-                index === currentBanner ? "active" : ""
-              }`}
-              onClick={() => setCurrentBanner(index)}
-            />
           ))}
         </div>
       </section>

@@ -260,16 +260,14 @@
 
 .banner-carousel {
   position: relative;
-  height: 500px;
   overflow: hidden;
-  background: linear-gradient(135deg, $primary-color 0%, #4c63b6 100%);
+  // background: linear-gradient(135deg, $primary-color 0%, #4c63b6 100%);
   margin-bottom: $space-3xl;
   width: 100%;
 }
 
 .banner-carousel__container {
   position: relative;
-  height: 100%;
   width: 100%;
 }
 
@@ -292,9 +290,22 @@
   opacity: 1;
 }
 
+.banner-carousel__slide--image-only {
+  padding: 0;
+  position: relative;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.banner-carousel__full-image {
+  width: 100% !important;
+  position: relative !important;
+}
+
 @media (max-width: $breakpoint-md) {
   .banner-carousel {
-    height: 450px;
     margin-bottom: $space-2xl;
   }
 
@@ -309,7 +320,6 @@
 
 @media (max-width: $breakpoint-sm) {
   .banner-carousel {
-    height: 400px;
     margin-bottom: $space-xl;
   }
 
@@ -356,7 +366,7 @@
 
 .banner-carousel__subtitle {
   font-size: $font-xl;
-  margin-bottom: $space-3xl;
+  margin-bottom: $space-xl;
   opacity: 0.95;
   line-height: 1.4;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -365,15 +375,40 @@
 @media (max-width: $breakpoint-md) {
   .banner-carousel__subtitle {
     font-size: $font-large;
-    margin-bottom: $space-xl;
+    margin-bottom: $space-lg;
   }
 }
 
 @media (max-width: $breakpoint-sm) {
   .banner-carousel__subtitle {
     font-size: $font-medium;
-    margin-bottom: $space-lg;
+    margin-bottom: $space-md;
     line-height: 1.5;
+  }
+}
+
+.banner-carousel__description {
+  font-size: $font-large;
+  margin-bottom: $space-2xl;
+  opacity: 0.9;
+  line-height: 1.5;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  font-weight: $font-weight-medium;
+  color: #ffe4b5; // Light cream color for better visibility
+}
+
+@media (max-width: $breakpoint-md) {
+  .banner-carousel__description {
+    font-size: $font-medium;
+    margin-bottom: $space-xl;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .banner-carousel__description {
+    font-size: $font-medium;
+    margin-bottom: $space-lg;
+    line-height: 1.4;
   }
 }
 

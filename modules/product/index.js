@@ -55,7 +55,7 @@ const ProductView = ({ slug }) => {
             id: data.data._id,
             name: data.data.name,
             brand: data.data.brand_name,
-            price: data.data.discounted_price || data.data.actual_price,
+            price: data.data.price || data.data.actual_price,
             originalPrice: data.data.actual_price,
             discount: data.data.discounted_percentage || 0,
             description: data.data.description,

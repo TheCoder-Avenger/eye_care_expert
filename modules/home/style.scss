@@ -260,15 +260,32 @@
 
 .banner-carousel {
   position: relative;
+  height: 500px;
   overflow: hidden;
   // background: linear-gradient(135deg, $primary-color 0%, #4c63b6 100%);
   margin-bottom: $space-3xl;
   width: 100%;
+  transition: height 0.5s ease-in-out;
+
+  &--full {
+    height: auto;
+    overflow: visible;
+  }
+
+  // Mobile height adjustments
+  @media (max-width: $breakpoint-md) {
+    height: 350px;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    height: 250px;
+  }
 }
 
 .banner-carousel__container {
   position: relative;
   width: 100%;
+  height: 100%;
 }
 
 .banner-carousel__slide {
@@ -297,11 +314,98 @@
   &.active {
     opacity: 1;
   }
+
+  .banner-carousel--full & {
+    height: auto;
+    position: relative;
+  }
 }
 
 .banner-carousel__full-image {
   width: 100% !important;
+  height: 100% !important;
   position: relative !important;
+  object-position: top center !important;
+
+  .banner-carousel--full & {
+    height: auto !important;
+    position: relative !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+}
+
+.banner-carousel__toggle-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: none;
+  border-radius: $radius-full;
+  padding: $space-md $space-lg;
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  cursor: pointer;
+  transition: all $transition-normal;
+  font-size: $font-medium;
+  font-weight: $font-weight-medium;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+  // Mobile positioning - keep absolute but center horizontally
+  @media (max-width: $breakpoint-sm) {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 15px;
+    right: auto;
+    padding: $space-sm $space-md;
+    font-size: $font-small;
+    gap: $space-xs;
+    width: auto;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+
+    @media (max-width: $breakpoint-sm) {
+      transform: translateX(-50%) translateY(-2px);
+    }
+  }
+
+  &:active,
+  &:focus {
+    background: rgba(0, 0, 0, 0.8);
+    outline: none;
+    transform: translateY(0);
+  }
+
+  &:focus {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
+      0 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.banner-carousel__toggle-icon {
+  font-size: $font-large;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-medium;
+  }
+}
+
+.banner-carousel__toggle-text {
+  white-space: nowrap;
+  font-size: $font-medium;
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-small;
+  }
 }
 
 @media (max-width: $breakpoint-md) {

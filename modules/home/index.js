@@ -23,6 +23,7 @@ const HomeView = () => {
   const [bestsellerProducts, setBestsellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFullBanner, setIsFullBanner] = useState(false);
 
   const banners = [
     {
@@ -140,7 +141,11 @@ const HomeView = () => {
 
   return (
     <div className="home-view">
-      <section className="banner-carousel">
+      <section
+        className={`banner-carousel ${
+          isFullBanner ? "banner-carousel--full" : ""
+        }`}
+      >
         <div className="banner-carousel__container">
           {banners.map((banner, index) => (
             <div
@@ -155,10 +160,36 @@ const HomeView = () => {
                 fill
                 className="banner-carousel__full-image"
                 priority={index === 0}
-                // style={{ objectFit: "fill" }}
+                style={{
+                  objectFit: isFullBanner ? "contain" : "cover",
+                  objectPosition: "top center",
+                }}
               />
             </div>
           ))}
+
+          {/* Banner Toggle Button */}
+          <button
+            className="banner-carousel__toggle-btn"
+            onClick={() => setIsFullBanner(!isFullBanner)}
+            title={isFullBanner ? "Show Compact View" : "Read Full Banner"}
+          >
+            {isFullBanner ? (
+              <>
+                <span className="banner-carousel__toggle-icon">📖</span>
+                <span className="banner-carousel__toggle-text">
+                  Compact View
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="banner-carousel__toggle-icon">🔍</span>
+                <span className="banner-carousel__toggle-text">
+                  Read Full Banner
+                </span>
+              </>
+            )}
+          </button>
         </div>
       </section>
 

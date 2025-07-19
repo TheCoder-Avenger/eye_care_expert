@@ -22,12 +22,18 @@ const ProductCard = ({ product }) => {
   return (
     <div className="product-card">
       <div className="product-card__image">
-        <Image
-          src={product.images?.[0] || "/placeholder-image.jpg"}
-          width={350}
-          height={250}
-          alt={product.name}
-        />
+        {product.images && product.images.length > 0 && product.images[0] ? (
+          <Image
+            src={product.images[0]}
+            width={350}
+            height={250}
+            alt={product.name}
+          />
+        ) : (
+          <div className="product-card__no-image">
+            <span>Image Not Available</span>
+          </div>
+        )}
         {product.buy_1_get_1_available && (
           <div className="product-card__badge">Buy 1 Get 1</div>
         )}

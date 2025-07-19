@@ -271,10 +271,34 @@
   // Mobile height adjustments
   @media (max-width: $breakpoint-md) {
     height: 350px;
+
+    // Force fixed height in compact mode
+    &:not(.banner-carousel--full) {
+      height: 350px !important;
+      overflow: hidden !important;
+    }
+
+    // Allow auto height only in full mode
+    &.banner-carousel--full {
+      height: auto !important;
+      overflow: visible !important;
+    }
   }
 
   @media (max-width: $breakpoint-sm) {
     height: 250px;
+
+    // Force fixed height in compact mode
+    &:not(.banner-carousel--full) {
+      height: 250px !important;
+      overflow: hidden !important;
+    }
+
+    // Allow auto height only in full mode
+    &.banner-carousel--full {
+      height: auto !important;
+      overflow: visible !important;
+    }
   }
 }
 
@@ -293,7 +317,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $space-4xl;
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
   color: white;
@@ -329,6 +352,39 @@
     object-fit: contain !important;
     object-position: center center !important;
   }
+
+  // Mobile-specific overrides to ensure proper behavior
+  @media (max-width: $breakpoint-md) {
+    // Force cover mode in compact view on mobile
+    .banner-carousel:not(.banner-carousel--full) & {
+      object-fit: cover !important;
+      object-position: top center !important;
+      height: 100% !important;
+    }
+
+    // Force contain mode in full view on mobile
+    .banner-carousel--full & {
+      object-fit: contain !important;
+      object-position: center center !important;
+      height: auto !important;
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    // Force cover mode in compact view on mobile
+    .banner-carousel:not(.banner-carousel--full) & {
+      object-fit: cover !important;
+      object-position: top center !important;
+      height: 100% !important;
+    }
+
+    // Force contain mode in full view on mobile
+    .banner-carousel--full & {
+      object-fit: contain !important;
+      object-position: center center !important;
+      height: auto !important;
+    }
+  }
 }
 
 .banner-carousel__toggle-btn {
@@ -360,6 +416,7 @@
     font-size: $font-small;
     gap: $space-xs;
     width: auto;
+    bottom: 10px;
   }
 
   &:hover {
@@ -368,7 +425,7 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 
     @media (max-width: $breakpoint-sm) {
-      transform: translateX(-50%) translateY(-2px);
+      transform: 10px;
     }
   }
 
@@ -412,7 +469,6 @@
   .banner-carousel__slide {
     flex-direction: column;
     text-align: center;
-    padding: $space-xl $space-lg;
     justify-content: center;
     gap: $space-lg;
   }
@@ -424,7 +480,6 @@
   }
 
   .banner-carousel__slide {
-    padding: $space-lg $space-md;
     gap: $space-md;
   }
 }

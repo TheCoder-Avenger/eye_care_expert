@@ -71,13 +71,13 @@ const Header = () => {
             <Link href="/" className="header__logo-link">
               <div className="header__logo">
                 <div className="header__logo-image">
-                  <Image
+                  <img
                     src="/eye-care-expert-logo.png"
                     alt="Eye Care Expert Logo"
                     width={60}
                     height={60}
                     className="header__logo-img"
-                    priority
+                    // priority
                   />
                 </div>
                 <div className="header__logo-text">

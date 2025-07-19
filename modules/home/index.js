@@ -223,12 +223,12 @@ const HomeView = () => {
                 index === currentBanner ? "active" : ""
               }`}
             >
-              <Image
+              <img
                 src={banner.image}
                 alt={banner.title}
-                fill
+                // fill
                 className="banner-carousel__full-image"
-                priority={index === 0}
+                // priority={index === 0}
                 style={{
                   objectFit: isFullBanner ? "contain" : "cover",
                   objectPosition: "top center",

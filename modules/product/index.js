@@ -320,38 +320,54 @@ const ProductView = ({ slug }) => {
       const lensPrice = selectedLens ? selectedLens.price : 0;
       const photochromaticPrice = photochromaticOption ? 700 : 0;
       const totalLensPrice = lensPrice + photochromaticPrice;
+      const totalPrice = product.price + totalLensPrice;
 
-      const result = await addToCart(product, {
-        lensType: selectedLensType,
-        lensName: selectedLens ? selectedLens.name : "",
-        lensPrice: totalLensPrice,
-        frameColor: selectedFrameColor,
-        powerOption: selectedPowerOption,
-        photochromaticOption,
-        prescription:
-          selectedPowerOption === "with-power" ? prescription : null,
-        quantity,
-        totalPrice: product.price + totalLensPrice,
-      });
+      // Prepare WhatsApp message
+      const message = `🛒 *Add to Cart Request*
 
-      if (result.success) {
-        setToast({
-          isVisible: true,
-          message: "Product added to cart successfully!",
-          type: "success",
-        });
-      } else {
-        setToast({
-          isVisible: true,
-          message: "Failed to add product to cart. Please try again.",
-          type: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+*Product Details:*
+• Product: ${product.name}
+• Frame Color: ${selectedFrameColor.toUpperCase()}
+• Frame Price: ₹${product.price.toLocaleString()}
+
+*Lens Selection:*
+• Lens Type: ${selectedLens ? selectedLens.name : "Not Selected"}
+• Lens Price: ₹${lensPrice.toLocaleString()}
+${photochromaticOption ? "• Photochromatic: +₹700" : ""}
+• Total Lens Price: ₹${totalLensPrice.toLocaleString()}
+
+*Power Options:*
+• Type: ${selectedPowerOption === "with-power" ? "With Power" : "Without Power"}
+${
+  selectedPowerOption === "with-power"
+    ? `
+*Prescription Details:*
+• Right Eye: SPH ${prescription.rightEye.sph}, CYL ${prescription.rightEye.cyl}, AXIS ${prescription.rightEye.axis}
+• Left Eye: SPH ${prescription.leftEye.sph}, CYL ${prescription.leftEye.cyl}, AXIS ${prescription.leftEye.axis}`
+    : ""
+}
+
+*Quantity:* ${quantity}
+*Total Price:* ₹${totalPrice.toLocaleString()}
+
+Please confirm this order.`;
+
+      // Redirect to WhatsApp
+      const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+        message
+      )}`;
+      window.open(whatsappUrl, "_blank");
+
       setToast({
         isVisible: true,
-        message: "Failed to add product to cart. Please try again.",
+        message: "Redirecting to WhatsApp...",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Error preparing WhatsApp message:", error);
+      setToast({
+        isVisible: true,
+        message: "Failed to prepare WhatsApp message. Please try again.",
         type: "error",
       });
     } finally {
@@ -360,7 +376,55 @@ const ProductView = ({ slug }) => {
   };
 
   const handleBuyNow = () => {
-    console.log("Buy now clicked");
+    const selectedLens = product.lensOptions.find(
+      (lens) => lens.id === selectedLensType
+    );
+    const lensPrice = selectedLens ? selectedLens.price : 0;
+    const photochromaticPrice = photochromaticOption ? 700 : 0;
+    const totalLensPrice = lensPrice + photochromaticPrice;
+    const totalPrice = product.price + totalLensPrice;
+
+    // Prepare WhatsApp message
+    const message = `🛍️ *Buy Now Request*
+
+*Product Details:*
+• Product: ${product.name}
+• Frame Color: ${selectedFrameColor.toUpperCase()}
+• Frame Price: ₹${product.price.toLocaleString()}
+
+*Lens Selection:*
+• Lens Type: ${selectedLens ? selectedLens.name : "Not Selected"}
+• Lens Price: ₹${lensPrice.toLocaleString()}
+${photochromaticOption ? "• Photochromatic: +₹700" : ""}
+• Total Lens Price: ₹${totalLensPrice.toLocaleString()}
+
+*Power Options:*
+• Type: ${selectedPowerOption === "with-power" ? "With Power" : "Without Power"}
+${
+  selectedPowerOption === "with-power"
+    ? `
+*Prescription Details:*
+• Right Eye: SPH ${prescription.rightEye.sph}, CYL ${prescription.rightEye.cyl}, AXIS ${prescription.rightEye.axis}
+• Left Eye: SPH ${prescription.leftEye.sph}, CYL ${prescription.leftEye.cyl}, AXIS ${prescription.leftEye.axis}`
+    : ""
+}
+
+*Quantity:* ${quantity}
+*Total Price:* ₹${totalPrice.toLocaleString()}
+
+I want to buy this product now. Please process my order.`;
+
+    // Redirect to WhatsApp
+    const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+
+    setToast({
+      isVisible: true,
+      message: "Redirecting to WhatsApp for purchase...",
+      type: "success",
+    });
   };
 
   const handleBuyOneGetOne = () => {
@@ -1017,7 +1081,57 @@ const ProductView = ({ slug }) => {
 
             <button
               className="product-view__buy-one-get-one"
-              onClick={handleBuyOneGetOne}
+              onClick={() => {
+                const selectedLens = product.lensOptions.find(
+                  (lens) => lens.id === selectedLensType
+                );
+                const lensPrice = selectedLens ? selectedLens.price : 0;
+                const photochromaticPrice = photochromaticOption ? 700 : 0;
+                const totalLensPrice = lensPrice + photochromaticPrice;
+                const totalPrice = product.price + totalLensPrice;
+
+                // Prepare WhatsApp message for Buy 1 Get 1
+                const message = `🎁 *Buy 1 Get 1 Free Inquiry*
+
+*Product Details:*
+• Product: ${product.name}
+• Frame Color: ${selectedFrameColor.toUpperCase()}
+• Frame Price: ₹${product.price.toLocaleString()}
+
+*Lens Selection:*
+• Lens Type: ${selectedLens ? selectedLens.name : "Not Selected"}
+• Lens Price: ₹${lensPrice.toLocaleString()}
+${photochromaticOption ? "• Photochromatic: +₹700" : ""}
+• Total Lens Price: ₹${totalLensPrice.toLocaleString()}
+
+*Power Options:*
+• Type: ${selectedPowerOption === "with-power" ? "With Power" : "Without Power"}
+${
+  selectedPowerOption === "with-power"
+    ? `
+*Prescription Details:*
+• Right Eye: SPH ${prescription.rightEye.sph}, CYL ${prescription.rightEye.cyl}, AXIS ${prescription.rightEye.axis}
+• Left Eye: SPH ${prescription.leftEye.sph}, CYL ${prescription.leftEye.cyl}, AXIS ${prescription.leftEye.axis}`
+    : ""
+}
+
+*Quantity:* ${quantity}
+*Total Price:* ₹${totalPrice.toLocaleString()}
+
+I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide available options.`;
+
+                // Redirect to WhatsApp
+                const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+                  message
+                )}`;
+                window.open(whatsappUrl, "_blank");
+
+                setToast({
+                  isVisible: true,
+                  message: "Redirecting to WhatsApp for Buy 1 Get 1 inquiry...",
+                  type: "success",
+                });
+              }}
               disabled={!isConfigurationComplete()}
             >
               🎁 Buy 1 Get 1 Free
@@ -1087,8 +1201,69 @@ const ProductView = ({ slug }) => {
                   Total Value: ₹{product.price + selectedSecondProduct.price}
                 </h4>
               </div>
-              <button className="buy-one-get-one__confirm">
-                Add Both to Cart
+              <button
+                className="buy-one-get-one__confirm"
+                onClick={() => {
+                  const selectedLens = product.lensOptions.find(
+                    (lens) => lens.id === selectedLensType
+                  );
+                  const lensPrice = selectedLens ? selectedLens.price : 0;
+                  const photochromaticPrice = photochromaticOption ? 700 : 0;
+                  const totalLensPrice = lensPrice + photochromaticPrice;
+                  const totalPrice = product.price + totalLensPrice;
+
+                  // Prepare WhatsApp message for Buy 1 Get 1
+                  const message = `🎁 *Buy 1 Get 1 Free Request*
+
+*Primary Product:*
+• Product: ${product.name}
+• Frame Color: ${selectedFrameColor.toUpperCase()}
+• Frame Price: ₹${product.price.toLocaleString()}
+
+*Lens Selection:*
+• Lens Type: ${selectedLens ? selectedLens.name : "Not Selected"}
+• Lens Price: ₹${lensPrice.toLocaleString()}
+${photochromaticOption ? "• Photochromatic: +₹700" : ""}
+• Total Lens Price: ₹${totalLensPrice.toLocaleString()}
+
+*Power Options:*
+• Type: ${selectedPowerOption === "with-power" ? "With Power" : "Without Power"}
+${
+  selectedPowerOption === "with-power"
+    ? `
+*Prescription Details:*
+• Right Eye: SPH ${prescription.rightEye.sph}, CYL ${prescription.rightEye.cyl}, AXIS ${prescription.rightEye.axis}
+• Left Eye: SPH ${prescription.leftEye.sph}, CYL ${prescription.leftEye.cyl}, AXIS ${prescription.leftEye.axis}`
+    : ""
+}
+
+*Free Product:*
+• Product: ${selectedSecondProduct.name}
+• Original Price: ₹${selectedSecondProduct.price.toLocaleString()}
+
+*Quantity:* ${quantity}
+*You Pay:* ₹${product.price.toLocaleString()}
+*You Save:* ₹${selectedSecondProduct.price.toLocaleString()}
+*Total Value:* ₹{(product.price + selectedSecondProduct.price).toLocaleString()}
+
+I want to avail the Buy 1 Get 1 Free offer. Please confirm my order.`;
+
+                  // Redirect to WhatsApp
+                  const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+                    message
+                  )}`;
+                  window.open(whatsappUrl, "_blank");
+
+                  setToast({
+                    isVisible: true,
+                    message: "Redirecting to WhatsApp for Buy 1 Get 1 offer...",
+                    type: "success",
+                  });
+
+                  setShowBuyOneGetOneModal(false);
+                }}
+              >
+                Order via WhatsApp
               </button>
             </div>
           )}

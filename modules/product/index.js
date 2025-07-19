@@ -438,15 +438,19 @@ I want to buy this product now. Please process my order.`;
   const isPrescriptionValid = () => {
     if (selectedPowerOption === "without-power") return true;
 
+    // For "With Power" option, at least 1 prescription field must be filled
     const { rightEye, leftEye } = prescription;
-    return (
-      rightEye.sph &&
-      rightEye.cyl &&
-      rightEye.axis &&
-      leftEye.sph &&
-      leftEye.cyl &&
-      leftEye.axis
-    );
+    const allFields = [
+      rightEye.sph,
+      rightEye.cyl,
+      rightEye.axis,
+      leftEye.sph,
+      leftEye.cyl,
+      leftEye.axis,
+    ];
+
+    // Check if at least one field is filled
+    return allFields.some((field) => field && field.trim() !== "");
   };
 
   const isConfigurationComplete = () => {
@@ -455,7 +459,7 @@ I want to buy this product now. Please process my order.`;
       return selectedFrameColor;
     }
 
-    // For "With Power" option, lens type, frame color, and prescription are required
+    // For "With Power" option, lens type, frame color, and at least 1 prescription field are required
     return selectedLensType && selectedFrameColor && isPrescriptionValid();
   };
 
@@ -985,6 +989,9 @@ I want to buy this product now. Please process my order.`;
           {selectedPowerOption === "with-power" && (
             <div className="product-view__prescription">
               <h3>Prescription Details:</h3>
+              <p className="product-view__prescription-note">
+                <strong>Select at least 1 field from the options below:</strong>
+              </p>
               <div className="product-view__prescription-form">
                 <div className="product-view__eye-section">
                   <h4>Right Eye (OD)</h4>

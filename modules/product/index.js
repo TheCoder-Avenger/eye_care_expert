@@ -22,6 +22,8 @@ const ProductView = ({ slug }) => {
   const [selectedFrameColor, setSelectedFrameColor] = useState("black");
   const [selectedPowerOption, setSelectedPowerOption] = useState("with-power");
   const [photochromaticOption, setPhotochromaticOption] = useState(false);
+  const [selectedLensCategory, setSelectedLensCategory] =
+    useState("Single Vision");
   const [prescription, setPrescription] = useState({
     rightEye: { sph: "", cyl: "", axis: "" },
     leftEye: { sph: "", cyl: "", axis: "" },
@@ -268,6 +270,23 @@ const ProductView = ({ slug }) => {
       fetchProduct();
     }
   }, [slug]);
+
+  useEffect(() => {
+    // Ensure selected lens type matches the selected category
+    if (product?.lensOptions) {
+      const categoryLenses = product.lensOptions.filter(
+        (lens) => lens.category === selectedLensCategory
+      );
+      if (categoryLenses.length > 0) {
+        const isCurrentLensInCategory = categoryLenses.some(
+          (lens) => lens.id === selectedLensType
+        );
+        if (!isCurrentLensInCategory) {
+          setSelectedLensType(categoryLenses[0].id);
+        }
+      }
+    }
+  }, [selectedLensCategory, product?.lensOptions, selectedLensType]);
 
   // Helper function to get color codes
   const getColorCode = (colorName) => {
@@ -606,18 +625,41 @@ const ProductView = ({ slug }) => {
                 2 lenses.
               </p>
 
-              {/* Group lenses by category */}
-              {["Single Vision", "Progressive", "Bifocal"].map((category) => {
+              {/* Category Tabs */}
+              <div className="product-view__lens-category-tabs">
+                {["Single Vision", "Progressive", "Bifocal"].map((category) => (
+                  <button
+                    key={category}
+                    className={`product-view__lens-category-tab ${
+                      selectedLensCategory === category
+                        ? "product-view__lens-category-tab--active"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedLensCategory(category);
+                      // Reset to first option of selected category
+                      const categoryLenses = product.lensOptions.filter(
+                        (lens) => lens.category === category
+                      );
+                      if (categoryLenses.length > 0) {
+                        setSelectedLensType(categoryLenses[0].id);
+                      }
+                    }}
+                  >
+                    {category} Lenses
+                  </button>
+                ))}
+              </div>
+
+              {/* Show lenses for selected category only */}
+              {(() => {
                 const categoryLenses = product.lensOptions.filter(
-                  (lens) => lens.category === category
+                  (lens) => lens.category === selectedLensCategory
                 );
                 if (categoryLenses.length === 0) return null;
 
                 return (
-                  <div key={category} className="product-view__lens-category">
-                    <h4 className="product-view__lens-category-title">
-                      {category} Lenses
-                    </h4>
+                  <div className="product-view__lens-category">
                     <div className="product-view__lens-grid">
                       {categoryLenses.map((lens) => (
                         <div
@@ -653,7 +695,7 @@ const ProductView = ({ slug }) => {
                     </div>
                   </div>
                 );
-              })}
+              })()}
 
               {/* Photochromatic Add-on */}
               <div className="product-view__photochromatic-option">

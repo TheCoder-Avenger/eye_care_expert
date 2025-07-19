@@ -411,6 +411,70 @@
   }
 }
 
+// Lens Category Tabs
+.product-view__lens-category-tabs {
+  display: flex;
+  gap: $space-sm;
+  margin-bottom: $space-xl;
+  border-bottom: 2px solid $border-color;
+  padding-bottom: $space-sm;
+
+  @media (max-width: $breakpoint-sm) {
+    flex-direction: column;
+    gap: $space-xs;
+  }
+}
+
+.product-view__lens-category-tab {
+  background: transparent;
+  border: none;
+  padding: $space-sm $space-lg;
+  font-size: $font-medium;
+  font-weight: 600;
+  color: $text-light;
+  cursor: pointer;
+  border-radius: $radius-sm $radius-sm 0 0;
+  transition: all $transition-normal;
+  position: relative;
+  white-space: nowrap;
+
+  &:hover {
+    color: $primary-color;
+    background: rgba($primary-color, 0.05);
+  }
+
+  &--active {
+    color: $primary-color;
+    background: rgba($primary-color, 0.1);
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: $primary-color;
+      border-radius: 2px 2px 0 0;
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: $space-sm;
+    font-size: $font-small;
+    border-radius: $radius-sm;
+
+    &--active::after {
+      display: none;
+    }
+
+    &--active {
+      background: $primary-color;
+      color: white;
+    }
+  }
+}
+
 .product-view__lens-category {
   margin-bottom: $space-2xl;
 

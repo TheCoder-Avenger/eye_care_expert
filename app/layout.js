@@ -2,6 +2,7 @@ import { Nunito_Sans } from "next/font/google";
 import Header from "@components/Header";
 import { UserProvider } from "@/context/UserContext";
 import ComingSoonToast from "@components/ComingSoonToast";
+import ComingSoonModal from "@components/ComingSoonModal";
 
 const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main>{children}</main>
           <ComingSoonToast />
+          <ComingSoonModal />
         </UserProvider>
       </body>
     </html>

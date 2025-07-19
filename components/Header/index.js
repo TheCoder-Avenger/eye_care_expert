@@ -5,21 +5,25 @@ import Link from "next/link";
 import Image from "next/image";
 import "./style.scss";
 import Modal from "@components/Modal";
-import Register from "@components/Register";
-import Login from "@components/Login";
 import { useUser } from "@/context/UserContext";
 import Cart from "@components/Cart";
 import Wishlist from "@components/Wishlist";
 import MobileDrawer from "@components/MobileDrawer";
 
 const Header = () => {
-  const { user, isLoggedIn, isLoading, logout, cart, wishlist } = useUser();
+  const {
+    user,
+    isLoggedIn,
+    isLoading,
+    logout,
+    cart,
+    wishlist,
+    showComingSoonModal,
+  } = useUser();
 
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showMobileDrawer, setShowMobileDrawer] = useState(false);
@@ -53,10 +57,6 @@ const Header = () => {
     setShowCartModal(false);
     setShowWishlistModal(false);
     setShowMobileDrawer(false);
-  };
-
-  const handleLoginSuccess = (userData) => {
-    console.log("User logged in:", userData);
   };
 
   // Cart and wishlist counts are now managed by UserContext
@@ -218,13 +218,13 @@ const Header = () => {
                 <div className="header__auth-buttons">
                   <button
                     className="header__login-btn"
-                    onClick={() => setShowLoginModal(true)}
+                    onClick={() => showComingSoonModal("Login")}
                   >
                     Login
                   </button>
                   <button
                     className="header__signup-btn"
-                    onClick={() => setShowRegisterModal(true)}
+                    onClick={() => showComingSoonModal("Sign Up")}
                   >
                     Sign Up
                   </button>
@@ -260,16 +260,6 @@ const Header = () => {
           </button>
         </div>
       </Modal>
-      <Register
-        isOpen={showRegisterModal}
-        onClose={() => setShowRegisterModal(false)}
-      />
-
-      <Login
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onLoginSuccess={handleLoginSuccess}
-      />
 
       <Cart isOpen={showCartModal} onClose={() => setShowCartModal(false)} />
       <Wishlist
@@ -291,8 +281,8 @@ const Header = () => {
         wishlistCount={wishlistCount}
         onWishlistClick={() => setShowWishlistModal(true)}
         onCartClick={() => setShowCartModal(true)}
-        onLoginClick={() => setShowLoginModal(true)}
-        onRegisterClick={() => setShowRegisterModal(true)}
+        onLoginClick={() => showComingSoonModal("Login")}
+        onRegisterClick={() => showComingSoonModal("Sign Up")}
         onUserProfileClick={() => setShowUserModal(true)}
         onLogout={handleLogout}
       />

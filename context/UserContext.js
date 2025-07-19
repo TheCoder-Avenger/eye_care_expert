@@ -24,6 +24,12 @@ export const UserProvider = ({ children }) => {
     type: "info",
   });
 
+  const [comingSoonModal, setComingSoonModal] = useState({
+    isVisible: false,
+    message: "",
+    type: "info",
+  });
+
   useEffect(() => {
     // Commented out API check - just load local cart if any
     const loadLocalCart = () => {
@@ -119,6 +125,15 @@ export const UserProvider = ({ children }) => {
     }, 3000);
   };
 
+  // Show Coming Soon modal (for login/signup)
+  const showComingSoonModal = (action) => {
+    setComingSoonModal({
+      isVisible: true,
+      message: `${action} feature is coming soon!`,
+      type: "info",
+    });
+  };
+
   const addToCart = async (product, options = {}) => {
     showComingSoonMessage("Add to Cart");
     return { success: false, message: "Feature coming soon!" };
@@ -203,7 +218,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const login = async (userData) => {
-    showComingSoonMessage("Login");
+    showComingSoonModal("Login");
     return { success: false, message: "Feature coming soon!" };
 
     // Original login code commented out:
@@ -236,7 +251,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    showComingSoonMessage("Registration");
+    showComingSoonModal("Registration");
     return { success: false, message: "Feature coming soon!" };
   };
 
@@ -266,6 +281,9 @@ export const UserProvider = ({ children }) => {
     updateCartQuantity,
     comingSoonToast,
     setComingSoonToast,
+    comingSoonModal,
+    setComingSoonModal,
+    showComingSoonModal,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

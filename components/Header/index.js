@@ -113,14 +113,16 @@ const Header = () => {
           </div>
 
           {/* Mobile hamburger menu button */}
-          <button
-            className="header__mobile-menu-btn"
-            onClick={() => setShowMobileDrawer(true)}
-          >
-            <span className="header__hamburger-line"></span>
-            <span className="header__hamburger-line"></span>
-            <span className="header__hamburger-line"></span>
-          </button>
+          <div className="header__mobile-menu-btn-container">
+            <button
+              className="header__mobile-menu-btn"
+              onClick={() => setShowMobileDrawer(true)}
+            >
+              <span className="header__hamburger-line"></span>
+              <span className="header__hamburger-line"></span>
+              <span className="header__hamburger-line"></span>
+            </button>
+          </div>
 
           <div className="header__category-toggle">
             <div className="header__toggle-container">

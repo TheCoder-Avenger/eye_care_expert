@@ -343,6 +343,7 @@
   z-index: $z-fixed;
   transition: all $transition-normal;
   border-radius: $radius-sm;
+  flex-shrink: 0;
 
   &:hover {
     transform: scale(1.05);
@@ -539,7 +540,7 @@
   .header__container {
     padding: $space-xs $space-sm;
     min-height: 55px;
-    gap: 0.1px;
+    gap: 0.02px;
   }
 
   .header__logo-image {
@@ -578,4 +579,15 @@
   .header__hamburger-line {
     height: 2.5px;
   }
+}
+
+.header__mobile-menu-btn-container {
+  flex: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+body {
+  margin: 0;
 }

@@ -27,6 +27,32 @@ const HomeView = () => {
   const [error, setError] = useState(null);
   const [isFullBanner, setIsFullBanner] = useState(false);
 
+  // Handle banner toggle with mobile optimization
+  const handleBannerToggle = () => {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      // Store current scroll position
+      const currentScrollY = window.scrollY;
+
+      // Toggle banner state
+      setIsFullBanner(!isFullBanner);
+
+      // If toggling to compact view and user has scrolled, maintain scroll position
+      if (isFullBanner && currentScrollY > 0) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: Math.min(currentScrollY, 200),
+            behavior: "smooth",
+          });
+        }, 50);
+      }
+    } else {
+      // Desktop - simple toggle
+      setIsFullBanner(!isFullBanner);
+    }
+  };
+
   const banners = [
     {
       id: 1,
@@ -214,9 +240,7 @@ const HomeView = () => {
           {/* Banner Toggle Button */}
           <button
             className="banner-carousel__toggle-btn"
-            onMouseEnter={() => setIsFullBanner(true)}
-            onMouseLeave={() => setIsFullBanner(false)}
-            onClick={() => setIsFullBanner(!isFullBanner)}
+            onClick={handleBannerToggle}
             title={isFullBanner ? "Show Compact View" : "Read Full Banner"}
           >
             {isFullBanner ? (

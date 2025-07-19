@@ -405,34 +405,35 @@
   z-index: 10;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
-  // Mobile positioning - keep absolute but center horizontally
-  @media (max-width: $breakpoint-sm) {
+  // Mobile positioning - always centered, consistent across all states
+  @media (max-width: $breakpoint-md) {
     left: 50%;
     right: auto;
+    bottom: 20px;
+    transform: translateX(-50%);
     padding: $space-sm $space-md;
     font-size: $font-small;
     gap: $space-xs;
     width: auto;
-    margin-bottom: 30px;
+
+    margin: 0;
+    position: absolute;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    bottom: -2px;
+    padding: $space-xs $space-sm;
+    font-size: $font-xs;
   }
 
   &:hover {
     background: rgba(0, 0, 0, 0.9);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 
-    // Override for mobile compact mode
+    // Mobile hover - maintain position
     @media (max-width: $breakpoint-md) {
-      .banner-carousel:not(.banner-carousel--full) & {
-        background: #5a6fd8; // Darker blue for hover
-      }
-
-      .banner-carousel--full & {
-        background: rgba(0, 0, 0, 0.9);
-      }
-    }
-
-    @media (max-width: $breakpoint-sm) {
-      margin-bottom: -30px;
+      transform: translateX(-50%);
+      margin: 0;
     }
   }
 
@@ -440,6 +441,12 @@
   &:focus {
     background: rgba(0, 0, 0, 0.8);
     outline: none;
+
+    // Mobile active/focus - maintain position
+    @media (max-width: $breakpoint-md) {
+      transform: translateX(-50%);
+      margin: 0;
+    }
   }
 
   &:focus {

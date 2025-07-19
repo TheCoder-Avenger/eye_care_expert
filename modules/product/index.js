@@ -707,7 +707,7 @@ const ProductView = ({ slug }) => {
                   />
                   <span className="checkmark"></span>
                   Add Photochromatic Features (+₹700)
-                  <small>Lenses that automatically darken in sunlight</small>
+                  <small>(Lenses that automatically darken in sunlight)</small>
                 </label>
               </div>
             </div>

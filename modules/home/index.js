@@ -6,6 +6,8 @@ import Link from "next/link";
 import Modal from "@components/Modal";
 import ProductCard from "@/components/ProductCard";
 import { useUser } from "@/context/UserContext";
+import productsData from "@/models/products.json";
+
 import "./style.scss";
 
 const HomeView = () => {
@@ -36,12 +38,55 @@ const HomeView = () => {
   // Debug: Log the banner image path
   console.log("Banner image path:", banners[0].image);
 
-  // Fetch products from API
+  // Fetch products from local JSON data instead of API
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError(null);
 
+      // Get bestseller products from local JSON data
+      console.log("Fetching bestseller products from local data...");
+
+      // Filter products where best_seller is true and not out of stock
+      const bestsellerData = productsData.filter(
+        (product) =>
+          product.best_seller === true && product.out_of_stock === false
+      );
+
+      console.log("Bestseller data:", bestsellerData);
+      console.log("Products count:", bestsellerData.length);
+
+      // Transform the data to match the expected format
+      const transformedProducts = bestsellerData.map((product) => ({
+        _id: product.product_id,
+        name: product.name,
+        brand_name: product.brand_name,
+        description: product.description,
+        images: product.images,
+        price: `₹${product.price}`,
+        originalPrice:
+          product.actual_price !== product.price
+            ? `₹${product.actual_price}`
+            : null,
+        discounted_percentage: product.discounted_percentage,
+        frameType: product.frame_type || product.material,
+        material: product.material,
+        color: product.color,
+        shape: product.shape,
+        size: product.size,
+        general_size: product.general_size,
+        available_lens_types: product.available_lens_types,
+        buy_1_get_1_available: product.buy_1_get_1_available,
+        is_popular: product.is_popular,
+        best_seller: product.best_seller,
+        quantity: product.quantity,
+        out_of_stock: product.out_of_stock,
+      }));
+
+      setBestsellerProducts(transformedProducts);
+
+      // COMMENTED OUT - Original API fetch code
+      /*
       // Fetch bestseller products
       console.log("Fetching bestseller products...");
       const bestsellerResponse = await fetch("/api/products?best_seller=true");
@@ -58,6 +103,7 @@ const HomeView = () => {
       );
 
       setBestsellerProducts(bestsellerData?.data?.products || []);
+      */
     } catch (err) {
       setError(err.message);
       console.error("Error fetching products:", err);

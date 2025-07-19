@@ -16,9 +16,7 @@ const ProductView = ({ slug }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  const [selectedLensType, setSelectedLensType] = useState(
-    "single-vision-uncoat"
-  );
+  const [selectedLensType, setSelectedLensType] = useState("");
   const [selectedFrameColor, setSelectedFrameColor] = useState("black");
   const [selectedPowerOption, setSelectedPowerOption] = useState("with-power");
   const [photochromaticOption, setPhotochromaticOption] = useState(false);
@@ -271,23 +269,6 @@ const ProductView = ({ slug }) => {
     }
   }, [slug]);
 
-  useEffect(() => {
-    // Ensure selected lens type matches the selected category
-    if (product?.lensOptions) {
-      const categoryLenses = product.lensOptions.filter(
-        (lens) => lens.category === selectedLensCategory
-      );
-      if (categoryLenses.length > 0) {
-        const isCurrentLensInCategory = categoryLenses.some(
-          (lens) => lens.id === selectedLensType
-        );
-        if (!isCurrentLensInCategory) {
-          setSelectedLensType(categoryLenses[0].id);
-        }
-      }
-    }
-  }, [selectedLensCategory, product?.lensOptions, selectedLensType]);
-
   // Helper function to get color codes
   const getColorCode = (colorName) => {
     const colorMap = {
@@ -399,6 +380,21 @@ const ProductView = ({ slug }) => {
     return selectedLensType && selectedFrameColor && isPrescriptionValid();
   };
 
+  const handleLensTypeChange = (lensId) => {
+    // Toggle selection - if same lens is clicked, unselect it
+    if (selectedLensType === lensId) {
+      setSelectedLensType("");
+    } else {
+      setSelectedLensType(lensId);
+    }
+  };
+
+  const handleLensCategoryChange = (category) => {
+    setSelectedLensCategory(category);
+    // Clear the selected lens type when switching categories
+    setSelectedLensType("");
+  };
+
   if (loading) {
     return (
       <div className="product-view">
@@ -494,48 +490,61 @@ const ProductView = ({ slug }) => {
             </div>
 
             {/* Show lens pricing */}
-            {product.lensOptions && selectedLensType && (
+            {product.lensOptions && (
               <div className="product-view__lens-pricing">
-                {(() => {
-                  const selectedLens = product.lensOptions.find(
-                    (lens) => lens.id === selectedLensType
-                  );
-                  if (selectedLens) {
-                    const lensPrice = selectedLens.price;
-                    const photochromaticPrice = photochromaticOption ? 700 : 0;
-                    const totalLensPrice = lensPrice + photochromaticPrice;
-                    const totalPrice = product.price + totalLensPrice;
+                {selectedLensType ? (
+                  (() => {
+                    const selectedLens = product.lensOptions.find(
+                      (lens) => lens.id === selectedLensType
+                    );
+                    if (selectedLens) {
+                      const lensPrice = selectedLens.price;
+                      const photochromaticPrice = photochromaticOption
+                        ? 700
+                        : 0;
+                      const totalLensPrice = lensPrice + photochromaticPrice;
+                      const totalPrice = product.price + totalLensPrice;
 
-                    return (
-                      <>
-                        <div className="product-view__lens-price-row">
-                          <span className="product-view__price-label">
-                            Lens Price ({selectedLens.name}):
-                          </span>
-                          <span className="product-view__price">
-                            ₹{lensPrice.toLocaleString()}
-                          </span>
-                        </div>
-                        {photochromaticOption && (
+                      return (
+                        <>
                           <div className="product-view__lens-price-row">
                             <span className="product-view__price-label">
-                              Photochromatic Features:
+                              Lens Price ({selectedLens.name}):
                             </span>
-                            <span className="product-view__price">₹700</span>
+                            <span className="product-view__price">
+                              ₹{lensPrice.toLocaleString()}
+                            </span>
                           </div>
-                        )}
-                        <div className="product-view__total-price">
-                          <span className="product-view__price-label">
-                            Total Price:
-                          </span>
-                          <span className="product-view__price product-view__price--total">
-                            ₹{totalPrice.toLocaleString()}
-                          </span>
-                        </div>
-                      </>
-                    );
-                  }
-                })()}
+                          {photochromaticOption && (
+                            <div className="product-view__lens-price-row">
+                              <span className="product-view__price-label">
+                                Photochromatic Features:
+                              </span>
+                              <span className="product-view__price">₹700</span>
+                            </div>
+                          )}
+                          <div className="product-view__total-price">
+                            <span className="product-view__price-label">
+                              Total Price:
+                            </span>
+                            <span className="product-view__price product-view__price--total">
+                              ₹{totalPrice.toLocaleString()}
+                            </span>
+                          </div>
+                        </>
+                      );
+                    }
+                  })()
+                ) : (
+                  <div className="product-view__lens-price-placeholder">
+                    <span className="product-view__price-label">
+                      Lens Price:
+                    </span>
+                    <span className="product-view__price-placeholder-text">
+                      Select a lens option above
+                    </span>
+                  </div>
+                )}
               </div>
             )}
 
@@ -635,16 +644,7 @@ const ProductView = ({ slug }) => {
                         ? "product-view__lens-category-tab--active"
                         : ""
                     }`}
-                    onClick={() => {
-                      setSelectedLensCategory(category);
-                      // Reset to first option of selected category
-                      const categoryLenses = product.lensOptions.filter(
-                        (lens) => lens.category === category
-                      );
-                      if (categoryLenses.length > 0) {
-                        setSelectedLensType(categoryLenses[0].id);
-                      }
-                    }}
+                    onClick={() => handleLensCategoryChange(category)}
                   >
                     {category} Lenses
                   </button>
@@ -669,7 +669,7 @@ const ProductView = ({ slug }) => {
                               ? "product-view__lens-option--active"
                               : ""
                           }`}
-                          onClick={() => setSelectedLensType(lens.id)}
+                          onClick={() => handleLensTypeChange(lens.id)}
                         >
                           <div className="product-view__lens-header">
                             <h5>{lens.name}</h5>

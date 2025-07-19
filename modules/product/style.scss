@@ -585,6 +585,26 @@
   }
 }
 
+.product-view__lens-price-placeholder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $space-sm;
+  padding-bottom: $space-sm;
+  border-bottom: 1px solid $border-color;
+
+  .product-view__price-label {
+    color: $text-light;
+    font-size: $font-medium;
+  }
+
+  .product-view__price-placeholder-text {
+    color: $text-light;
+    font-style: italic;
+    font-size: $font-medium;
+  }
+}
+
 // Photochromatic Option
 .product-view__photochromatic-option {
   background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);

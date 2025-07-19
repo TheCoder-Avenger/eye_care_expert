@@ -115,6 +115,10 @@ const productSchema = new mongoose.Schema(
       default: 100,
       min: 0,
     },
+    out_of_stock: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

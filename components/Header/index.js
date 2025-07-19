@@ -10,6 +10,7 @@ import Login from "@components/Login";
 import { useUser } from "@/context/UserContext";
 import Cart from "@components/Cart";
 import Wishlist from "@components/Wishlist";
+import MobileDrawer from "@components/MobileDrawer";
 
 const Header = () => {
   const { user, isLoggedIn, isLoading, logout, cart, wishlist } = useUser();
@@ -21,6 +22,7 @@ const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [showMobileDrawer, setShowMobileDrawer] = useState(false);
 
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
@@ -50,6 +52,7 @@ const Header = () => {
     setShowUserModal(false);
     setShowCartModal(false);
     setShowWishlistModal(false);
+    setShowMobileDrawer(false);
   };
 
   const handleLoginSuccess = (userData) => {
@@ -84,6 +87,16 @@ const Header = () => {
               </div>
             </Link>
           </div>
+
+          {/* Mobile hamburger menu button */}
+          <button
+            className="header__mobile-menu-btn"
+            onClick={() => setShowMobileDrawer(true)}
+          >
+            <span className="header__hamburger-line"></span>
+            <span className="header__hamburger-line"></span>
+            <span className="header__hamburger-line"></span>
+          </button>
 
           <div className="header__category-toggle">
             <div className="header__toggle-container">
@@ -236,6 +249,26 @@ const Header = () => {
       <Wishlist
         isOpen={showWishlistModal}
         onClose={() => setShowWishlistModal(false)}
+      />
+
+      <MobileDrawer
+        isOpen={showMobileDrawer}
+        onClose={() => setShowMobileDrawer(false)}
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryToggle}
+        selectedLanguage={selectedLanguage}
+        languages={languages}
+        onLanguageChange={handleLanguageChange}
+        isLoggedIn={isLoggedIn}
+        user={user}
+        cartCount={cartCount}
+        wishlistCount={wishlistCount}
+        onWishlistClick={() => setShowWishlistModal(true)}
+        onCartClick={() => setShowCartModal(true)}
+        onLoginClick={() => setShowLoginModal(true)}
+        onRegisterClick={() => setShowRegisterModal(true)}
+        onUserProfileClick={() => setShowUserModal(true)}
+        onLogout={handleLogout}
       />
     </>
   );

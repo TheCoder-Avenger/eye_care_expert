@@ -15,6 +15,7 @@
     justify-content: space-between;
     padding: $space-lg $space-2xl;
     gap: $space-2xl;
+    position: relative;
   }
 }
 
@@ -328,10 +329,36 @@
   margin-left: $space-xs;
 }
 
+// Mobile hamburger menu styles
+.header__mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: $z-fixed;
+  transition: all $transition-normal;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.header__hamburger-line {
+  width: 100%;
+  height: 3px;
+  background: $text-color;
+  border-radius: 2px;
+  transition: all $transition-normal;
+}
+
 @media (max-width: $breakpoint-md) {
   .header__container {
     padding: $space-lg;
-    flex-wrap: wrap;
     gap: $space-lg;
   }
 
@@ -343,22 +370,15 @@
     font-size: $font-sm;
   }
 
-  .header__category-toggle {
-    order: 3;
-    flex: 1 1 100%;
+  // Show mobile hamburger menu
+  .header__mobile-menu-btn {
+    display: flex;
   }
 
+  // Hide desktop elements on mobile
+  .header__category-toggle,
   .header__controls {
-    gap: $space-sm;
-  }
-
-  .header__icon-btn-label {
     display: none;
-  }
-
-  .header__toggle-btn {
-    padding: $space-xs $space-lg;
-    font-size: $font-small;
   }
 }
 
@@ -371,10 +391,6 @@
     gap: $space-sm;
   }
 
-  .header__logo-icon {
-    font-size: $font-2xl;
-  }
-
   .header__logo-text h1 {
     font-size: $font-large;
   }
@@ -383,21 +399,12 @@
     font-size: $font-xs;
   }
 
-  .header__dropdown-trigger,
-  .header__icon-btn,
-  .header__profile-btn {
-    padding: $space-xs $space-md;
-    font-size: $font-small;
+  .header__mobile-menu-btn {
+    width: 28px;
+    height: 22px;
   }
 
-  .header__auth-buttons {
-    flex-direction: column;
-    gap: $space-xs;
-  }
-
-  .header__login-btn,
-  .header__signup-btn {
-    padding: $space-xs $space-md;
-    font-size: $font-small;
+  .header__hamburger-line {
+    height: 2px;
   }
 }

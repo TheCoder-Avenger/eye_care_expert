@@ -377,7 +377,7 @@
     ],
     "buy_1_get_1_available": true,
     "is_popular": false,
-    "best_seller": false,
+    "best_seller": true,
     "quantity": 100,
     "out_of_stock": false
   },
@@ -725,7 +725,7 @@
     ],
     "buy_1_get_1_available": true,
     "is_popular": false,
-    "best_seller": false,
+    "best_seller": true,
     "quantity": 100,
     "out_of_stock": false
   },
@@ -2429,7 +2429,7 @@
     ],
     "buy_1_get_1_available": true,
     "is_popular": false,
-    "best_seller": false,
+    "best_seller": true,
     "quantity": 100,
     "out_of_stock": false
   },
@@ -2753,7 +2753,7 @@
     ],
     "buy_1_get_1_available": true,
     "is_popular": false,
-    "best_seller": false,
+    "best_seller": true,
     "quantity": 100,
     "out_of_stock": false
   },
@@ -18431,7 +18431,7 @@
     ],
     "buy_1_get_1_available": true,
     "is_popular": false,
-    "best_seller": false,
+    "best_seller": true,
     "quantity": 100,
     "out_of_stock": false
   },

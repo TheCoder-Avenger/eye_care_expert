@@ -150,8 +150,11 @@ const Cart = ({ isOpen, onClose }) => {
         {!isLoggedIn ? (
           <div className="cart__login-message">
             <div className="cart__login-icon">🛒</div>
-            <h3>Sign in to view your cart</h3>
-            <p>Save your items for later by signing in to your account.</p>
+            <h3>Sign Up/Login to view your cart</h3>
+            <p>
+              Save your items for later by signing up/logging in to your
+              account.
+            </p>
           </div>
         ) : loading ? (
           <div className="cart__loading">

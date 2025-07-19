@@ -135,9 +135,10 @@ const Wishlist = ({ isOpen, onClose }) => {
         {!isLoggedIn ? (
           <div className="wishlist__login-message">
             <div className="wishlist__login-icon">💖</div>
-            <h3>Sign in to view your wishlist</h3>
+            <h3>Sign Up/Login to view your wishlist</h3>
             <p>
-              Save your favorite items for later by signing in to your account.
+              Save your favorite items for later by signing up/logging in to
+              your account.
             </p>
           </div>
         ) : loading ? (

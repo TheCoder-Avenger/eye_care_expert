@@ -355,7 +355,7 @@ ${
 Please confirm this order.`;
 
       // Redirect to WhatsApp
-      const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+      const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
         message
       )}`;
       window.open(whatsappUrl, "_blank");
@@ -419,7 +419,7 @@ ${
 I want to buy this product now. Please process my order.`;
 
     // Redirect to WhatsApp
-    const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
       message
     )}`;
     window.open(whatsappUrl, "_blank");
@@ -1143,7 +1143,7 @@ ${
 I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide available options.`;
 
                 // Redirect to WhatsApp
-                const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+                const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
                   message
                 )}`;
                 window.open(whatsappUrl, "_blank");
@@ -1276,7 +1276,7 @@ ${
 I want to avail the Buy 1 Get 1 Free offer. Please confirm my order.`;
 
                   // Redirect to WhatsApp
-                  const whatsappUrl = `https://wa.me/918879046890?text=${encodeURIComponent(
+                  const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
                     message
                   )}`;
                   window.open(whatsappUrl, "_blank");

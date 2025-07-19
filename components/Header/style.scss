@@ -366,6 +366,76 @@
   }
 }
 
+// Mobile Category Logos - Hidden on desktop, shown on mobile
+.header__mobile-category {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+
+  &-toggle {
+    display: flex;
+    background: rgba($primary-color, 0.1);
+    border: 1px solid rgba($primary-color, 0.2);
+    border-radius: $radius-lg;
+    padding: $space-xs;
+    gap: $space-xs;
+    overflow: hidden;
+  }
+}
+
+.header__mobile-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-sm $space-md;
+  transition: all $transition-normal;
+  cursor: pointer;
+  min-width: 60px;
+  position: relative;
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: $primary-color;
+    color: white;
+    box-shadow: $shadow-sm;
+
+    .header__mobile-toggle-icon {
+      transform: scale(1.1);
+    }
+
+    .header__mobile-toggle-text {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &-icon {
+    font-size: $font-large;
+    line-height: 1;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    transition: all $transition-normal;
+  }
+
+  &-text {
+    font-size: $font-xs;
+    font-weight: $font-weight-medium;
+    color: inherit;
+    text-align: center;
+    line-height: 1.2;
+    transition: all $transition-normal;
+  }
+}
+
 @media (max-width: $breakpoint-md) {
   .header__container {
     padding: $space-md $space-lg;
@@ -388,6 +458,11 @@
 
   .header__logo-tagline {
     font-size: $font-xs;
+  }
+
+  // Show mobile category toggle
+  .header__mobile-category {
+    display: flex;
   }
 
   // Show mobile hamburger menu with larger size
@@ -431,6 +506,24 @@
     font-size: $font-xs;
   }
 
+  // Show mobile category toggle with smaller size
+  .header__mobile-category {
+    display: flex;
+
+    .header__mobile-toggle {
+      padding: $space-xs $space-sm;
+      min-width: 50px;
+
+      &-icon {
+        font-size: $font-medium;
+      }
+
+      &-text {
+        font-size: $font-xs;
+      }
+    }
+  }
+
   .header__mobile-menu-btn {
     width: 30px;
     height: 26px;
@@ -446,6 +539,7 @@
   .header__container {
     padding: $space-xs $space-sm;
     min-height: 55px;
+    gap: 0.1px;
   }
 
   .header__logo-image {
@@ -455,6 +549,24 @@
 
   .header__logo-text h1 {
     font-size: $font-regular;
+  }
+
+  // Show mobile category toggle with extra small size
+  .header__mobile-category {
+    display: flex;
+
+    .header__mobile-toggle {
+      padding: $space-xs;
+      min-width: 45px;
+
+      &-icon {
+        font-size: $font-regular;
+      }
+
+      &-text {
+        font-size: $font-xs;
+      }
+    }
   }
 
   .header__mobile-menu-btn {

@@ -88,6 +88,30 @@ const Header = () => {
             </Link>
           </div>
 
+          {/* Mobile Category Toggle - Only visible on mobile */}
+          <div className="header__mobile-category">
+            <div className="header__mobile-category-toggle">
+              <button
+                className={`header__mobile-toggle ${
+                  selectedCategory === "Eyeglass" ? "active" : ""
+                }`}
+                onClick={() => handleCategoryToggle("Eyeglass")}
+              >
+                <span className="header__mobile-toggle-icon">👓</span>
+                <span className="header__mobile-toggle-text">Eyeglasses</span>
+              </button>
+              <button
+                className={`header__mobile-toggle ${
+                  selectedCategory === "Sunglass" ? "active" : ""
+                }`}
+                onClick={() => handleCategoryToggle("Sunglass")}
+              >
+                <span className="header__mobile-toggle-icon">🕶️</span>
+                <span className="header__mobile-toggle-text">Sunglasses</span>
+              </button>
+            </div>
+          </div>
+
           {/* Mobile hamburger menu button */}
           <button
             className="header__mobile-menu-btn"

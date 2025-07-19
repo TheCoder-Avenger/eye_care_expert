@@ -63,11 +63,8 @@ const HomeView = () => {
         brand_name: product.brand_name,
         description: product.description,
         images: product.images,
-        price: `₹${product.price}`,
-        originalPrice:
-          product.actual_price !== product.price
-            ? `₹${product.actual_price}`
-            : null,
+        price: product.price, // Keep as number for formatPrice function
+        actual_price: product.actual_price, // Keep as number for formatPrice function
         discounted_percentage: product.discounted_percentage,
         frameType: product.frame_type || product.material,
         material: product.material,

@@ -37,7 +37,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="product-card__content">
-        <h3 className="product-card__title">{product.name}</h3>
+        <h3 className="product-card__title">{product?.name?.toUpperCase()}</h3>
         <p className="product-card__description">
           {product.description.length > 100
             ? `${product.description.substring(0, 100)}...`

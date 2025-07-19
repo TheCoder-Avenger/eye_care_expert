@@ -352,7 +352,10 @@ ${
 *Price per Unit:* ₹${totalPrice.toLocaleString()}
 *Total Price:* ₹${(totalPrice * quantity).toLocaleString()}
 
-Please confirm this order.`;
+Please confirm this order.
+
+*Next Steps:*
+Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
       // Redirect to WhatsApp
       const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
@@ -416,7 +419,10 @@ ${
 *Price per Unit:* ₹${totalPrice.toLocaleString()}
 *Total Price:* ₹${(totalPrice * quantity).toLocaleString()}
 
-I want to buy this product now. Please process my order.`;
+I want to buy this product now. Please process my order.
+
+*Next Steps:*
+Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
     // Redirect to WhatsApp
     const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
@@ -1074,6 +1080,18 @@ I want to buy this product now. Please process my order.`;
           )}
 
           <div className="product-view__actions">
+            <div className="product-view__action-instruction">
+              <p>
+                <strong>
+                  By clicking any button (Add to Cart, Buy Now, Buy 1 Get 1
+                  Free):
+                </strong>
+                <br />
+                Visit our store to choose your second frame, schedule an
+                appointment, or contact our team for a video call consultation
+                to select your second frame
+              </p>
+            </div>
             <div className="product-view__quantity">
               <label>Quantity:</label>
               <div className="product-view__quantity-controls">
@@ -1147,7 +1165,10 @@ ${
 *Price per Unit:* ₹${totalPrice.toLocaleString()}
 *Total Price:* ₹${(totalPrice * quantity).toLocaleString()}
 
-I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide available options.`;
+I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide available options.
+
+*Next Steps:*
+Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
                 // Redirect to WhatsApp
                 const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
@@ -1280,7 +1301,10 @@ ${
                     quantity
                   ).toLocaleString()}
 
-I want to avail the Buy 1 Get 1 Free offer. Please confirm my order.`;
+I want to avail the Buy 1 Get 1 Free offer. Please confirm my order.
+
+*Next Steps:*
+Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
                   // Redirect to WhatsApp
                   const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(

@@ -21,7 +21,6 @@
 @media (max-width: $breakpoint-lg) {
   .home-view__main {
     flex-direction: column;
-    padding: $space-lg 0;
   }
 }
 
@@ -409,23 +408,20 @@
   // Mobile positioning - keep absolute but center horizontally
   @media (max-width: $breakpoint-sm) {
     left: 50%;
-    transform: translateX(-50%);
-    bottom: 15px;
     right: auto;
     padding: $space-sm $space-md;
     font-size: $font-small;
     gap: $space-xs;
     width: auto;
-    bottom: 10px;
+    margin-bottom: 30px;
   }
 
   &:hover {
     background: rgba(0, 0, 0, 0.9);
-    transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 
     @media (max-width: $breakpoint-sm) {
-      transform: 10px;
+      margin-bottom: -30px;
     }
   }
 
@@ -433,7 +429,6 @@
   &:focus {
     background: rgba(0, 0, 0, 0.8);
     outline: none;
-    transform: translateY(0);
   }
 
   &:focus {

@@ -420,6 +420,17 @@
     background: rgba(0, 0, 0, 0.9);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 
+    // Override for mobile compact mode
+    @media (max-width: $breakpoint-md) {
+      .banner-carousel:not(.banner-carousel--full) & {
+        background: #5a6fd8; // Darker blue for hover
+      }
+
+      .banner-carousel--full & {
+        background: rgba(0, 0, 0, 0.9);
+      }
+    }
+
     @media (max-width: $breakpoint-sm) {
       margin-bottom: -30px;
     }

@@ -214,6 +214,8 @@ const HomeView = () => {
           {/* Banner Toggle Button */}
           <button
             className="banner-carousel__toggle-btn"
+            onMouseEnter={() => setIsFullBanner(true)}
+            onMouseLeave={() => setIsFullBanner(false)}
             onClick={() => setIsFullBanner(!isFullBanner)}
             title={isFullBanner ? "Show Compact View" : "Read Full Banner"}
           >

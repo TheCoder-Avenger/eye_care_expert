@@ -17,7 +17,7 @@ const ProductView = ({ slug }) => {
   const [isZoomed, setIsZoomed] = useState(false);
 
   const [selectedLensType, setSelectedLensType] = useState("");
-  const [selectedFrameColor, setSelectedFrameColor] = useState("black");
+  const [selectedFrameColor, setSelectedFrameColor] = useState("");
   const [selectedPowerOption, setSelectedPowerOption] = useState("with-power");
   const [photochromaticOption, setPhotochromaticOption] = useState(false);
   const [selectedLensCategory, setSelectedLensCategory] =
@@ -253,6 +253,11 @@ const ProductView = ({ slug }) => {
           };
 
           setProduct(transformedProduct);
+
+          // Set default frame color based on product color
+          if (foundProduct.color) {
+            setSelectedFrameColor(foundProduct.color.toLowerCase());
+          }
         } else {
           throw new Error("Product not found");
         }

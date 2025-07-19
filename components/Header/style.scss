@@ -13,7 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: $space-lg $space-2xl;
+    // padding: $space-lg $space-2xl;
     gap: $space-2xl;
     position: relative;
   }
@@ -339,12 +339,18 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: $space-xs;
   z-index: $z-fixed;
   transition: all $transition-normal;
+  border-radius: $radius-sm;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    background: rgba($primary-color, 0.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
 
@@ -354,25 +360,45 @@
   background: $text-color;
   border-radius: 2px;
   transition: all $transition-normal;
+
+  .header__mobile-menu-btn:hover & {
+    background: $primary-color;
+  }
 }
 
 @media (max-width: $breakpoint-md) {
   .header__container {
-    padding: $space-lg;
-    gap: $space-lg;
+    padding: $space-md $space-lg;
+    gap: $space-md;
+    min-height: auto;
+  }
+
+  .header__logo {
+    gap: $space-sm;
+  }
+
+  .header__logo-image {
+    width: 50px;
+    height: 50px;
   }
 
   .header__logo-text h1 {
-    font-size: $font-xl;
+    font-size: $font-large;
   }
 
   .header__logo-tagline {
-    font-size: $font-sm;
+    font-size: $font-xs;
   }
 
-  // Show mobile hamburger menu
+  // Show mobile hamburger menu with larger size
   .header__mobile-menu-btn {
     display: flex;
+    width: 32px;
+    height: 28px;
+  }
+
+  .header__hamburger-line {
+    height: 3px;
   }
 
   // Hide desktop elements on mobile
@@ -384,15 +410,21 @@
 
 @media (max-width: $breakpoint-sm) {
   .header__container {
-    padding: $space-md;
+    padding: $space-sm $space-md;
+    min-height: 60px;
   }
 
   .header__logo {
-    gap: $space-sm;
+    gap: $space-xs;
+  }
+
+  .header__logo-image {
+    width: 45px;
+    height: 45px;
   }
 
   .header__logo-text h1 {
-    font-size: $font-large;
+    font-size: $font-medium;
   }
 
   .header__logo-tagline {
@@ -400,11 +432,38 @@
   }
 
   .header__mobile-menu-btn {
-    width: 28px;
-    height: 22px;
+    width: 30px;
+    height: 26px;
   }
 
   .header__hamburger-line {
-    height: 2px;
+    height: 3px;
+  }
+}
+
+// Extra small screens (phones in portrait)
+@media (max-width: 400px) {
+  .header__container {
+    padding: $space-xs $space-sm;
+    min-height: 55px;
+  }
+
+  .header__logo-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header__logo-text h1 {
+    font-size: $font-regular;
+  }
+
+  .header__mobile-menu-btn {
+    width: 28px;
+    height: 24px;
+    padding: $space-xs;
+  }
+
+  .header__hamburger-line {
+    height: 2.5px;
   }
 }

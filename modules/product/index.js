@@ -424,16 +424,51 @@ const ProductView = ({ slug }) => {
           {product.images && product.images.length > 0 ? (
             <>
               <div className="product-view__main-image">
-                <Image
-                  src={product.images[selectedImageIndex]}
-                  alt={product.name}
-                  width={500}
-                  height={500}
-                  className={`product-view__main-image-img ${
-                    isZoomed ? "product-view__main-image-img--zoomed" : ""
-                  }`}
-                  onClick={() => setIsZoomed(!isZoomed)}
-                />
+                {(() => {
+                  // Define lens chart images
+                  const lensChartImages = [
+                    "/single_vision_lens_chart.jpeg",
+                    "/progressive_lens_chart.jpeg",
+                    "/bifocal_lens_chart.jpeg",
+                  ];
+
+                  // Check if selected index is for a lens chart
+                  const productImageCount = product.images.length;
+                  const isLensChartSelected =
+                    selectedImageIndex >= productImageCount;
+
+                  if (isLensChartSelected) {
+                    // Show lens chart image
+                    const lensChartIndex =
+                      selectedImageIndex - productImageCount;
+                    return (
+                      <Image
+                        src={lensChartImages[lensChartIndex]}
+                        alt={`Lens Chart ${lensChartIndex + 1}`}
+                        width={500}
+                        height={500}
+                        className={`product-view__main-image-img ${
+                          isZoomed ? "product-view__main-image-img--zoomed" : ""
+                        }`}
+                        onClick={() => setIsZoomed(!isZoomed)}
+                      />
+                    );
+                  } else {
+                    // Show product image
+                    return (
+                      <Image
+                        src={product.images[selectedImageIndex]}
+                        alt={product.name}
+                        width={500}
+                        height={500}
+                        className={`product-view__main-image-img ${
+                          isZoomed ? "product-view__main-image-img--zoomed" : ""
+                        }`}
+                        onClick={() => setIsZoomed(!isZoomed)}
+                      />
+                    );
+                  }
+                })()}
                 <button
                   className="product-view__zoom-btn"
                   onClick={() => setIsZoomed(!isZoomed)}
@@ -443,6 +478,7 @@ const ProductView = ({ slug }) => {
               </div>
 
               <div className="product-view__thumbnails">
+                {/* Product Images */}
                 {product.images.map((image, index) => (
                   <button
                     key={index}
@@ -461,15 +497,133 @@ const ProductView = ({ slug }) => {
                     />
                   </button>
                 ))}
+
+                {/* Lens Chart Images - Always Show */}
+                <button
+                  className={`product-view__thumbnail ${
+                    selectedImageIndex === product.images.length
+                      ? "product-view__thumbnail--active"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedImageIndex(product.images.length)}
+                >
+                  <Image
+                    src="/single_vision_lens_chart.jpeg"
+                    alt="Single Vision Lens Chart"
+                    width={80}
+                    height={80}
+                  />
+                </button>
+
+                <button
+                  className={`product-view__thumbnail ${
+                    selectedImageIndex === product.images.length + 1
+                      ? "product-view__thumbnail--active"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    setSelectedImageIndex(product.images.length + 1)
+                  }
+                >
+                  <Image
+                    src="/progressive_lens_chart.jpeg"
+                    alt="Progressive Lens Chart"
+                    width={80}
+                    height={80}
+                  />
+                </button>
+
+                <button
+                  className={`product-view__thumbnail ${
+                    selectedImageIndex === product.images.length + 2
+                      ? "product-view__thumbnail--active"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    setSelectedImageIndex(product.images.length + 2)
+                  }
+                >
+                  <Image
+                    src="/bifocal_lens_chart.jpeg"
+                    alt="Bifocal Lens Chart"
+                    width={80}
+                    height={80}
+                  />
+                </button>
               </div>
             </>
           ) : (
-            <div className="product-view__no-image">
-              <div className="product-view__placeholder">
-                <h3>No Images Available</h3>
-                <p>Product images will be added soon.</p>
+            <>
+              <div className="product-view__main-image">
+                <Image
+                  src="/single_vision_lens_chart.jpeg"
+                  alt="Single Vision Lens Chart"
+                  width={500}
+                  height={500}
+                  className={`product-view__main-image-img ${
+                    isZoomed ? "product-view__main-image-img--zoomed" : ""
+                  }`}
+                  onClick={() => setIsZoomed(!isZoomed)}
+                />
+                <button
+                  className="product-view__zoom-btn"
+                  onClick={() => setIsZoomed(!isZoomed)}
+                >
+                  {isZoomed ? "🔍-" : "🔍+"}
+                </button>
               </div>
-            </div>
+
+              <div className="product-view__thumbnails">
+                {/* Lens Chart Images - Always Show */}
+                <button
+                  className={`product-view__thumbnail ${
+                    selectedImageIndex === 0
+                      ? "product-view__thumbnail--active"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedImageIndex(0)}
+                >
+                  <Image
+                    src="/single_vision_lens_chart.jpeg"
+                    alt="Single Vision Lens Chart"
+                    width={80}
+                    height={80}
+                  />
+                </button>
+
+                <button
+                  className={`product-view__thumbnail ${
+                    selectedImageIndex === 1
+                      ? "product-view__thumbnail--active"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedImageIndex(1)}
+                >
+                  <Image
+                    src="/progressive_lens_chart.jpeg"
+                    alt="Progressive Lens Chart"
+                    width={80}
+                    height={80}
+                  />
+                </button>
+
+                <button
+                  className={`product-view__thumbnail ${
+                    selectedImageIndex === 2
+                      ? "product-view__thumbnail--active"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedImageIndex(2)}
+                >
+                  <Image
+                    src="/bifocal_lens_chart.jpeg"
+                    alt="Bifocal Lens Chart"
+                    width={80}
+                    height={80}
+                  />
+                </button>
+              </div>
+            </>
           )}
         </div>
 

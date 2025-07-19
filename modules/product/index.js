@@ -16,9 +16,12 @@ const ProductView = ({ slug }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  const [selectedLensType, setSelectedLensType] = useState("single-vision");
+  const [selectedLensType, setSelectedLensType] = useState(
+    "single-vision-uncoat"
+  );
   const [selectedFrameColor, setSelectedFrameColor] = useState("black");
   const [selectedPowerOption, setSelectedPowerOption] = useState("with-power");
+  const [photochromaticOption, setPhotochromaticOption] = useState(false);
   const [prescription, setPrescription] = useState({
     rightEye: { sph: "", cyl: "", axis: "" },
     leftEye: { sph: "", cyl: "", axis: "" },
@@ -91,20 +94,147 @@ const ProductView = ({ slug }) => {
                 available: foundProduct.quantity > 0,
               },
             ],
-            lensOptions:
-              foundProduct.available_lens_types &&
-              foundProduct.available_lens_types.length > 0
-                ? foundProduct.available_lens_types.map((lensType, index) => ({
-                    id: lensType.type.toLowerCase().replace(/ /g, "-"),
-                    name: lensType.type,
-                    price: index * 500, // Different prices for different lens types
-                    description: `${lensType.type} lens${
-                      lensType.sub_options && lensType.sub_options.length > 0
-                        ? ` with options: ${lensType.sub_options.join(", ")}`
-                        : ""
-                    }`,
-                  }))
-                : [],
+            lensOptions: [
+              // Single Vision Lenses
+              {
+                id: "single-vision-uncoat",
+                category: "Single Vision",
+                name: "Uncoat Lens",
+                price: 900,
+                features: [],
+                description: "Basic single vision lens for distance or reading",
+              },
+              {
+                id: "single-vision-arc",
+                category: "Single Vision",
+                name: "Arc Coating Lens",
+                price: 1300,
+                features: ["Arc Coating", "Scratch Resistant Coating"],
+                description: "Enhanced durability with anti-reflective coating",
+              },
+              {
+                id: "single-vision-blue-cut",
+                category: "Single Vision",
+                name: "Blue Cut Lens",
+                price: 1800,
+                features: [
+                  "Arc Coating",
+                  "Scratch Resistant Coating",
+                  "Blue Light Protection",
+                ],
+                description:
+                  "Protection from harmful blue light from digital screens",
+              },
+              {
+                id: "single-vision-high-index-blue",
+                category: "Single Vision",
+                name: "High Index Blue Cut Lens",
+                price: 2800,
+                features: [
+                  "Arc Coating",
+                  "Scratch Resistant Coating",
+                  "Blue Light Protection",
+                  "UV Protection",
+                  "Thin and Strong Lens",
+                ],
+                description: "Premium thin lens with complete eye protection",
+              },
+
+              // Progressive Lenses
+              {
+                id: "progressive-uncoat",
+                category: "Progressive",
+                name: "Normal Corridor Uncoat Lens",
+                price: 1900,
+                features: ["Distance Near and Intermittent Vision"],
+                description: "Basic progressive lens for all distances",
+              },
+              {
+                id: "progressive-arc",
+                category: "Progressive",
+                name: "Normal Corridor Arc Lens",
+                price: 2500,
+                features: [
+                  "Distance Near and Intermittent Vision",
+                  "Double Side Arc",
+                ],
+                description: "Progressive lens with enhanced coating",
+              },
+              {
+                id: "progressive-blue-cut",
+                category: "Progressive",
+                name: "Normal Corridor Blue Cut Lens",
+                price: 3000,
+                features: [
+                  "Distance Near and Intermittent Vision",
+                  "Double Side Arc",
+                  "Blue Light Protection",
+                  "UV Protection",
+                ],
+                description: "Progressive lens with blue light protection",
+              },
+              {
+                id: "progressive-wide-corridor",
+                category: "Progressive",
+                name: "Wide Corridor Blue Cut Lens",
+                price: 5000,
+                features: [
+                  "Distance Near and Intermittent Vision",
+                  "Double Side Arc",
+                  "Blue Light Protection",
+                  "UV Protection",
+                  "Wide Corridor",
+                ],
+                description:
+                  "Premium progressive lens with wider field of view",
+              },
+
+              // Bifocal Lenses
+              {
+                id: "bifocal-uncoat",
+                category: "Bifocal",
+                name: "Bifocal Uncoat Lens",
+                price: 1200,
+                features: ["Distance and Near Vision"],
+                description: "Basic bifocal lens for distance and reading",
+              },
+              {
+                id: "bifocal-arc",
+                category: "Bifocal",
+                name: "Bifocal Arc Lens",
+                price: 1600,
+                features: ["Distance and Near Vision", "Double Side Arc"],
+                description: "Bifocal lens with anti-reflective coating",
+              },
+              {
+                id: "bifocal-blue-cut",
+                category: "Bifocal",
+                name: "Bifocal Blue Cut Lens",
+                price: 2200,
+                features: [
+                  "Distance and Near Vision",
+                  "Double Side Arc",
+                  "Blue Light Protection",
+                  "UV Protection",
+                ],
+                description: "Bifocal lens with blue light protection",
+              },
+              {
+                id: "bifocal-high-index",
+                category: "Bifocal",
+                name: "High Index Bifocal Lens",
+                price: 2800,
+                features: [
+                  "Distance and Near Vision",
+                  "Double Side Arc",
+                  "Blue Light Protection",
+                  "UV Protection",
+                  "Thin and Strong Lens",
+                ],
+                description:
+                  "Premium thin bifocal lens with complete protection",
+              },
+            ],
             buyOneGetOneProducts:
               foundProduct.buy_1_get_1_available &&
               foundProduct.images &&
@@ -179,13 +309,24 @@ const ProductView = ({ slug }) => {
     setIsAddingToCart(true);
 
     try {
+      const selectedLens = product.lensOptions.find(
+        (lens) => lens.id === selectedLensType
+      );
+      const lensPrice = selectedLens ? selectedLens.price : 0;
+      const photochromaticPrice = photochromaticOption ? 700 : 0;
+      const totalLensPrice = lensPrice + photochromaticPrice;
+
       const result = await addToCart(product, {
         lensType: selectedLensType,
+        lensName: selectedLens ? selectedLens.name : "",
+        lensPrice: totalLensPrice,
         frameColor: selectedFrameColor,
         powerOption: selectedPowerOption,
+        photochromaticOption,
         prescription:
           selectedPowerOption === "with-power" ? prescription : null,
         quantity,
+        totalPrice: product.price + totalLensPrice,
       });
 
       if (result.success) {
@@ -326,9 +467,59 @@ const ProductView = ({ slug }) => {
           </div>
 
           <div className="product-view__pricing">
-            <span className="product-view__price">
-              ₹{product.price?.toLocaleString()}
-            </span>
+            <div className="product-view__frame-price">
+              <span className="product-view__price-label">Frame Price:</span>
+              <span className="product-view__price">
+                ₹{product.price?.toLocaleString()}
+              </span>
+            </div>
+
+            {/* Show lens pricing */}
+            {product.lensOptions && selectedLensType && (
+              <div className="product-view__lens-pricing">
+                {(() => {
+                  const selectedLens = product.lensOptions.find(
+                    (lens) => lens.id === selectedLensType
+                  );
+                  if (selectedLens) {
+                    const lensPrice = selectedLens.price;
+                    const photochromaticPrice = photochromaticOption ? 700 : 0;
+                    const totalLensPrice = lensPrice + photochromaticPrice;
+                    const totalPrice = product.price + totalLensPrice;
+
+                    return (
+                      <>
+                        <div className="product-view__lens-price-row">
+                          <span className="product-view__price-label">
+                            Lens Price ({selectedLens.name}):
+                          </span>
+                          <span className="product-view__price">
+                            ₹{lensPrice.toLocaleString()}
+                          </span>
+                        </div>
+                        {photochromaticOption && (
+                          <div className="product-view__lens-price-row">
+                            <span className="product-view__price-label">
+                              Photochromatic Features:
+                            </span>
+                            <span className="product-view__price">₹700</span>
+                          </div>
+                        )}
+                        <div className="product-view__total-price">
+                          <span className="product-view__price-label">
+                            Total Price:
+                          </span>
+                          <span className="product-view__price product-view__price--total">
+                            ₹{totalPrice.toLocaleString()}
+                          </span>
+                        </div>
+                      </>
+                    );
+                  }
+                })()}
+              </div>
+            )}
+
             {product.originalPrice > product.price && (
               <>
                 <span className="product-view__original-price">
@@ -409,25 +600,73 @@ const ProductView = ({ slug }) => {
 
           {product.lensOptions && product.lensOptions.length > 0 && (
             <div className="product-view__lens-options">
-              <h3>Lens Type:</h3>
-              <div className="product-view__lens-grid">
-                {product.lensOptions.map((lens) => (
-                  <div
-                    key={lens.id}
-                    className={`product-view__lens-option ${
-                      selectedLensType === lens.id
-                        ? "product-view__lens-option--active"
-                        : ""
-                    }`}
-                    onClick={() => setSelectedLensType(lens.id)}
-                  >
-                    <h4>{lens.name}</h4>
-                    <p>{lens.description}</p>
-                    <span className="product-view__lens-price">
-                      {lens.price === 0 ? "Included" : `+₹${lens.price}`}
-                    </span>
+              <h3>Lens Type Selection:</h3>
+              <p className="product-view__lens-note">
+                Choose your lens type based on your vision needs. Prices are for
+                2 lenses.
+              </p>
+
+              {/* Group lenses by category */}
+              {["Single Vision", "Progressive", "Bifocal"].map((category) => {
+                const categoryLenses = product.lensOptions.filter(
+                  (lens) => lens.category === category
+                );
+                if (categoryLenses.length === 0) return null;
+
+                return (
+                  <div key={category} className="product-view__lens-category">
+                    <h4 className="product-view__lens-category-title">
+                      {category} Lenses
+                    </h4>
+                    <div className="product-view__lens-grid">
+                      {categoryLenses.map((lens) => (
+                        <div
+                          key={lens.id}
+                          className={`product-view__lens-option ${
+                            selectedLensType === lens.id
+                              ? "product-view__lens-option--active"
+                              : ""
+                          }`}
+                          onClick={() => setSelectedLensType(lens.id)}
+                        >
+                          <div className="product-view__lens-header">
+                            <h5>{lens.name}</h5>
+                            <span className="product-view__lens-price">
+                              ₹{lens.price.toLocaleString()}
+                            </span>
+                          </div>
+                          <p className="product-view__lens-description">
+                            {lens.description}
+                          </p>
+                          {lens.features && lens.features.length > 0 && (
+                            <div className="product-view__lens-features">
+                              <span className="features-label">Features:</span>
+                              <ul>
+                                {lens.features.map((feature, index) => (
+                                  <li key={index}>✓ {feature}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                );
+              })}
+
+              {/* Photochromatic Add-on */}
+              <div className="product-view__photochromatic-option">
+                <label className="product-view__checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={photochromaticOption}
+                    onChange={(e) => setPhotochromaticOption(e.target.checked)}
+                  />
+                  <span className="checkmark"></span>
+                  Add Photochromatic Features (+₹700)
+                  <small>Lenses that automatically darken in sunlight</small>
+                </label>
               </div>
             </div>
           )}

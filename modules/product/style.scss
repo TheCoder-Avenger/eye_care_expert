@@ -393,68 +393,213 @@
   }
 }
 
+// Lens Options Styling
 .product-view__lens-options {
   margin-bottom: $space-2xl;
 
   h3 {
     color: $text-color;
-    margin-bottom: $space-lg;
+    margin-bottom: $space-sm;
     font-size: $font-xl;
-    font-weight: $font-weight-semibold;
+  }
+
+  &-note {
+    color: $text-light;
+    font-size: $font-small;
+    margin-bottom: $space-xl;
+    font-style: italic;
+  }
+}
+
+.product-view__lens-category {
+  margin-bottom: $space-2xl;
+
+  &-title {
+    color: $primary-color;
+    font-size: $font-large;
+    margin-bottom: $space-lg;
+    padding-bottom: $space-sm;
+    border-bottom: 2px solid $primary-color;
+    display: inline-block;
   }
 }
 
 .product-view__lens-grid {
-  display: flex;
+  display: grid;
   gap: $space-lg;
-  flex-wrap: wrap;
+  margin-bottom: $space-xl;
+
+  @media (min-width: $breakpoint-lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .product-view__lens-option {
-  flex: 1;
-  min-width: 180px;
-  padding: $space-xl;
+  background: $background-light;
   border: 2px solid $border-color;
   border-radius: $radius-lg;
+  padding: $space-lg;
   cursor: pointer;
-  transition: all $transition-slow;
-  background: $background-color;
+  transition: all $transition-normal;
 
   &:hover {
     border-color: $primary-color;
-    box-shadow: 0 4px 12px rgba($primary-color, 0.1);
-    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
   }
 
   &--active {
     border-color: $primary-color;
-    background: $background-lighter;
-    box-shadow: 0 4px 12px rgba($primary-color, 0.15);
+    background: linear-gradient(
+      135deg,
+      rgba($primary-color, 0.1) 0%,
+      rgba($primary-color, 0.05) 100%
+    );
+    box-shadow: $shadow-md;
   }
 
-  h4 {
-    margin: 0 0 $space-sm 0;
-    color: $text-color;
-    font-size: $font-large;
-    font-weight: $font-weight-semibold;
+  .product-view__lens-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $space-sm;
+
+    h5 {
+      color: $text-color;
+      font-size: $font-medium;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+    }
+
+    .product-view__lens-price {
+      background: $primary-color;
+      color: white;
+      padding: $space-xs $space-sm;
+      border-radius: $radius-sm;
+      font-weight: 600;
+      font-size: $font-small;
+      margin-left: $space-sm;
+    }
   }
 
-  p {
-    margin: 0 0 $space-lg 0;
+  .product-view__lens-description {
     color: $text-light;
-    font-size: $font-regular;
+    font-size: $font-small;
+    margin-bottom: $space-sm;
     line-height: 1.4;
+  }
+
+  .product-view__lens-features {
+    .features-label {
+      color: $text-color;
+      font-weight: 600;
+      font-size: $font-small;
+      display: block;
+      margin-bottom: $space-xs;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: $space-xs;
+
+      li {
+        color: $success-color;
+        font-size: $font-small;
+        display: flex;
+        align-items: center;
+
+        &::before {
+          content: "✓";
+          margin-right: $space-xs;
+          font-weight: bold;
+        }
+      }
+    }
   }
 }
 
-.product-view__lens-price {
-  display: inline-block;
-  background: $primary-color;
-  color: $text-inverse;
-  padding: $space-xs $space-sm;
-  border-radius: $radius-sm;
-  font-size: $font-small;
-  font-weight: $font-weight-semibold;
+// Photochromatic Option
+.product-view__photochromatic-option {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border: 2px solid #f39c12;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  margin-top: $space-lg;
+
+  .product-view__checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: #8b5a00;
+
+    input[type="checkbox"] {
+      margin-right: $space-sm;
+      transform: scale(1.2);
+    }
+
+    small {
+      display: block;
+      font-weight: normal;
+      color: #8b5a00;
+      opacity: 0.8;
+      margin-top: $space-xs;
+      font-size: $font-small;
+    }
+  }
+}
+
+// Pricing Updates
+.product-view__pricing {
+  background: $background-light;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  margin-bottom: $space-xl;
+
+  .product-view__frame-price,
+  .product-view__lens-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $space-sm;
+    padding-bottom: $space-sm;
+    border-bottom: 1px solid $border-color;
+
+    .product-view__price-label {
+      color: $text-light;
+      font-size: $font-medium;
+    }
+
+    .product-view__price {
+      color: $text-color;
+      font-weight: 600;
+      font-size: $font-large;
+    }
+  }
+
+  .product-view__total-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $space-lg;
+    padding-top: $space-lg;
+    border-top: 2px solid $primary-color;
+
+    .product-view__price-label {
+      color: $text-color;
+      font-size: $font-large;
+      font-weight: 600;
+    }
+
+    .product-view__price--total {
+      color: $primary-color;
+      font-weight: 700;
+      font-size: $font-xl;
+    }
+  }
 }
 
 .product-view__power-options {

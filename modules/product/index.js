@@ -450,6 +450,12 @@ I want to buy this product now. Please process my order.`;
   };
 
   const isConfigurationComplete = () => {
+    // For "Without Power" option, only frame color is required
+    if (selectedPowerOption === "without-power") {
+      return selectedFrameColor;
+    }
+
+    // For "With Power" option, lens type, frame color, and prescription are required
     return selectedLensType && selectedFrameColor && isPrescriptionValid();
   };
 
@@ -853,92 +859,102 @@ I want to buy this product now. Please process my order.`;
             </div>
           </div>
 
-          {product.lensOptions && product.lensOptions.length > 0 && (
-            <div className="product-view__lens-options">
-              <h3>Lens Type Selection:</h3>
-              <p className="product-view__lens-note">
-                Choose your lens type based on your vision needs. Prices are for
-                2 lenses.
-              </p>
+          {product.lensOptions &&
+            product.lensOptions.length > 0 &&
+            selectedPowerOption === "with-power" && (
+              <div className="product-view__lens-options">
+                <h3>Lens Type Selection:</h3>
+                <p className="product-view__lens-note">
+                  Choose your lens type based on your vision needs. Prices are
+                  for 2 lenses.
+                </p>
 
-              {/* Category Tabs */}
-              <div className="product-view__lens-category-tabs">
-                {["Single Vision", "Progressive", "Bifocal"].map((category) => (
-                  <button
-                    key={category}
-                    className={`product-view__lens-category-tab ${
-                      selectedLensCategory === category
-                        ? "product-view__lens-category-tab--active"
-                        : ""
-                    }`}
-                    onClick={() => handleLensCategoryChange(category)}
-                  >
-                    {category} Lenses
-                  </button>
-                ))}
-              </div>
+                {/* Category Tabs */}
+                <div className="product-view__lens-category-tabs">
+                  {["Single Vision", "Progressive", "Bifocal"].map(
+                    (category) => (
+                      <button
+                        key={category}
+                        className={`product-view__lens-category-tab ${
+                          selectedLensCategory === category
+                            ? "product-view__lens-category-tab--active"
+                            : ""
+                        }`}
+                        onClick={() => handleLensCategoryChange(category)}
+                      >
+                        {category} Lenses
+                      </button>
+                    )
+                  )}
+                </div>
 
-              {/* Show lenses for selected category only */}
-              {(() => {
-                const categoryLenses = product.lensOptions.filter(
-                  (lens) => lens.category === selectedLensCategory
-                );
-                if (categoryLenses.length === 0) return null;
+                {/* Show lenses for selected category only */}
+                {(() => {
+                  const categoryLenses = product.lensOptions.filter(
+                    (lens) => lens.category === selectedLensCategory
+                  );
+                  if (categoryLenses.length === 0) return null;
 
-                return (
-                  <div className="product-view__lens-category">
-                    <div className="product-view__lens-grid">
-                      {categoryLenses.map((lens) => (
-                        <div
-                          key={lens.id}
-                          className={`product-view__lens-option ${
-                            selectedLensType === lens.id
-                              ? "product-view__lens-option--active"
-                              : ""
-                          }`}
-                          onClick={() => handleLensTypeChange(lens.id)}
-                        >
-                          <div className="product-view__lens-header">
-                            <h5>{lens.name}</h5>
-                            <span className="product-view__lens-price">
-                              ₹{lens.price.toLocaleString()}
-                            </span>
-                          </div>
-                          <p className="product-view__lens-description">
-                            {lens.description}
-                          </p>
-                          {lens.features && lens.features.length > 0 && (
-                            <div className="product-view__lens-features">
-                              <span className="features-label">Features:</span>
-                              <ul>
-                                {lens.features.map((feature, index) => (
-                                  <li key={index}>✓ {feature}</li>
-                                ))}
-                              </ul>
+                  return (
+                    <div className="product-view__lens-category">
+                      <div className="product-view__lens-grid">
+                        {categoryLenses.map((lens) => (
+                          <div
+                            key={lens.id}
+                            className={`product-view__lens-option ${
+                              selectedLensType === lens.id
+                                ? "product-view__lens-option--active"
+                                : ""
+                            }`}
+                            onClick={() => handleLensTypeChange(lens.id)}
+                          >
+                            <div className="product-view__lens-header">
+                              <h5>{lens.name}</h5>
+                              <span className="product-view__lens-price">
+                                ₹{lens.price.toLocaleString()}
+                              </span>
                             </div>
-                          )}
-                        </div>
-                      ))}
+                            <p className="product-view__lens-description">
+                              {lens.description}
+                            </p>
+                            {lens.features && lens.features.length > 0 && (
+                              <div className="product-view__lens-features">
+                                <span className="features-label">
+                                  Features:
+                                </span>
+                                <ul>
+                                  {lens.features.map((feature, index) => (
+                                    <li key={index}>✓ {feature}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                );
-              })()}
+                  );
+                })()}
 
-              {/* Photochromatic Add-on */}
-              <div className="product-view__photochromatic-option">
-                <label className="product-view__checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={photochromaticOption}
-                    onChange={(e) => setPhotochromaticOption(e.target.checked)}
-                  />
-                  <span className="checkmark"></span>
-                  Add Photochromatic Features (+₹700)
-                  <small>(Lenses that automatically darken in sunlight)</small>
-                </label>
+                {/* Photochromatic Add-on */}
+                <div className="product-view__photochromatic-option">
+                  <label className="product-view__checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={photochromaticOption}
+                      onChange={(e) =>
+                        setPhotochromaticOption(e.target.checked)
+                      }
+                    />
+                    <span className="checkmark"></span>
+                    Add Photochromatic Features (+₹700)
+                    <small>
+                      (Lenses that automatically darken in sunlight)
+                    </small>
+                  </label>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           <div className="product-view__power-options">
             <h3>Power Options:</h3>

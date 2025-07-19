@@ -326,6 +326,7 @@ const ProductView = ({ slug }) => {
       const message = `🛒 *Add to Cart Request*
 
 *Product Details:*
+• Product ID: ${product.id}
 • Product: ${product.name}
 • Frame Color: ${selectedFrameColor.toUpperCase()}
 • Frame Price: ₹${product.price.toLocaleString()}
@@ -348,7 +349,8 @@ ${
 }
 
 *Quantity:* ${quantity}
-*Total Price:* ₹${totalPrice.toLocaleString()}
+*Price per Unit:* ₹${totalPrice.toLocaleString()}
+*Total Price:* ₹${(totalPrice * quantity).toLocaleString()}
 
 Please confirm this order.`;
 
@@ -388,6 +390,7 @@ Please confirm this order.`;
     const message = `🛍️ *Buy Now Request*
 
 *Product Details:*
+• Product ID: ${product.id}
 • Product: ${product.name}
 • Frame Color: ${selectedFrameColor.toUpperCase()}
 • Frame Price: ₹${product.price.toLocaleString()}
@@ -410,7 +413,8 @@ ${
 }
 
 *Quantity:* ${quantity}
-*Total Price:* ₹${totalPrice.toLocaleString()}
+*Price per Unit:* ₹${totalPrice.toLocaleString()}
+*Total Price:* ₹${(totalPrice * quantity).toLocaleString()}
 
 I want to buy this product now. Please process my order.`;
 
@@ -1094,6 +1098,7 @@ I want to buy this product now. Please process my order.`;
                 const message = `🎁 *Buy 1 Get 1 Free Inquiry*
 
 *Product Details:*
+• Product ID: ${product.id}
 • Product: ${product.name}
 • Frame Color: ${selectedFrameColor.toUpperCase()}
 • Frame Price: ₹${product.price.toLocaleString()}
@@ -1116,7 +1121,8 @@ ${
 }
 
 *Quantity:* ${quantity}
-*Total Price:* ₹${totalPrice.toLocaleString()}
+*Price per Unit:* ₹${totalPrice.toLocaleString()}
+*Total Price:* ₹${(totalPrice * quantity).toLocaleString()}
 
 I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide available options.`;
 
@@ -1216,6 +1222,7 @@ I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide av
                   const message = `🎁 *Buy 1 Get 1 Free Request*
 
 *Primary Product:*
+• Product ID: ${product.id}
 • Product: ${product.name}
 • Frame Color: ${selectedFrameColor.toUpperCase()}
 • Frame Price: ₹${product.price.toLocaleString()}
@@ -1242,9 +1249,13 @@ ${
 • Original Price: ₹${selectedSecondProduct.price.toLocaleString()}
 
 *Quantity:* ${quantity}
-*You Pay:* ₹${product.price.toLocaleString()}
-*You Save:* ₹${selectedSecondProduct.price.toLocaleString()}
-*Total Value:* ₹{(product.price + selectedSecondProduct.price).toLocaleString()}
+*Price per Unit:* ₹${product.price.toLocaleString()}
+*You Pay:* ₹${(product.price * quantity).toLocaleString()}
+*You Save:* ₹${(selectedSecondProduct.price * quantity).toLocaleString()}
+*Total Value:* ₹${(
+                    (product.price + selectedSecondProduct.price) *
+                    quantity
+                  ).toLocaleString()}
 
 I want to avail the Buy 1 Get 1 Free offer. Please confirm my order.`;
 

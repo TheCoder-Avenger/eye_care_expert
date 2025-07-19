@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
+import productsData from "@/models/products.json";
 import "./style.scss";
 
 const ProductsView = () => {
@@ -25,11 +26,16 @@ const ProductsView = () => {
     totalProducts: 0,
   });
 
-  // Fetch products from API
+  // Fetch products from local JSON data instead of API
   const fetchProducts = async (page = 1) => {
     try {
       setLoading(true);
+      setError(null);
 
+      console.log("Fetching products from local data...");
+
+      // COMMENTED OUT - Original API fetch code
+      /*
       const queryParams = new URLSearchParams({
         page: page.toString(),
         limit: "9",
@@ -52,6 +58,111 @@ const ProductsView = () => {
       } else {
         throw new Error(data.error || "Failed to fetch products");
       }
+      */
+
+      // Filter products from local JSON data
+      let filteredProducts = productsData.filter(
+        (product) => product.out_of_stock === false
+      );
+
+      // Apply search filter
+      if (filters.search) {
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+            product.description
+              .toLowerCase()
+              .includes(filters.search.toLowerCase())
+        );
+      }
+
+      // Apply color filter
+      if (filters.color) {
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.color.toLowerCase() === filters.color.toLowerCase()
+        );
+      }
+
+      // Apply shape filter
+      if (filters.shape) {
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.shape.toLowerCase() === filters.shape.toLowerCase()
+        );
+      }
+
+      // Apply frame type filter
+      if (filters.frame_type) {
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.frame_type?.toLowerCase() ===
+            filters.frame_type.toLowerCase()
+        );
+      }
+
+      // Apply material filter
+      if (filters.material) {
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.material.toLowerCase() === filters.material.toLowerCase()
+        );
+      }
+
+      // Apply price range filter
+      if (filters.minPrice) {
+        filteredProducts = filteredProducts.filter(
+          (product) => product.price >= parseFloat(filters.minPrice)
+        );
+      }
+      if (filters.maxPrice) {
+        filteredProducts = filteredProducts.filter(
+          (product) => product.price <= parseFloat(filters.maxPrice)
+        );
+      }
+
+      console.log("Filtered products:", filteredProducts.length);
+
+      // Pagination logic
+      const limit = 9;
+      const totalProducts = filteredProducts.length;
+      const totalPages = Math.ceil(totalProducts / limit);
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+      // Transform the data to match the expected format
+      const transformedProducts = paginatedProducts.map((product) => ({
+        _id: product.product_id,
+        name: product.name,
+        brand_name: product.brand_name,
+        description: product.description,
+        images: product.images,
+        price: product.price, // Keep as number for formatPrice function
+        actual_price: product.actual_price, // Keep as number for formatPrice function
+        discounted_percentage: product.discounted_percentage,
+        frameType: product.frame_type || product.material,
+        material: product.material,
+        color: product.color,
+        shape: product.shape,
+        size: product.size,
+        general_size: product.general_size,
+        available_lens_types: product.available_lens_types,
+        buy_1_get_1_available: product.buy_1_get_1_available,
+        is_popular: product.is_popular,
+        best_seller: product.best_seller,
+        quantity: product.quantity,
+        out_of_stock: product.out_of_stock,
+      }));
+
+      setProducts(transformedProducts);
+      setPagination({
+        currentPage: page,
+        totalPages,
+        totalProducts,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      });
     } catch (err) {
       setError(err.message);
       console.error("Error fetching products:", err);

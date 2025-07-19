@@ -16,7 +16,9 @@ const ProductCard = ({ product }) => {
 
   // Handle view product - navigate to product detail page
   const handleViewProduct = () => {
-    router.push(`/product/${product._id}`);
+    // Use product_id or _id depending on which is available
+    const productId = product.product_id || product._id;
+    router.push(`/product/${productId}`);
   };
 
   return (

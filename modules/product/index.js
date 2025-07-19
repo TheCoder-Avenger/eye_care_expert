@@ -40,28 +40,37 @@ const ProductView = ({ slug }) => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
+        // const response = await fetch(`/api/products/${slug}`);
 
-        const response = await fetch(`/api/products/${slug}`);
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch product");
+        // }
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch product");
-        }
+        // const data = await response.json();
 
-        const data = await response.json();
+        const productsData = await import("@/models/products.json");
+        const allProducts = productsData.default;
 
-        if (data.success) {
-          // Transform API data to match component expectations
+        const foundProduct = allProducts.find(
+          (product) =>
+            product.product_id === slug ||
+            product.product_id.toString() === slug ||
+            product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === slug
+        );
+
+        if (foundProduct) {
+          // Transform local data to match component expectations
           const transformedProduct = {
-            id: data.data._id,
-            name: data.data.name,
-            brand: data.data.brand_name,
-            price: data.data.price || data.data.actual_price,
-            originalPrice: data.data.actual_price,
-            discount: data.data.discounted_percentage || 0,
-            description: data.data.description,
+            id: foundProduct.product_id,
+            name: foundProduct.name,
+            brand: foundProduct.brand_name,
+            price: foundProduct.price || foundProduct.actual_price,
+            originalPrice: foundProduct.actual_price,
+            discount: foundProduct.discounted_percentage || 0,
+            description: foundProduct.description,
             images:
-              data.data.images && data.data.images.length > 0
-                ? data.data.images.map((img) =>
+              foundProduct.images && foundProduct.images.length > 0
+                ? foundProduct.images.map((img) =>
                     img.includes("drive.google.com") &&
                     !img.includes("uc?export=view")
                       ? img
@@ -77,15 +86,15 @@ const ProductView = ({ slug }) => {
                 : [],
             colors: [
               {
-                name: data.data.color,
-                code: getColorCode(data.data.color),
-                available: data.data.quantity > 0,
+                name: foundProduct.color,
+                code: getColorCode(foundProduct.color),
+                available: foundProduct.quantity > 0,
               },
             ],
             lensOptions:
-              data.data.available_lens_types &&
-              data.data.available_lens_types.length > 0
-                ? data.data.available_lens_types.map((lensType, index) => ({
+              foundProduct.available_lens_types &&
+              foundProduct.available_lens_types.length > 0
+                ? foundProduct.available_lens_types.map((lensType, index) => ({
                     id: lensType.type.toLowerCase().replace(/ /g, "-"),
                     name: lensType.type,
                     price: index * 500, // Different prices for different lens types
@@ -97,25 +106,25 @@ const ProductView = ({ slug }) => {
                   }))
                 : [],
             buyOneGetOneProducts:
-              data.data.buy_1_get_1_available &&
-              data.data.images &&
-              data.data.images.length > 0
+              foundProduct.buy_1_get_1_available &&
+              foundProduct.images &&
+              foundProduct.images.length > 0
                 ? [
                     {
                       id: "related-1",
-                      name: `${data.data.shape} Frame`,
-                      price: Math.round(data.data.actual_price * 0.8),
-                      image: data.data.images[0],
+                      name: `${foundProduct.shape} Frame`,
+                      price: Math.round(foundProduct.actual_price * 0.8),
+                      image: foundProduct.images[0],
                     },
                   ]
                 : [],
             // Add original product data for reference
-            originalData: data.data,
+            originalData: foundProduct,
           };
 
           setProduct(transformedProduct);
         } else {
-          throw new Error(data.error || "Failed to fetch product");
+          throw new Error("Product not found");
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -310,8 +319,10 @@ const ProductView = ({ slug }) => {
 
         <div className="product-view__details">
           <div className="product-view__header">
-            <h1 className="product-view__title">{product.name}</h1>
-            <p className="product-view__brand">{product.brand}</p>
+            <h1 className="product-view__title">
+              {product?.name.toUpperCase()}
+            </h1>
+            <p className="product-view__brand">{product?.description}</p>
           </div>
 
           <div className="product-view__pricing">

@@ -15,8 +15,9 @@ const ProductsView = () => {
     search: "",
     color: "",
     shape: "",
-    frame_type: "",
     material: "",
+    general_size: "",
+    best_seller: "",
     minPrice: "",
     maxPrice: "",
   });
@@ -92,20 +93,27 @@ const ProductsView = () => {
         );
       }
 
-      // Apply frame type filter
-      if (filters.frame_type) {
-        filteredProducts = filteredProducts.filter(
-          (product) =>
-            product.frame_type?.toLowerCase() ===
-            filters.frame_type.toLowerCase()
-        );
-      }
-
       // Apply material filter
       if (filters.material) {
         filteredProducts = filteredProducts.filter(
           (product) =>
             product.material.toLowerCase() === filters.material.toLowerCase()
+        );
+      }
+
+      // Apply general size filter
+      if (filters.general_size) {
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.general_size.toLowerCase() ===
+            filters.general_size.toLowerCase()
+        );
+      }
+
+      // Apply best_seller filter
+      if (filters.best_seller) {
+        filteredProducts = filteredProducts.filter(
+          (product) => product.best_seller === true
         );
       }
 
@@ -235,15 +243,28 @@ const ProductsView = () => {
                 onChange={(e) => handleFilterChange("color", e.target.value)}
               >
                 <option value="">All Colors</option>
-                <option value="Black">Black</option>
-                <option value="Brown">Brown</option>
-                <option value="Gold">Gold</option>
-                <option value="Silver">Silver</option>
-                <option value="Blue">Blue</option>
-                <option value="Purple">Purple</option>
-                <option value="Gray">Gray</option>
-                <option value="Tortoise">Tortoise</option>
-                <option value="Gunmetal">Gunmetal</option>
+                <option value="BLACK">Black</option>
+                <option value="BROWN">Brown</option>
+                <option value="GREY">Grey</option>
+                <option value="BLUE">Blue</option>
+                <option value="GOLD">Gold</option>
+                <option value="SILVER">Silver</option>
+                <option value="WHITE">White</option>
+                <option value="GREEN">Green</option>
+                <option value="PINK">Pink</option>
+                <option value="PURPLE">Purple</option>
+                <option value="MAROON">Maroon</option>
+                <option value="GUN METAL">Gun Metal</option>
+                <option value="ROSE GOLD">Rose Gold</option>
+                <option value="MATTE BLACK">Matte Black</option>
+                <option value="MATTE GREY">Matte Grey</option>
+                <option value="MATTE BLUE">Matte Blue</option>
+                <option value="TRANSPARENT GREY">Transparent Grey</option>
+                <option value="TRANSPARENT BLUE">Transparent Blue</option>
+                <option value="BLACK AND SILVER">Black & Silver</option>
+                <option value="BLACK AND GOLD">Black & Gold</option>
+                <option value="BLACK AND BROWN">Black & Brown</option>
+                <option value="BLUE SILVER">Blue Silver</option>
               </select>
             </div>
 
@@ -253,28 +274,15 @@ const ProductsView = () => {
                 onChange={(e) => handleFilterChange("shape", e.target.value)}
               >
                 <option value="">All Shapes</option>
-                <option value="Aviator">Aviator</option>
-                <option value="Round">Round</option>
-                <option value="Square">Square</option>
-                <option value="Rectangle">Rectangle</option>
-                <option value="Cat Eye">Cat Eye</option>
-                <option value="Oval">Oval</option>
-                <option value="Wrap">Wrap</option>
-                <option value="Oversized">Oversized</option>
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <select
-                value={filters.frame_type}
-                onChange={(e) =>
-                  handleFilterChange("frame_type", e.target.value)
-                }
-              >
-                <option value="">All Frame Types</option>
-                <option value="Full Rim">Full Rim</option>
-                <option value="Semi Rim">Semi Rim</option>
-                <option value="Rimless">Rimless</option>
+                <option value="SQUARE">Square</option>
+                <option value="ROUND">Round</option>
+                <option value="RECTANGULAR">Rectangular</option>
+                <option value="CAT EYE">Cat Eye</option>
+                <option value="AVIATOR">Aviator</option>
+                <option value="OVAL">Oval</option>
+                <option value="HEXAGON">Hexagon</option>
+                <option value="WAYFARER">Wayfarer</option>
+                <option value="BUTTRERFLY">Butterfly</option>
               </select>
             </div>
 
@@ -284,11 +292,42 @@ const ProductsView = () => {
                 onChange={(e) => handleFilterChange("material", e.target.value)}
               >
                 <option value="">All Materials</option>
-                <option value="Metal">Metal</option>
-                <option value="Acetate">Acetate</option>
-                <option value="Titanium">Titanium</option>
-                <option value="Stainless Steel">Stainless Steel</option>
-                <option value="Polycarbonate">Polycarbonate</option>
+                <option value="TR">TR (Plastic)</option>
+                <option value="METAL">Metal</option>
+                <option value="ACETATE">Acetate</option>
+                <option value="TITANIUM">Titanium</option>
+                <option value="HALF METAL">Half Metal</option>
+                <option value="METAL HALF">Metal Half</option>
+                <option value="TITANIUM RIMLESS">Titanium Rimless</option>
+                <option value="ULTEM RIMLESS">Ultem Rimless</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <select
+                value={filters.general_size}
+                onChange={(e) =>
+                  handleFilterChange("general_size", e.target.value)
+                }
+              >
+                <option value="">All Sizes</option>
+                <option value="SMALL">Small</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LARGE">Large</option>
+                <option value="NARROW">Narrow</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <select
+                value={filters.best_seller}
+                onChange={(e) =>
+                  handleFilterChange("best_seller", e.target.value)
+                }
+              >
+                <option value="">All Best Sellers</option>
+                <option value="true">Best Sellers</option>
+                <option value="false">Not Best Sellers</option>
               </select>
             </div>
           </div>
@@ -319,8 +358,9 @@ const ProductsView = () => {
                     search: "",
                     color: "",
                     shape: "",
-                    frame_type: "",
                     material: "",
+                    general_size: "",
+                    best_seller: "",
                     minPrice: "",
                     maxPrice: "",
                   })

@@ -47,48 +47,41 @@ const Login = ({ isOpen, onClose, onLoginSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
     setIsLoading(true);
+    setError("");
 
     try {
-      const loginData = {
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-      };
+      // Comment out API call and use coming soon functionality
+      const result = await login(formData);
 
-      const response = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Login failed");
+      if (result.success) {
+        setIsModalOpen(false);
+        setFormData({ email: "", password: "" });
+      } else {
+        setError(result.message || "Login failed. Please try again.");
       }
 
-      const result = await response.json();
-      console.log("Login successful:", result);
+      // Original API code commented out:
+      // const response = await fetch("/api/users/login", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(loginData),
+      // });
 
-      login(result.user);
+      // const data = await response.json();
 
-      setFormData({ email: "", password: "" });
-
-      if (onLoginSuccess) {
-        onLoginSuccess(result.user);
-      }
-
-      alert("Login successful! Welcome back.");
-      onClose();
+      // if (data.success) {
+      //   await login(data.user);
+      //   setIsModalOpen(false);
+      //   setFormData({ email: "", password: "" });
+      // } else {
+      //   setError(data.error || "Login failed. Please try again.");
+      // }
     } catch (error) {
       console.error("Login error:", error);
-      alert(`Login failed: ${error.message}`);
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

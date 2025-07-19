@@ -82,60 +82,62 @@ const Register = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
     setIsLoading(true);
+    setError("");
 
     try {
-      const userData = {
-        first_name: formData.first_name.trim(),
-        last_name: formData.last_name.trim(),
-        email: formData.email.trim().toLowerCase(),
-        mobile_number: formData.mobile_number.replace(/\D/g, ""),
-        alternate_mobile_number: formData.alternate_mobile_number
-          ? formData.alternate_mobile_number.replace(/\D/g, "")
-          : null,
-        password: formData.password,
-      };
+      // Comment out API call and use coming soon functionality
+      const result = await register(formData);
 
-      console.log("User data to be saved:", userData);
-
-      const response = await fetch("/api/users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Registration failed");
+      if (result.success) {
+        setIsModalOpen(false);
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+        });
+      } else {
+        setError(result.message || "Registration failed. Please try again.");
       }
 
-      const result = await response.json();
-      console.log("Registration successful:", result);
+      // Original API code commented out:
+      // const userData = {
+      //   firstName: formData.firstName.trim(),
+      //   lastName: formData.lastName.trim(),
+      //   email: formData.email.trim().toLowerCase(),
+      //   phone: formData.phone.trim(),
+      //   password: formData.password,
+      // };
 
-      login(result.user);
+      // const response = await fetch("/api/users/register", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(userData),
+      // });
 
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        mobile_number: "",
-        alternate_mobile_number: "",
-        password: "",
-        confirmPassword: "",
-      });
+      // const data = await response.json();
 
-      alert("Registration successful! Welcome to EyeCare Expert.");
-      onClose();
+      // if (data.success) {
+      //   setIsModalOpen(false);
+      //   setFormData({
+      //     firstName: "",
+      //     lastName: "",
+      //     email: "",
+      //     phone: "",
+      //     password: "",
+      //     confirmPassword: "",
+      //   });
+      // } else {
+      //   setError(data.error || "Registration failed. Please try again.");
+      // }
     } catch (error) {
       console.error("Registration error:", error);
-      alert(`Registration failed: ${error.message}`);
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

@@ -463,14 +463,26 @@
     padding: $space-sm;
     font-size: $font-small;
     border-radius: $radius-sm;
+    background: $background-light;
+    border: 1px solid $border-color;
 
-    &--active::after {
-      display: none;
+    &:hover {
+      background: rgba($primary-color, 0.05);
+      border-color: $primary-color;
     }
 
     &--active {
-      background: $primary-color;
-      color: white;
+      background: $primary-color !important;
+      color: white !important;
+      border-color: $primary-color;
+
+      &::after {
+        display: none;
+      }
+
+      &:hover {
+        background: darken($primary-color, 5%) !important;
+      }
     }
   }
 }

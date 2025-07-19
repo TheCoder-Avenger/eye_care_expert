@@ -43,8 +43,10 @@ const Header = () => {
   ];
 
   const handleLanguageChange = (language) => {
-    setSelectedLanguage(language.name);
+    showComingSoonModal("Language Change");
     setShowLanguageDropdown(false);
+    // Comment out actual language change functionality
+    // setSelectedLanguage(language.name);
   };
 
   const handleCategoryToggle = (category) => {

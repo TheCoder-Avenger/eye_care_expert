@@ -358,7 +358,7 @@ Please confirm this order.
 Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
       // Redirect to WhatsApp
-      const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
+      const whatsappUrl = `https://wa.me/919270906660?text=${encodeURIComponent(
         message
       )}`;
       window.open(whatsappUrl, "_blank");
@@ -425,7 +425,7 @@ I want to buy this product now. Please process my order.
 Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
     // Redirect to WhatsApp
-    const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/919270906660?text=${encodeURIComponent(
       message
     )}`;
     window.open(whatsappUrl, "_blank");
@@ -1171,7 +1171,7 @@ I'm interested in the Buy 1 Get 1 Free offer for this product. Please provide av
 Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
                 // Redirect to WhatsApp
-                const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
+                const whatsappUrl = `https://wa.me/919270906660?text=${encodeURIComponent(
                   message
                 )}`;
                 window.open(whatsappUrl, "_blank");
@@ -1307,7 +1307,7 @@ I want to avail the Buy 1 Get 1 Free offer. Please confirm my order.
 Visit our store to choose your second frame, schedule an appointment, or contact our team for a video call consultation to select your second frame.`;
 
                   // Redirect to WhatsApp
-                  const whatsappUrl = `https://wa.me/919930033384?text=${encodeURIComponent(
+                  const whatsappUrl = `https://wa.me/919270906660?text=${encodeURIComponent(
                     message
                   )}`;
                   window.open(whatsappUrl, "_blank");

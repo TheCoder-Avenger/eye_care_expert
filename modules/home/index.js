@@ -210,7 +210,7 @@ const HomeView = () => {
 
   return (
     <div className="home-view">
-      <section
+      {/* <section
         className={`banner-carousel ${
           isFullBanner ? "banner-carousel--full" : ""
         }`}
@@ -236,8 +236,7 @@ const HomeView = () => {
               />
             </div>
           ))}
-
-          {/* Banner Toggle Button */}
+          Banner Toggle Button
           <button
             className="banner-carousel__toggle-btn"
             onClick={handleBannerToggle}
@@ -260,7 +259,7 @@ const HomeView = () => {
             )}
           </button>
         </div>
-      </section>
+      </section> */}
 
       <div className="home-view__container">
         <div className="home-view__main">

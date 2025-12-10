@@ -13,3 +13,19 @@ export function generateMetadata({ params }) {
     )}.`,
   };
 }
+
+export async function generateStaticParams() {
+  // TODO: Replace this with real API/data source
+  // Example static list:
+  // const products = await fetch("https://your-api.com/products").then(r => r.json());
+
+  const products = [
+    { slug: "blue-light-glasses" },
+    { slug: "contact-lens-solution" },
+    { slug: "premium-eye-drops" },
+  ];
+
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
+}

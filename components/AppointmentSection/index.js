@@ -10,7 +10,8 @@ const STORE_WHATSAPP_NUMBER = "919270906660";
 const SLOT_PERIODS = {
   morning: {
     id: "morning",
-    name: "🌅 Morning",
+    icon: "🌅",
+    label: "Morning",
     range: "10 AM - 12 PM",
     slots: [
       "10:00 AM - 10:30 AM",
@@ -21,7 +22,8 @@ const SLOT_PERIODS = {
   },
   afternoon: {
     id: "afternoon",
-    name: "☀️ Afternoon",
+    icon: "☀️",
+    label: "Afternoon",
     range: "12 PM - 5 PM",
     slots: [
       "12:00 PM - 12:30 PM",
@@ -38,7 +40,8 @@ const SLOT_PERIODS = {
   },
   evening: {
     id: "evening",
-    name: "🌙 Evening",
+    icon: "🌙",
+    label: "Evening",
     range: "5 PM - 9 PM",
     slots: [
       "05:00 PM - 05:30 PM",
@@ -438,7 +441,8 @@ Please confirm my appointment slot. Thank you!`;
                     }`}
                     onClick={() => setActivePeriod(period.id)}
                   >
-                    <span>{period.name}</span>
+                    <span className="period-icon">{period.icon}</span>
+                    <span className="period-label">{period.label}</span>
                   </button>
                 ))}
               </div>

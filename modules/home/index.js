@@ -6,6 +6,7 @@ import Link from "next/link";
 import Modal from "@components/Modal";
 import ProductCard from "@/components/ProductCard";
 import AppointmentSection from "@/components/AppointmentSection";
+import SpecialOfferModal from "@/components/SpecialOfferModal";
 import { useUser } from "@/context/UserContext";
 import productsData from "@/models/products.json";
 
@@ -23,6 +24,7 @@ const HomeView = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [bestsellerProducts, setBestsellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -145,6 +147,13 @@ const HomeView = () => {
 
   useEffect(() => {
     fetchProducts();
+
+    // Automatically trigger Special Opening Offer popup for patients on visit
+    const offerTimer = setTimeout(() => {
+      setIsOfferModalOpen(true);
+    }, 1000);
+
+    return () => clearTimeout(offerTimer);
   }, []);
 
   const handleFilterChange = (filterType, value) => {
@@ -389,6 +398,13 @@ const HomeView = () => {
           </div>
         )}
       </Modal>
+
+      {/* Special Opening Offer Patient Popup */}
+      <SpecialOfferModal
+        isOpen={isOfferModalOpen}
+        onClose={() => setIsOfferModalOpen(false)}
+        onOpen={() => setIsOfferModalOpen(true)}
+      />
     </div>
   );
 };

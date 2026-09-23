@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Modal from "@components/Modal";
 import ProductCard from "@/components/ProductCard";
+import AppointmentSection from "@/components/AppointmentSection";
 import { useUser } from "@/context/UserContext";
 import productsData from "@/models/products.json";
 
@@ -262,6 +263,9 @@ const HomeView = () => {
       </section> */}
 
       <div className="home-view__container">
+        {/* In-Clinic Appointment & Vision Care Consultation Section */}
+        <AppointmentSection />
+
         <div className="home-view__main">
           {/* Bestseller Products Section */}
           <section className="product-section">

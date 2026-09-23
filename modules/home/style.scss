@@ -10,18 +10,18 @@
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  padding: 2rem 1.5rem 3rem;
+
+  @media (max-width: $breakpoint-sm) {
+    padding: 1.25rem 1rem 2rem;
+  }
 }
 
 .home-view__main {
   display: flex;
+  flex-direction: column;
   gap: $space-2xl;
   width: 100%;
-}
-
-@media (max-width: $breakpoint-lg) {
-  .home-view__main {
-    flex-direction: column;
-  }
 }
 
 .home-view__logo-section {
